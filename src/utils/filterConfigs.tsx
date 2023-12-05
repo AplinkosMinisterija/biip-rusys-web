@@ -1,0 +1,132 @@
+import { FilterInputTypes } from '../components/other/DynamicFilter/Filter';
+import { User } from '../types';
+import {
+  getObservationFormStatusTypes,
+  getRequestStatusTypes,
+  getRequestTypes,
+  getSourcesList,
+  getSpeciesList,
+  speciesOptionLabel,
+} from './functions';
+import { getActivities, getEvolutionOptions, getMethodOptions } from './options';
+import { formFiltersLabels } from './texts';
+
+export const myObservationFilterConfig = {
+  method: {
+    label: formFiltersLabels.method,
+    key: 'method',
+    optionLabel: (option) => option?.label,
+    inputType: FilterInputTypes.singleselect,
+    options: getMethodOptions(),
+  },
+  evolution: {
+    label: formFiltersLabels.evolution,
+    key: 'evolution',
+    optionLabel: (option) => option?.label,
+    inputType: FilterInputTypes.singleselect,
+    options: getEvolutionOptions(),
+  },
+  activity: {
+    label: formFiltersLabels.activity,
+    key: 'activity',
+    optionLabel: (option) => option?.label,
+    inputType: FilterInputTypes.singleselect,
+    options: getActivities(),
+  },
+  source: {
+    label: formFiltersLabels.source,
+    key: 'source',
+    inputType: FilterInputTypes.asyncSelect,
+    api: getSourcesList,
+    optionLabel: (option) => option.name,
+  },
+  dateFrom: {
+    label: formFiltersLabels.dateFrom,
+    key: 'dateFrom',
+    inputType: FilterInputTypes.date,
+  },
+  dateTo: {
+    label: formFiltersLabels.dateTo,
+    key: 'dateTo',
+    inputType: FilterInputTypes.date,
+  },
+  status: {
+    label: formFiltersLabels.status,
+    key: 'status',
+    inputType: FilterInputTypes.multiselect,
+    options: getObservationFormStatusTypes(),
+  },
+  species: {
+    label: formFiltersLabels.species,
+    key: 'species',
+    inputType: FilterInputTypes.asyncMultiSelect,
+    api: getSpeciesList,
+    optionLabel: (option) => speciesOptionLabel(option),
+    getOptionValue: (option) => option.speciesId,
+  },
+};
+
+export const observationFilterConfig = (users?: User[]) => ({
+  ...myObservationFilterConfig,
+  createdBy: {
+    label: formFiltersLabels.users,
+    key: 'createdBy',
+    inputType: FilterInputTypes.singleselect,
+    optionLabel: (option: User) => `${option?.firstName} ${option?.lastName}`,
+    options: users,
+  },
+});
+
+export const observationRowConfig = [
+  ['species'],
+  ['createdBy'],
+  ['dateFrom', 'dateTo'],
+  ['state'],
+  ['status'],
+  ['source'],
+  ['method'],
+  ['evolution'],
+  ['activity'],
+];
+
+export const deletedRequestFilterConfig = {
+  dateFrom: {
+    label: formFiltersLabels.dateFrom,
+    key: 'dateFrom',
+    inputType: FilterInputTypes.date,
+  },
+  dateTo: {
+    label: formFiltersLabels.dateTo,
+    key: 'dateTo',
+    inputType: FilterInputTypes.date,
+  },
+  type: {
+    label: formFiltersLabels.type,
+    key: 'type',
+    inputType: FilterInputTypes.multiselect,
+    options: getRequestTypes(),
+  },
+};
+
+export const myRequestFilterConfig = {
+  ...deletedRequestFilterConfig,
+  status: {
+    label: formFiltersLabels.status,
+    key: 'status',
+    inputType: FilterInputTypes.multiselect,
+    options: getRequestStatusTypes(),
+  },
+};
+
+export const requestFilterConfig = (users: User[]) => ({
+  ...myRequestFilterConfig,
+  createdBy: {
+    label: formFiltersLabels.users,
+    key: 'createdBy',
+    inputType: FilterInputTypes.singleselect,
+    optionLabel: (option: User) => `${option?.firstName} ${option?.lastName}`,
+    options: users,
+  },
+});
+
+export const requestRowConfig = [['dateFrom', 'dateTo'], ['createdBy'], ['type'], ['status']];
