@@ -37,7 +37,7 @@ export const getFormTypes = (isTenantUser: boolean) => {
     },
     {
       title: 'Gauti prieigą',
-      description: 'Suteikiama galimybė peržiūrėti saugomų/invazinių rūšių radavietes žemėlapyje.',
+      description: 'Suteikiama galimybė peržiūrėti saugomų rūšių radavietes žemėlapyje.',
       value: RequestTypes.GET,
     },
     {
