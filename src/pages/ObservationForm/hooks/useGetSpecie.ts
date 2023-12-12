@@ -12,6 +12,7 @@ export const useGetSpecie = (id: string) => {
     () => Api.getSpecieByQueryString(species),
     {
       enabled: !!species && !!isNew(id),
+      refetchOnWindowFocus: false,
     },
   );
 

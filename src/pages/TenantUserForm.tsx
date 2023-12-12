@@ -63,6 +63,8 @@ const TenantUserForm = () => {
     onSuccess: (user) => {
       if (currentUser?.id === user?.id) return navigate(slugs.profile);
     },
+    refetchOnWindowFocus: false,
+
     enabled: !isNew(id),
   });
 

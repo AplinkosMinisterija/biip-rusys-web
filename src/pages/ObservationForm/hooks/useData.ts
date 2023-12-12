@@ -18,6 +18,7 @@ export const useData = () => {
     () => Api.getObservationForm(id),
     {
       enabled: !isNew(id),
+      refetchOnWindowFocus: false,
     },
   );
 

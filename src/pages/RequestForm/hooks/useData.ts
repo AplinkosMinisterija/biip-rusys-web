@@ -26,6 +26,7 @@ export const useData = () => {
     onError: () => {
       navigate(slugs.requests);
     },
+    refetchOnWindowFocus: false,
     enabled: !isNew(id),
   });
 
