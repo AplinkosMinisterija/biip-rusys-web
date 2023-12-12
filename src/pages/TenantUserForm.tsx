@@ -41,36 +41,22 @@ const TenantUserForm = () => {
   const title = isNew(id) ? pageTitles.inviteTenantUser : pageTitles.updateTenantUser;
   const validationSchema = isNew(id) ? validateCreateTenantUser : validateUpdateTenantUser;
 
-  const createUser = useMutation((values: TenantUserProps) => api.createTenantUser(values), {
-    onError: (e: any) => {
-      const errorType = e?.response?.data?.type;
-      handleErrorFromServerToast(errorType);
+  const userMutation = useMutation(
+    (values: TenantUserProps) =>
+      isNew(id) ? api.createTenantUser(values) : api.updateTenantUser(values, id),
+    {
+      onError: (e: any) => {
+        const errorType = e?.response?.data?.type;
+        handleErrorFromServerToast(errorType);
+      },
+      onSuccess: () => {
+        navigate(slugs.tenantUsers);
+      },
+      retry: false,
     },
-    onSuccess: () => {
-      navigate(slugs.tenantUsers);
-    },
-    retry: false,
-  });
+  );
 
-  const updateUser = useMutation((values: TenantUserProps) => api.updateTenantUser(values, id), {
-    onError: () => {
-      handleErrorFromServerToast();
-    },
-    onSuccess: () => {
-      navigate(slugs.tenantUsers);
-    },
-    retry: false,
-  });
-
-  const handleSubmit = async (values: TenantUserProps) => {
-    if (isNew(id)) {
-      return await createUser.mutateAsync(values);
-    }
-
-    return await updateUser.mutateAsync(values);
-  };
-
-  const { data: user, isLoading } = useQuery(['tenantUser', id], () => api.getTenantUser(id), {
+  const { data: user, isFetching } = useQuery(['tenantUser', id], () => api.getTenantUser(id), {
     onError: () => {
       navigate(slugs.tenantUsers);
     },
@@ -113,7 +99,7 @@ const TenantUserForm = () => {
         <SimpleContainer title={formLabels.tenantUserInfo}>
           <>
             <Row>
-              <StyledTextField
+              <TextField
                 label={inputLabels.firstName}
                 value={values.firstName}
                 error={errors.firstName}
@@ -121,7 +107,7 @@ const TenantUserForm = () => {
                 onChange={(firstName) => handleChange('firstName', firstName)}
               />
 
-              <StyledTextField
+              <TextField
                 label={inputLabels.lastName}
                 name="lastName"
                 value={values.lastName}
@@ -129,7 +115,7 @@ const TenantUserForm = () => {
                 onChange={(lastName) => handleChange('lastName', lastName)}
               />
               {isNew(id) && (
-                <StyledNumericTextField
+                <NumericTextField
                   label={inputLabels.personalCode}
                   name="personalCode"
                   value={values.personalCode}
@@ -137,21 +123,21 @@ const TenantUserForm = () => {
                   onChange={(code) => handleChange('personalCode', code.replace(/\s/g, ''))}
                 />
               )}
-              <StyledTextField
+              <TextField
                 label={inputLabels.phone}
                 value={values.phone}
                 error={errors.phone}
                 name="phone"
                 onChange={(phone) => handleChange('phone', phone)}
               />
-              <StyledTextField
+              <TextField
                 label={inputLabels.email}
                 name="email"
                 value={values.email}
                 error={errors.email}
                 onChange={(email) => handleChange('email', email)}
               />
-              <StyledSelectField
+              <SelectField
                 label={inputLabels.role}
                 name="role"
                 value={getRolesTypes().find((role) => role.id === values.role)}
@@ -167,7 +153,7 @@ const TenantUserForm = () => {
     );
   };
 
-  if (isLoading) {
+  if (isFetching) {
     return <LoaderComponent />;
   }
 
@@ -175,7 +161,7 @@ const TenantUserForm = () => {
     <FormPageWrapper
       title={title}
       initialValues={initialValues}
-      onSubmit={handleSubmit}
+      onSubmit={userMutation.mutateAsync}
       renderForm={renderForm}
       validationSchema={validationSchema}
       deleteInfo={deleteInfo}
@@ -191,17 +177,6 @@ const Row = styled.div`
   @media ${device.mobileL} {
     grid-template-columns: repeat(1, 1fr);
   }
-`;
-
-const StyledTextField = styled(TextField)`
-  flex: 1;
-`;
-
-const StyledSelectField = styled(SelectField)`
-  flex: 1;
-`;
-const StyledNumericTextField = styled(NumericTextField)`
-  flex: 1;
 `;
 
 const InnerContainer = styled.div`

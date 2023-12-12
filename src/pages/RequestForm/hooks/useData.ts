@@ -22,7 +22,7 @@ export const useData = () => {
   const scope = getScope(isDeletedRequest);
   const navigate = useNavigate();
 
-  const { data: request, isLoading } = useQuery(['request', id], () => Api.getRequest(scope, id), {
+  const { data: request, isFetching } = useQuery(['request', id], () => Api.getRequest(scope, id), {
     onError: () => {
       navigate(slugs.requests);
     },
@@ -52,18 +52,9 @@ export const useData = () => {
     canDeleteRequest ? deleteRequest.mutateAsync : undefined,
   );
 
-  const createRequest = useMutation((values: RequestFormServerProps) => api.createRequest(values), {
-    onError: () => {
-      handleErrorFromServerToast();
-    },
-    onSuccess: () => {
-      navigate(slugs.requests);
-    },
-    retry: false,
-  });
-
-  const updateRequest = useMutation(
-    (values: RequestFormServerProps) => api.updateRequest(values, id),
+  const requestMutation = useMutation(
+    (values: RequestFormServerProps) =>
+      isNew(id) ? api.createRequest(values) : api.updateRequest(values, id),
     {
       onError: () => {
         handleErrorFromServerToast();
@@ -120,11 +111,7 @@ export const useData = () => {
       },
     };
 
-    if (isNew(id)) {
-      return await createRequest.mutateAsync(params);
-    }
-
-    return await updateRequest.mutateAsync(params);
+    return await requestMutation.mutateAsync(params);
   };
 
   const initialFormValues: RequestFormProps = {
@@ -152,7 +139,7 @@ export const useData = () => {
   return {
     initialFormValues,
     deleteInfo,
-    loading: isLoading,
+    loading: isFetching,
     disabled,
     id,
     title,
