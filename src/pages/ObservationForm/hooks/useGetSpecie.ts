@@ -7,13 +7,14 @@ export const useGetSpecie = (id: string) => {
   const [searchParams] = useSearchParams();
   const { species } = Object.fromEntries([...Array.from(searchParams)]);
 
-  const { data: specie, isLoading } = useQuery(
+  const { data: specie, isFetching } = useQuery(
     ['specie', id],
     () => Api.getSpecieByQueryString(species),
     {
       enabled: !!species && !!isNew(id),
+      refetchOnWindowFocus: false,
     },
   );
 
-  return { specie, specieLoading: isLoading };
+  return { specie, specieLoading: isFetching };
 };

@@ -13,29 +13,21 @@ export const useData = () => {
   const { id = '' } = useParams();
   const { specie, specieLoading } = useGetSpecie(id);
 
-  const { data: observationForm, isLoading } = useQuery(
+  const { data: observationForm, isFetching } = useQuery(
     ['form', id],
     () => Api.getObservationForm(id),
     {
       enabled: !isNew(id),
+      refetchOnWindowFocus: false,
     },
   );
 
   const disabled = !!observationForm && !observationForm?.canEdit;
   const mapQueryString = getMapQueryString(disabled);
 
-  const createForm = useMutation((values: FormServerProps) => api.createObservationForm(values), {
-    onError: () => {
-      handleErrorFromServerToast();
-    },
-    onSuccess: () => {
-      navigate(slugs.observationForms);
-    },
-    retry: false,
-  });
-
-  const updateForm = useMutation(
-    (values: FormServerProps) => api.updateObservationForm(values, id),
+  const formMutation = useMutation(
+    (values: FormServerProps) =>
+      isNew(id) ? api.createObservationForm(values) : api.updateObservationForm(values, id),
     {
       onError: () => {
         handleErrorFromServerToast();
@@ -87,11 +79,7 @@ export const useData = () => {
       ...(!!transect && { transect }),
     };
 
-    if (isNew(id)) {
-      return await createForm.mutateAsync(params);
-    }
-
-    return await updateForm.mutateAsync(params);
+    return await formMutation.mutateAsync(params);
   };
 
   const initialValues: FormProps = {
@@ -115,7 +103,7 @@ export const useData = () => {
 
   return {
     handleSubmit,
-    loading: isLoading || specieLoading,
+    loading: isFetching || specieLoading,
     mapQueryString,
     initialValues,
     disabled,
