@@ -1,5 +1,5 @@
 import { TableRow } from '../../components/tables/table';
-import { TenantUserProps, User } from '../../types';
+import { TenantUserProps } from '../../types';
 import { roleLabels } from '../../utils/texts';
 
 export const mapUsers = (users: TenantUserProps[]): TableRow[] =>
