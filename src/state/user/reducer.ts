@@ -1,6 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { User } from '../../types';
-import { RolesTypes } from '../../utils/constants';
 import type { RootState } from '../store';
 
 export interface UserReducerProps {
