@@ -26,7 +26,6 @@ interface FormPageWrapperProps {
   backUrl?: string;
   canSubmit?: boolean;
   disabled?: boolean;
-  additionalComponent?: JSX.Element;
   deleteInfo?: DeleteInfoProps;
   twoColumn?: boolean;
   validateOnMount?: boolean;
