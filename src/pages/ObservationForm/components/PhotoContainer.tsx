@@ -17,7 +17,7 @@ export const PhotoContainer = ({
 
     handleChange('photos', [...photos, ...uploadedPhotos]);
   };
-  const showPhotosContainer = !disabled || (disabled && !isEmpty(photos));
+  const showPhotosContainer = !disabled || !isEmpty(photos);
 
   if (!showPhotosContainer) return <></>;
 
