@@ -1,9 +1,8 @@
-import React from 'react';
 import styled from 'styled-components';
-import Button, { ButtonColors } from '../buttons/Button';
 import { device } from '../../styles';
-import Icon from './Icons';
 import { buttonsTitles } from '../../utils/texts';
+import Button, { ButtonColors } from '../buttons/Button';
+import Icon from './Icons';
 
 interface ActionContainerInterface {
   onClose: () => void;
@@ -13,7 +12,6 @@ interface ActionContainerInterface {
   title?: string;
   onClick: () => void;
   loading?: boolean;
-  additionalComponent?: JSX.Element;
 }
 
 const DeleteCard = ({
@@ -24,7 +22,6 @@ const DeleteCard = ({
   onClick,
   title,
   loading = false,
-  additionalComponent,
 }: ActionContainerInterface) => {
   return (
     <>
@@ -38,7 +35,6 @@ const DeleteCard = ({
           <Name>{name}</Name>
           {descriptionSecondPart}
         </Description>
-        {additionalComponent && additionalComponent}
         <BottomRow>
           <StyledButton
             onClick={() => onClose()}
