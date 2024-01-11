@@ -1,4 +1,4 @@
-import { isEqual } from 'lodash';
+import { isEmpty, isEqual } from 'lodash';
 import { MeasurementUnit } from '../../../components/other/MeasurmentUnit';
 import { Column, IndividualsContainer, StyledSingleCheckBox } from '../styles';
 import { ObservedSpecieDataContainerProps } from '../types';
@@ -60,7 +60,7 @@ export const ObservedSpecieDataContainer = ({
               <StyledSingleCheckBox
                 disabled={disabled}
                 label={inputLabels.partWatchArea}
-                value={!!values.transect}
+                value={!isEmpty(values.transect)}
                 onChange={handleSetTransect}
               />
             )}
