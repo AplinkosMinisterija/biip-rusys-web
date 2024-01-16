@@ -1,3 +1,4 @@
+import { isEmpty } from 'lodash';
 import styled from 'styled-components';
 import { MeasurementUnit } from '../../../components/other/MeasurmentUnit';
 import { device } from '../../../styles';
@@ -17,7 +18,7 @@ export const TransectInfoFields = ({
   transect,
   errors,
 }: TransectInfoFieldsProps) => {
-  if (!transect) return <></>;
+  if (isEmpty(transect)) return <></>;
 
   const { unit, height, width } = transect;
 

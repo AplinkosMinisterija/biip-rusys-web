@@ -26,7 +26,7 @@ export interface FormProps {
 }
 
 export interface FormServerProps {
-  transect?: Transect | undefined;
+  transect?: Transect | null;
   quantity: string;
   species: number | undefined;
   source: string | undefined;

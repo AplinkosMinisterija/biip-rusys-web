@@ -62,6 +62,14 @@ export const useData = () => {
       transect,
     } = values;
 
+    const getTransectValue = () => {
+      if (isNew(id)) {
+        return transect;
+      }
+
+      return transect || null;
+    };
+
     const params: FormServerProps = {
       quantity,
       species: species?.speciesId,
@@ -76,7 +84,7 @@ export const useData = () => {
       photos,
       evolution,
       activity,
-      ...(!!transect && { transect }),
+      transect: getTransectValue(),
     };
 
     return await formMutation.mutateAsync(params);
