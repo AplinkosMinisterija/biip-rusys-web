@@ -6,7 +6,7 @@ import NumericTextField from '../components/fields/NumericTextField';
 import SelectField from '../components/fields/SelectField';
 import TextField from '../components/fields/TextField';
 import LoaderComponent from '../components/other/LoaderComponent';
-import FormPageWrapper from '../components/wrappers/FormikFormPageWrapper';
+import FormikFormPageWrapper from '../components/wrappers/FormikFormPageWrapper';
 import { useAppSelector } from '../state/hooks';
 import { device } from '../styles';
 import { DeleteInfoProps } from '../types';
@@ -160,7 +160,7 @@ const TenantUserForm = () => {
   }
 
   return (
-    <FormPageWrapper
+    <FormikFormPageWrapper
       title={title}
       initialValues={initialValues}
       onSubmit={userMutation.mutateAsync}

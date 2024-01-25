@@ -4,7 +4,7 @@ import SimpleContainer from '../../components/containers/SimpleContainer';
 import TextField from '../../components/fields/TextField';
 import LoaderComponent from '../../components/other/LoaderComponent';
 import { StatusModal } from '../../components/other/StatusModal';
-import FormPageWrapper from '../../components/wrappers/FormikFormPageWrapper';
+import FormikFormPageWrapper from '../../components/wrappers/FormikFormPageWrapper';
 import { ColumnOne, ColumnTwo, InnerContainer } from '../../styles/GenericStyledComponents';
 import { isNew } from '../../utils/functions';
 import {
@@ -91,7 +91,7 @@ const RequestForm = () => {
   }
 
   return (
-    <FormPageWrapper
+    <FormikFormPageWrapper
       twoColumn={!isNew(id)}
       title={title}
       initialValues={initialFormValues}

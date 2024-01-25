@@ -32,7 +32,7 @@ export const StatusModal = ({ handleChange, values, labels }: StatusModalProps) 
   const { status = '', comment } = values;
 
   return (
-    <Modal onClose={handleClose} visible={!!values.status}>
+    <Modal onClose={handleClose} visible={!!values.status && values.status !== StatusTypes.DRAFT}>
       <Container>
         <IconContainer onClick={handleClose}>
           <StyledCloseButton name={'close'} />

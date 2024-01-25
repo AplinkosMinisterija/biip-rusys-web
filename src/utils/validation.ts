@@ -14,6 +14,10 @@ import { availableMimeTypes } from '../components/fields/DragAndDropUploadField'
 import { availablePhotoMimeTypes } from '../components/fields/PhotoUploadField';
 import { Species } from '../types';
 
+export const validateDraftForm = Yup.object().shape({
+  species: Yup.object().required(validationTexts.requireSelect).nullable(),
+});
+
 export const validateForm = Yup.object().shape(
   {
     species: Yup.object().required(validationTexts.requireSelect).nullable(),
@@ -44,31 +48,41 @@ export const validateForm = Yup.object().shape(
     geom: Yup.object().required(validationTexts.requireMap).nullable(),
     observedBy: Yup.string().required(validationTexts.requireText).nullable(),
     observedAt: Yup.date().required(validationTexts.requireSelect).nullable(),
-    activity: Yup.string().when(['species'], {
-      is: (species: Species) => {
-        return isEqual(species?.formType, FormTypes.ENDANGERED_ANIMAL);
-      },
-      then: Yup.string().required(validationTexts.requireSelect).nullable(),
-    }),
+    activity: Yup.string()
+      .when(['species'], {
+        is: (species: Species) => {
+          console.log(
+            isEqual(species?.formType, FormTypes.ENDANGERED_ANIMAL),
+            ' isEqual(species?.formType, FormTypes.ENDANGERED_ANIMAL)',
+          );
+          return isEqual(species?.formType, FormTypes.ENDANGERED_ANIMAL);
+        },
+        then: Yup.string().required(validationTexts.requireSelect).nullable(),
+      })
+      .nullable(),
 
-    evolution: Yup.string().when(['species', 'activity'], {
-      is: (species: Species, activity: AnimalActivity) =>
-        [FormTypes.ENDANGERED_MUSHROOM, FormTypes.ENDANGERED_PLANT].includes(species?.formType) ||
-        [AnimalActivity.HABITATION, AnimalActivity.OBSERVED_ALIVE, AnimalActivity.OTHER].includes(
-          activity,
-        ),
-      then: Yup.string().required(validationTexts.requireSelect).nullable(),
-    }),
-    quantity: Yup.string().when(['species'], {
-      is: (species: Species) => {
-        const isInvasivePlant = isEqual(FormTypes.INVASIVE_PLANT, species?.formType);
+    evolution: Yup.string()
+      .when(['species', 'activity'], {
+        is: (species: Species, activity: AnimalActivity) =>
+          [FormTypes.ENDANGERED_MUSHROOM, FormTypes.ENDANGERED_PLANT].includes(species?.formType) ||
+          [AnimalActivity.HABITATION, AnimalActivity.OBSERVED_ALIVE, AnimalActivity.OTHER].includes(
+            activity,
+          ),
+        then: Yup.string().required(validationTexts.requireSelect).nullable(),
+      })
+      .nullable(),
+    quantity: Yup.string()
+      .when(['species'], {
+        is: (species: Species) => {
+          const isInvasivePlant = isEqual(FormTypes.INVASIVE_PLANT, species?.formType);
 
-        return !isInvasivePlant;
-      },
-      then: Yup.string()
-        .required(validationTexts.requireText)
-        .matches(/^[0-9][0-9]*$/, 'Turi būti teigiama reikšmė'),
-    }),
+          return !isInvasivePlant;
+        },
+        then: Yup.string()
+          .required(validationTexts.requireText)
+          .matches(/^[0-9][0-9]*$/, 'Turi būti teigiama reikšmė'),
+      })
+      .nullable(),
     method: Yup.string().when(['species'], {
       is: (species: Species) => {
         const formType = species?.formType;

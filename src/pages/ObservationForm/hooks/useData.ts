@@ -25,6 +25,8 @@ export const useData = () => {
   const disabled = !!observationForm && !observationForm?.canEdit;
   const mapQueryString = getMapQueryString(disabled);
 
+  const isDraft = isNew(id) || observationForm?.status === StatusTypes.DRAFT;
+
   const formMutation = useMutation(
     (values: FormServerProps) =>
       isNew(id) ? api.createObservationForm(values) : api.updateObservationForm(values, id),
@@ -39,12 +41,20 @@ export const useData = () => {
     },
   );
 
-  const handleSubmit = async (values: FormProps, helper) => {
-    const canSetStatus = !isNew(id) && !values?.status;
+  const handleSubmitForm = async (values: FormProps, helper) => {
+    const canSetStatus = !isDraft && !values?.status;
     if (canSetStatus) {
       return helper.setFieldValue('status', StatusTypes.SUBMITTED);
     }
 
+    handleSubmit(values);
+  };
+
+  const handleDraftSubmit = async (values: FormProps) => {
+    handleSubmit(values);
+  };
+
+  const handleSubmit = async (values: FormProps) => {
     const {
       quantity,
       species,
@@ -53,6 +63,7 @@ export const useData = () => {
       source,
       description,
       geom,
+      status,
       observedBy,
       observedAt,
       photos,
@@ -71,6 +82,7 @@ export const useData = () => {
     };
 
     const params: FormServerProps = {
+      ...(!!status && { status }),
       quantity,
       species: species?.speciesId,
       source: source?.id,
@@ -79,7 +91,7 @@ export const useData = () => {
       ...(!!methodValue && { methodValue }),
       method,
       observedAt,
-      geom,
+      ...(!!geom && { geom }),
       comment,
       photos,
       evolution,
@@ -95,7 +107,7 @@ export const useData = () => {
     status: undefined,
     species: observationForm?.species || specie?.taxonomy || undefined,
     source: observationForm?.source || undefined,
-    quantity: observationForm?.quantity?.toString() || '',
+    quantity: observationForm?.quantity || '',
     method: observationForm?.method || '',
     methodValue: observationForm?.methodValue || '',
     transect: observationForm?.transect || undefined,
@@ -110,7 +122,9 @@ export const useData = () => {
   };
 
   return {
-    handleSubmit,
+    handleSubmitForm,
+    handleDraftSubmit,
+    isDraft,
     loading: isFetching || specieLoading,
     mapQueryString,
     initialValues,

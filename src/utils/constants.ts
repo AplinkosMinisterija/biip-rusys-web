@@ -57,6 +57,7 @@ export enum StatusTypes {
   APPROVED = 'APPROVED',
   RETURNED = 'RETURNED',
   REJECTED = 'REJECTED',
+  DRAFT = 'DRAFT',
 }
 
 export enum RolesTypes {

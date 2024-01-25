@@ -149,7 +149,7 @@ const InputContainer = styled.div<{
 
 const TextInput = styled.input<{ readOnly: boolean; selectedValue: boolean }>`
   border: none;
-  padding: 4px 12px 4px 4px;
+  padding: 4px 12px 4px 12px;
 
   width: 100%;
   height: 100%;

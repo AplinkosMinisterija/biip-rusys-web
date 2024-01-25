@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from 'react-query';
 import api from '../api';
 import SimpleContainer from '../components/containers/SimpleContainer';
 import TextField from '../components/fields/TextField';
-import FormPageWrapper from '../components/wrappers/FormikFormPageWrapper';
+import FormikFormPageWrapper from '../components/wrappers/FormikFormPageWrapper';
 import { useAppSelector } from '../state/hooks';
 import { ColumnOne, Grid } from '../styles/GenericStyledComponents';
 import { Tenant } from '../types';
@@ -69,7 +69,7 @@ const TenantForm = () => {
   };
 
   return (
-    <FormPageWrapper
+    <FormikFormPageWrapper
       title={tenant.name}
       validateOnMount={!isTenantFullyCompleted(tenant)}
       initialValues={initialValues}

@@ -60,15 +60,15 @@ export interface ObservedSpecieDataContainerProps {
 
 export interface ObserverDataContainerProps {
   values: FormProps;
-  errors: { [key: string]: string };
+  errors: any;
   handleChange: HandleChangeType;
   disabled: boolean;
-  id?: string;
+  isDraft?: boolean;
 }
 
 export interface PhotoContainerProps {
   photos: any[];
-  photoError?: string;
+  photoError?: any;
   handleChange: HandleChangeType;
   disabled: boolean;
 }

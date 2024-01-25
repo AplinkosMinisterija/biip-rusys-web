@@ -9,7 +9,7 @@ export interface MapProps {
   height?: string;
   onSave?: (data: any) => void;
   onClose?: () => void;
-  error?: string;
+  error?: any;
   queryString?: string;
   value?: string;
 }

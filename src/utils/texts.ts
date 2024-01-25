@@ -216,6 +216,7 @@ export const menuLabels = {
 };
 export const buttonsTitles = {
   download: 'Atsisiųsti',
+  saveDraft: 'Saugoti juodraštį',
   or: 'Arba',
   eLogin: 'Prisijungti per el. valdžios vartus',
   fillOutRequest: 'Pildyti prašymą',
@@ -396,6 +397,7 @@ export const observationFormStatusLabels = {
   [StatusTypes.RETURNED]: 'Grąžinta taisymui',
   [StatusTypes.REJECTED]: 'Atmesta',
   [StatusTypes.APPROVED]: 'Patvirtinta',
+  [StatusTypes.DRAFT]: 'Juodraštis',
 };
 
 export const requestStatusLabels = {

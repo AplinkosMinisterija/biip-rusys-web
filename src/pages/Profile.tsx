@@ -4,7 +4,7 @@ import Cookies from 'universal-cookie';
 import api from '../api';
 import SimpleContainer from '../components/containers/SimpleContainer';
 import TextField from '../components/fields/TextField';
-import FormPageWrapper from '../components/wrappers/FormikFormPageWrapper';
+import FormikFormPageWrapper from '../components/wrappers/FormikFormPageWrapper';
 import { useAppSelector } from '../state/hooks';
 import { device } from '../styles';
 import { User } from '../types';
@@ -92,7 +92,7 @@ const Profile = () => {
   };
 
   return (
-    <FormPageWrapper
+    <FormikFormPageWrapper
       back={false}
       title={pageTitles.updateProfile}
       validateOnMount={!isProfileFullyCompleted(user)}

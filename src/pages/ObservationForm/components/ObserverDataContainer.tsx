@@ -14,7 +14,7 @@ export const ObserverDataContainer = ({
   errors,
   handleChange,
   disabled,
-  id,
+  isDraft,
 }: ObserverDataContainerProps) => {
   return (
     <SimpleContainer title={formLabels.dataAboutObserver}>
@@ -40,7 +40,7 @@ export const ObserverDataContainer = ({
           />
           <AsyncSelectField
             label={inputLabels.source}
-            disabled={!isNew(id)}
+            disabled={!isDraft}
             value={values?.source}
             error={errors.source}
             name="source"
