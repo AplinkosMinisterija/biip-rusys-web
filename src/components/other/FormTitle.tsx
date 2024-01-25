@@ -1,18 +1,22 @@
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { device } from '../../styles';
+import { DeleteInfoProps } from '../../types';
 import { buttonsTitles } from '../../utils/texts';
 import Button, { ButtonColors } from '../buttons/Button';
+import { DeleteComponent } from './DeleteComponent';
 import Icon from './Icons';
 
 export const FormTitle = ({
   backUrl,
   back = true,
   title,
+  deleteInfo,
 }: {
   backUrl?: string;
   title?: string;
   back?: boolean;
+  deleteInfo?: DeleteInfoProps;
 }) => {
   const navigate = useNavigate();
   const url: string | number = backUrl || -1;
@@ -34,6 +38,7 @@ export const FormTitle = ({
         )}
         <Title>{title}</Title>
       </InnerRow>
+      <DeleteComponent deleteInfo={deleteInfo} />
     </Row>
   );
 };

@@ -51,10 +51,6 @@ export const validateForm = Yup.object().shape(
     activity: Yup.string()
       .when(['species'], {
         is: (species: Species) => {
-          console.log(
-            isEqual(species?.formType, FormTypes.ENDANGERED_ANIMAL),
-            ' isEqual(species?.formType, FormTypes.ENDANGERED_ANIMAL)',
-          );
           return isEqual(species?.formType, FormTypes.ENDANGERED_ANIMAL);
         },
         then: Yup.string().required(validationTexts.requireSelect).nullable(),

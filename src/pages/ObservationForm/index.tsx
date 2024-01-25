@@ -53,7 +53,6 @@ const ObservationForm = () => {
         enableReinitialize={false}
         initialValues={initialValues}
         onSubmit={(values, helper) => {
-          console.log('ka?');
           values.status === StatusTypes.DRAFT
             ? handleDraftSubmit(values)
             : handleSubmitForm(values, helper);
@@ -67,13 +66,10 @@ const ObservationForm = () => {
               ? await validateDraftForm.validate(values, { abortEarly: false })
               : await validateForm.validate(values, { abortEarly: false });
           } catch (e) {
-            console.log(e, 'watna?');
             return {
               ...yupToFormErrors(e),
             };
           }
-
-          console.log('niom');
 
           return null;
         }}
@@ -89,8 +85,6 @@ const ObservationForm = () => {
               activity: undefined,
             });
           };
-
-          console.log(errors, 'errors');
 
           return (
             <StyledForm two_column={!isDraft ? 1 : 0}>
