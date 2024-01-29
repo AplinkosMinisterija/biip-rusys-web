@@ -1,3 +1,4 @@
+import { isEmpty } from 'lodash';
 import { useMutation, useQuery } from 'react-query';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getMapQueryString } from '../functions';
@@ -110,7 +111,7 @@ export const useData = () => {
     quantity: observationForm?.quantity || '',
     method: observationForm?.method || '',
     methodValue: observationForm?.methodValue || '',
-    transect: observationForm?.transect || undefined,
+    transect: !isEmpty(observationForm?.transect) ? observationForm?.transect : undefined,
     description: observationForm?.description || '',
     observedAt: observationForm?.observedAt || new Date(),
     photos: observationForm?.photos || [],
