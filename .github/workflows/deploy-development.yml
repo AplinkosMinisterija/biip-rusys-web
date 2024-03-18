@@ -18,4 +18,4 @@ jobs:
       build-args: |
         NODE_ENV=development
         VITE_SENTRY_DSN=https://bf21f87b264ed8a7586f44652cd0a935@sentry.biip.lt/15
-        VITE_MAPS_HOST=https://dev.maps.biip.lt
+        VITE_MAPS_HOST=https://dev-maps.biip.lt
