@@ -7,10 +7,9 @@ import { buttonsTitles } from '../../../utils/texts';
 import Button, { ButtonColors } from '../../buttons/Button';
 import AsyncMultiSelect from '../../fields/AsyncMultiSelect';
 import AsyncSelectField from '../../fields/AsyncSelectField';
-import DatePicker from '../../fields/DatePicker';
 import MultiSelect from '../../fields/MultiSelect';
 import SelectField from '../../fields/SelectField';
-import TextField from '../../fields/TextField';
+import { DatePicker, TextField } from '@aplinkosministerija/design-system';
 
 export interface LabelsProps {
   [key: string]: string;

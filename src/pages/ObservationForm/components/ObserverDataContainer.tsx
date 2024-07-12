@@ -3,11 +3,10 @@ import { ObserverDataContainerProps } from '../types';
 import CheckBox from './../../../components/buttons/CheckBox';
 import SimpleContainer from './../../../components/containers/SimpleContainer';
 import AsyncSelectField from './../../../components/fields/AsyncSelectField';
-import Datepicker from './../../../components/fields/DatePicker';
-import TextField from './../../../components/fields/TextField';
 import { Sources } from './../../../types';
 import { getSourcesList, isNew } from './../../../utils/functions';
 import { formLabels, inputLabels } from './../../../utils/texts';
+import { DatePicker, TextField } from '@aplinkosministerija/design-system';
 
 export const ObserverDataContainer = ({
   values,
@@ -20,7 +19,7 @@ export const ObserverDataContainer = ({
     <SimpleContainer title={formLabels.dataAboutObserver}>
       <Column>
         <Row>
-          <Datepicker
+          <DatePicker
             disabled={disabled}
             label={inputLabels.observedAt}
             value={values.observedAt}

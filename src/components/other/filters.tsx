@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import TextField from '../fields/TextField';
+import { TextField } from '@aplinkosministerija/design-system';
 
 export interface LoginLayoutProps {
   filters: any;

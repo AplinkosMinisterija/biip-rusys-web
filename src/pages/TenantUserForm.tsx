@@ -2,9 +2,6 @@ import { useMutation, useQuery } from 'react-query';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import SimpleContainer from '../components/containers/SimpleContainer';
-import NumericTextField from '../components/fields/NumericTextField';
-import SelectField from '../components/fields/SelectField';
-import TextField from '../components/fields/TextField';
 import LoaderComponent from '../components/other/LoaderComponent';
 import FormPageWrapper from '../components/wrappers/FormikFormPageWrapper';
 import { useAppSelector } from '../state/hooks';
@@ -24,6 +21,7 @@ import {
 } from '../utils/texts';
 import { validateCreateTenantUser, validateUpdateTenantUser } from '../utils/validation';
 import api from './../api';
+import { NumericTextField, PhoneField, SelectField, TextField } from '@aplinkosministerija/design-system';
 
 interface TenantUserProps {
   firstName?: string;
@@ -125,7 +123,7 @@ const TenantUserForm = () => {
                   onChange={(code) => handleChange('personalCode', code.replace(/\s/g, ''))}
                 />
               )}
-              <TextField
+              <PhoneField
                 label={inputLabels.phone}
                 value={values.phone}
                 error={errors.phone}
