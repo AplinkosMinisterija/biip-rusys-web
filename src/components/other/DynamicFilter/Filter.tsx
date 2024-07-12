@@ -9,7 +9,8 @@ import AsyncMultiSelect from '../../fields/AsyncMultiSelect';
 import AsyncSelectField from '../../fields/AsyncSelectField';
 import MultiSelect from '../../fields/MultiSelect';
 import SelectField from '../../fields/SelectField';
-import { DatePicker, TextField } from '@aplinkosministerija/design-system';
+import { TextField } from '@aplinkosministerija/design-system';
+import Datepicker from '../../fields/DatePicker';
 
 export interface LabelsProps {
   [key: string]: string;
@@ -64,7 +65,7 @@ const Filter = ({ values, filters, rowConfig, onSubmit }: LoginLayoutProps) => {
           if (filter.inputType === FilterInputTypes.date) {
             return (
               <InputWrapper single={singleItem} key={filter.key} isLast={index === row.length - 1}>
-                <DatePicker
+                <Datepicker
                   name={filter.key}
                   value={values[filter.key]}
                   onChange={(value) => setFieldValue(filter.key, value)}
