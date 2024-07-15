@@ -13,6 +13,7 @@ import { isEqual } from 'lodash';
 import { availableMimeTypes } from '../components/fields/DragAndDropUploadField';
 import { availablePhotoMimeTypes } from '../components/fields/PhotoUploadField';
 import { Species } from '../types';
+import { phoneNumberRegexPattern } from '@aplinkosministerija/design-system';
 
 export const validateForm = Yup.object().shape(
   {
@@ -115,7 +116,7 @@ export const validateCreateTenantUser = Yup.object().shape({
   phone: Yup.string()
     .required(validationTexts.requireText)
     .trim()
-    .matches(/^(86|\+3706)\d{7}$/, validationTexts.badPhoneFormat)
+    .matches(phoneNumberRegexPattern, validationTexts.badPhoneFormat)
     .nullable(),
   email: Yup.string()
     .email(validationTexts.badEmailFormat)
@@ -129,7 +130,7 @@ export const validateUpdateTenantUser = Yup.object().shape({
   phone: Yup.string()
     .required(validationTexts.requireText)
     .trim()
-    .matches(/^(86|\+3706)\d{7}$/, validationTexts.badPhoneFormat)
+    .matches(phoneNumberRegexPattern, validationTexts.badPhoneFormat)
     .nullable(),
   email: Yup.string().email(validationTexts.badEmailFormat).required(validationTexts.requireText),
 });
@@ -186,7 +187,7 @@ export const validateProfileForm = Yup.object().shape({
   phone: Yup.string()
     .required(validationTexts.requireText)
     .trim()
-    .matches(/(86|\+3706)\d{7}/, validationTexts.badPhoneFormat),
+    .matches(phoneNumberRegexPattern, validationTexts.badPhoneFormat),
   email: Yup.string().email(validationTexts.badEmailFormat).required(validationTexts.requireText),
 });
 
@@ -227,6 +228,6 @@ export const validateUpdateTenantForm = Yup.object().shape({
   phone: Yup.string()
     .required(validationTexts.requireText)
     .trim()
-    .matches(/^(86|\+3706)\d{7}$/, validationTexts.badPhoneFormat),
+    .matches(phoneNumberRegexPattern, validationTexts.badPhoneFormat),
   email: Yup.string().email(validationTexts.badEmailFormat).required(validationTexts.requireText),
 });

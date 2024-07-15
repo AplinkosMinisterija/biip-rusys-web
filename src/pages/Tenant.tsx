@@ -1,7 +1,6 @@
 import { useMutation, useQueryClient } from 'react-query';
 import api from '../api';
 import SimpleContainer from '../components/containers/SimpleContainer';
-import TextField from '../components/fields/TextField';
 import FormPageWrapper from '../components/wrappers/FormikFormPageWrapper';
 import { useAppSelector } from '../state/hooks';
 import { ColumnOne, Grid } from '../styles/GenericStyledComponents';
@@ -13,6 +12,7 @@ import {
 } from '../utils/functions';
 import { formLabels, inputLabels, validationTexts } from '../utils/texts';
 import { validateUpdateTenantForm } from '../utils/validation';
+import { PhoneField, TextField } from '@aplinkosministerija/design-system';
 
 export interface TenantProps {
   phone: string;
@@ -45,12 +45,11 @@ const TenantForm = () => {
       <ColumnOne>
         <SimpleContainer title={formLabels.infoAboutTenant}>
           <Grid column={2}>
-            <TextField
+            <PhoneField
               label={inputLabels.phone}
               value={values.phone}
               error={errors.phone}
               name="phone"
-              placeholder="862211123"
               onChange={(e) => handleChange('phone', e)}
             />
             <TextField

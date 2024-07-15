@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import Cookies from 'universal-cookie';
 import api from '../api';
 import SimpleContainer from '../components/containers/SimpleContainer';
-import TextField from '../components/fields/TextField';
 import FormPageWrapper from '../components/wrappers/FormikFormPageWrapper';
 import { useAppSelector } from '../state/hooks';
 import { device } from '../styles';
@@ -15,6 +14,7 @@ import {
 } from '../utils/functions';
 import { formLabels, inputLabels, pageTitles, validationTexts } from '../utils/texts';
 import { validateProfileForm } from '../utils/validation';
+import { PhoneField, TextField } from '@aplinkosministerija/design-system';
 
 export interface UserProps {
   firstName?: string;
@@ -70,7 +70,7 @@ const Profile = () => {
                 error={errors.lastName}
                 onChange={(lastName) => handleChange('lastName', lastName)}
               />
-              <TextField
+              <PhoneField
                 label={inputLabels.phone}
                 value={values.phone}
                 error={errors.phone}

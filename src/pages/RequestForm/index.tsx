@@ -1,7 +1,6 @@
 import Api from '../../api';
 import FormHistoryContainer from '../../components/containers/FormHistoryContainer';
 import SimpleContainer from '../../components/containers/SimpleContainer';
-import TextField from '../../components/fields/TextField';
 import LoaderComponent from '../../components/other/LoaderComponent';
 import { StatusModal } from '../../components/other/StatusModal';
 import FormPageWrapper from '../../components/wrappers/FormikFormPageWrapper';
@@ -21,6 +20,7 @@ import { GeneratedFileComponent } from './components/GeneratedFileContainer';
 import SpeciesTaxonomiesContainer from './components/TaxonomiesContainer';
 import { useData } from './hooks/useData';
 import { RequestFormProps } from './types';
+import { TextField } from '@aplinkosministerija/design-system';
 
 const RequestForm = () => {
   const {

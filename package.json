@@ -4,6 +4,7 @@
   "private": true,
   "prettier": "@aplinkosministerija/biip-prettier-config",
   "dependencies": {
+    "@aplinkosministerija/design-system": "^0.0.45",
     "@material-ui/core": "^4.12.4",
     "@reduxjs/toolkit": "^1.8.1",
     "@sentry/react": "^7.61.0",
@@ -25,6 +26,7 @@
     "react-paginate": "^8.1.3",
     "react-query": "^3.39.3",
     "react-redux": "^7.2.8",
+    "react-resize-detector": "^7.1.2",
     "react-router-dom": "^6.3.0",
     "react-toastify": "^9.0.7",
     "redux": "^4.1.2",
@@ -33,7 +35,6 @@
     "typescript": "^4.6.3",
     "universal-cookie": "^4.0.4",
     "vite": "^5.0.5",
-    "react-resize-detector": "^7.1.2",
     "vite-plugin-svgr": "^4.2.0",
     "vite-tsconfig-paths": "^4.2.1",
     "vitest": "^0.34.6",
