@@ -216,6 +216,7 @@ export const menuLabels = {
 };
 export const buttonsTitles = {
   download: 'Atsisiųsti',
+  returnToLogin: 'Grįžti į prisijungimo langą',
   or: 'Arba',
   eLogin: 'Prisijungti per el. valdžios vartus',
   fillOutRequest: 'Pildyti prašymą',
@@ -262,6 +263,7 @@ export const buttonsTitles = {
 };
 
 export const formLabels = {
+  notGrantedAccess: 'Nesuteikta prieiga',
   infoAboutTenant: 'Informacija apie įmonę',
   selectProfile: 'Pasirinkite paskyrą',
   history: 'Istorija',
