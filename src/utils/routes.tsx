@@ -20,6 +20,7 @@ import { handleIsTenantOwner, handleIsTenantUser } from './functions';
 import { menuLabels, url } from './texts';
 
 export const slugs = {
+  cantLogin: '/negalima_jungtis',
   profile: '/profilis',
   tenant: '/imone',
   login: '/login',

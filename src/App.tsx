@@ -17,6 +17,7 @@ import Cookies from 'universal-cookie';
 import api from './api';
 import DefaultLayout from './components/layouts/DefaultLayout';
 import LoaderComponent from './components/other/LoaderComponent';
+import { CantLogin } from './pages/CantLogin';
 import { Login } from './pages/Login';
 import { useAppSelector } from './state/hooks';
 import { ProfileId } from './types';
@@ -92,6 +93,9 @@ function App() {
   const { isLoading: tenantInfoLoading } = useTenantInfoMutation();
 
   const eGatesLoginMutation = useMutation((ticket: string) => api.eGatesLogin({ ticket }), {
+    onError: () => {
+      navigate(slugs.cantLogin);
+    },
     onSuccess: (data) => {
       handleUpdateTokens(data);
     },
@@ -201,6 +205,7 @@ function App() {
             <Routes>
               <Route element={<PublicRoute profileId={profileId} loggedIn={loggedIn} />}>
                 <Route path="/login" element={<Login />} />
+                <Route path={slugs.cantLogin} element={<CantLogin />} />
               </Route>
               <Route
                 element={
