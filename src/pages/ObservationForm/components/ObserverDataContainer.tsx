@@ -1,12 +1,12 @@
+import { DatePicker, TextField } from '@aplinkosministerija/design-system';
 import { Column, Row } from '../styles';
 import { ObserverDataContainerProps } from '../types';
 import CheckBox from './../../../components/buttons/CheckBox';
 import SimpleContainer from './../../../components/containers/SimpleContainer';
 import AsyncSelectField from './../../../components/fields/AsyncSelectField';
 import { Sources } from './../../../types';
-import { getSourcesList, isNew } from './../../../utils/functions';
+import { getSourcesList } from './../../../utils/functions';
 import { formLabels, inputLabels } from './../../../utils/texts';
-import { DatePicker, TextField } from '@aplinkosministerija/design-system';
 
 export const ObserverDataContainer = ({
   values,
@@ -39,7 +39,7 @@ export const ObserverDataContainer = ({
           />
           <AsyncSelectField
             label={inputLabels.source}
-            disabled={!isNew(id)}
+            disabled={disabled}
             value={values?.source}
             error={errors.source}
             name="source"
