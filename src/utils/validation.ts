@@ -96,6 +96,12 @@ export const validateForm = Yup.object().shape(
       },
       then: Yup.string().required(validationTexts.requireText).nullable(),
     }),
+    photos: Yup.array().when('species', {
+      is: (species) => species?.speciesType.includes(SpeciesTypes.INVASIVE),
+      then: Yup.array()
+        .required(validationTexts.requirePhotos)
+        .min(1, validationTexts.requirePhotos),
+    }),
     isCorrectFormInformation: Yup.boolean()
       .required(validationTexts.requireSelect)
       .oneOf([true], validationTexts.requireSelect),
