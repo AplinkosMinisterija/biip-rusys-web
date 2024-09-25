@@ -558,7 +558,7 @@ export const descriptions = {
   tableNotFound: 'Atsiprašome nieko neradome pagal pasirinktus filtrus',
   footerTitle: '© Lietuvos Respublikos aplinkos ministerija, 2013-2022',
   footerDescription:
-    '  Duomenys apie įmonę kaupiami ir saugomi Juridinių asmenų registre. Įmonės kodas: 188602370 | Adresas: A. Jakšto g. 4, 01105 Vilnius Telefonas: 8 706 63661 | El. paštas: info@am.lt',
+    '  Duomenys apie įmonę kaupiami ir saugomi Juridinių asmenų registre. Įmonės kodas: 188602370 | Adresas: A. Jakšto g. 4, 01105 Vilnius Telefonas: +370 626 22 252 | El. paštas: info@am.lt',
 };
 
 export const deleteTitles = {
