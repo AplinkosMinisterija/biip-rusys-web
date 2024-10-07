@@ -23,7 +23,7 @@ interface LoginProps {
 export const Login = () => {
   const captchaRef = useRef<any>();
   const { isLoading: userInfoLoading } = useUserInfo();
-  const isProdEnvironment = import.meta.env.NODE_ENV === 'prod';
+  const isProdEnvironment = import.meta.env.VITE_USER_NODE_ENV === 'production';
   const handleLogin = async (values: LoginProps) => {
     const captchaToken = await captchaRef?.current?.execute();
     const params = { ...values, captchaToken };
