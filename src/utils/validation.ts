@@ -83,22 +83,24 @@ export const validateForm = Yup.object().shape(
         .required(validationTexts.requireText)
         .matches(/^[0-9][0-9]*$/, 'Turi būti teigiama reikšmė'),
     }),
-    method: Yup.string().when(['species'], {
-      is: (species: Species) => {
-        const formType = species?.formType;
+    method: Yup.string()
+      .when(['species'], {
+        is: (species: Species) => {
+          const formType = species?.formType;
 
-        const hasMethod = [
-          FormTypes.INVASIVE_CRUSTACEAN,
-          FormTypes.INVASIVE_FISH,
-          FormTypes.INVASIVE_MOLLUSK,
-          FormTypes.INVASIVE_MAMMAL,
-          FormTypes.INVASIVE_PLANT,
-        ].includes(formType);
+          const hasMethod = [
+            FormTypes.INVASIVE_CRUSTACEAN,
+            FormTypes.INVASIVE_FISH,
+            FormTypes.INVASIVE_MOLLUSK,
+            FormTypes.INVASIVE_MAMMAL,
+            FormTypes.INVASIVE_PLANT,
+          ].includes(formType);
 
-        return hasMethod;
-      },
-      then: Yup.string().required(validationTexts.requireSelect).nullable(),
-    }),
+          return hasMethod;
+        },
+        then: Yup.string().required(validationTexts.requireSelect).nullable(),
+      })
+      .nullable(),
     methodValue: Yup.string()
       .when(['species', 'method'], {
         is: (species: Species, method: string) => {
