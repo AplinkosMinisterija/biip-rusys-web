@@ -151,7 +151,7 @@ const routes = [
     slug: slugs.placesMap,
     component: <PlacesMap />,
   },
-  import.meta.env.NODE_ENV === 'prod'
+  import.meta.env.VITE_USER_NODE_ENV === 'production'
     ? {}
     : {
         slug: '/profiliai/:id',
