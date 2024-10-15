@@ -29,7 +29,7 @@ export const useData = () => {
     },
   );
 
-  const removeUser = useMutation(() => api.deleteObservationForm(id), {
+  const deleteForm = useMutation(() => api.deleteObservationForm(id), {
     onError: () => {
       handleErrorFromServerToast();
     },
@@ -46,7 +46,7 @@ export const useData = () => {
     deleteTitle: deleteTitles.form,
     deleteName: `#${observationForm?.id}`,
     deleteFunction:
-      observationForm?.status === StatusTypes.RETURNED ? removeUser.mutateAsync : undefined,
+      observationForm?.status === StatusTypes.RETURNED ? deleteForm.mutateAsync : undefined,
   };
 
   const disabled = !!observationForm && !observationForm?.canEdit;
