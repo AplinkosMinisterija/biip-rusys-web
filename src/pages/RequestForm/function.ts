@@ -16,7 +16,7 @@ export const getDeleteInfo = (
   return {
     deleteButtonText:
       type === RequestTypes.GET_ONCE ? buttonsTitles.deleteExcerpt : buttonsTitles.deleteRequest,
-    deleteDescriptionFirstPart: deleteDescriptionFirstPart.request,
+    deleteDescriptionFirstPart: deleteDescriptionFirstPart.entity,
     deleteDescriptionSecondPart:
       type === RequestTypes.GET_ONCE
         ? deleteDescriptionSecondPart.excerpt

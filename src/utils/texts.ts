@@ -250,6 +250,7 @@ export const buttonsTitles = {
   edit: 'Atnaujinti',
   view: 'Peržiūrėti',
   removeTenantUser: 'Pašalinti darbuotoją',
+  removeForm: 'Pašalinti stebėjimą',
   deleteGroup: 'Ištrinti grupę',
   sarasas: 'Sąrašas',
   zemelapis: 'Žemėlapis',
@@ -564,17 +565,18 @@ export const descriptions = {
 export const deleteTitles = {
   tenantUser: 'Pašalinti darbuotoją',
   request: 'Ištrinti prašymą',
+  form: 'Ištrinti stebėjimą',
   excerpt: 'Ištrinti išrašą',
 };
 
 export const deleteDescriptionFirstPart = {
-  tenantUser: 'Ar esate tikri, kad norite pašalinti ',
-  request: 'Ar esate tikri, kad norite ištrinti ',
+  entity: 'Ar esate tikri, kad norite pašalinti',
 };
 
 export const deleteDescriptionSecondPart = {
-  tenantUser: ' darbuotoją?',
+  tenantUser: 'darbuotoją?',
   request: 'prašymą?',
+  form: 'stebėjimą?',
   excerpt: 'išrašą?',
 };
 

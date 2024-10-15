@@ -1,3 +1,9 @@
+import {
+  NumericTextField,
+  PhoneField,
+  SelectField,
+  TextField,
+} from '@aplinkosministerija/design-system';
 import { useMutation, useQuery } from 'react-query';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
@@ -21,7 +27,6 @@ import {
 } from '../utils/texts';
 import { validateCreateTenantUser, validateUpdateTenantUser } from '../utils/validation';
 import api from './../api';
-import { NumericTextField, PhoneField, SelectField, TextField } from '@aplinkosministerija/design-system';
 
 interface TenantUserProps {
   firstName?: string;
@@ -78,7 +83,7 @@ const TenantUserForm = () => {
 
   const deleteInfo: DeleteInfoProps = {
     deleteButtonText: buttonsTitles.removeTenantUser,
-    deleteDescriptionFirstPart: deleteDescriptionFirstPart.tenantUser,
+    deleteDescriptionFirstPart: deleteDescriptionFirstPart.entity,
     deleteDescriptionSecondPart: deleteDescriptionSecondPart.tenantUser,
     deleteTitle: deleteTitles.tenantUser,
     deleteName: `${user?.firstName} ${user?.lastName}`,

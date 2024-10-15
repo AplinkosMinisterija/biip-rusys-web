@@ -31,9 +31,7 @@ const DeleteCard = ({
         </IconContainer>
         <Title>{title}</Title>
         <Description>
-          {descriptionFirstPart}
-          <Name>{name}</Name>
-          {descriptionSecondPart}
+          {descriptionFirstPart} <Name>{name}</Name> {descriptionSecondPart}
         </Description>
         <BottomRow>
           <StyledButton
