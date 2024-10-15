@@ -1,5 +1,12 @@
 import { useMutation, useQuery } from 'react-query';
 import { useNavigate, useParams } from 'react-router-dom';
+import { DeleteInfoProps } from '../../../types';
+import {
+  buttonsTitles,
+  deleteDescriptionFirstPart,
+  deleteDescriptionSecondPart,
+  deleteTitles,
+} from '../../../utils/texts';
 import { getMapQueryString } from '../functions';
 import { FormProps, FormServerProps } from '../types';
 import { default as api, default as Api } from './../../../api';
@@ -21,6 +28,26 @@ export const useData = () => {
       refetchOnWindowFocus: false,
     },
   );
+
+  const deleteForm = useMutation(() => api.deleteObservationForm(id), {
+    onError: () => {
+      handleErrorFromServerToast();
+    },
+    onSuccess: () => {
+      navigate(slugs.observationForms);
+    },
+    retry: false,
+  });
+
+  const deleteInfo: DeleteInfoProps = {
+    deleteButtonText: buttonsTitles.removeForm,
+    deleteDescriptionFirstPart: deleteDescriptionFirstPart.entity,
+    deleteDescriptionSecondPart: deleteDescriptionSecondPart.form,
+    deleteTitle: deleteTitles.form,
+    deleteName: `#${observationForm?.id}`,
+    deleteFunction:
+      observationForm?.status === StatusTypes.RETURNED ? deleteForm.mutateAsync : undefined,
+  };
 
   const disabled = !!observationForm && !observationForm?.canEdit;
   const mapQueryString = getMapQueryString(disabled);
@@ -111,6 +138,7 @@ export const useData = () => {
 
   return {
     handleSubmit,
+    deleteInfo,
     loading: isFetching || specieLoading,
     mapQueryString,
     initialValues,

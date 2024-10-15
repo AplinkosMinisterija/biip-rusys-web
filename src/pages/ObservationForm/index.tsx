@@ -25,7 +25,15 @@ import { useData } from './hooks/useData';
 import { FormProps } from './types';
 
 const ObservationForm = () => {
-  const { initialValues, id = '', disabled, loading, handleSubmit, mapQueryString } = useData();
+  const {
+    initialValues,
+    id = '',
+    deleteInfo,
+    disabled,
+    loading,
+    handleSubmit,
+    mapQueryString,
+  } = useData();
 
   const renderForm = (values: FormProps, errors: any, handleChange: any, setValues: any) => {
     const handleUpdateSpecie = (species: Species) => {
@@ -120,6 +128,7 @@ const ObservationForm = () => {
       validationSchema={validateForm}
       disabled={disabled}
       submitButtonText={buttonsTitles.submit}
+      deleteInfo={deleteInfo}
     />
   );
 };
