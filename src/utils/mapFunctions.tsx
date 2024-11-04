@@ -52,7 +52,10 @@ const mapRequestItem = (request: Request) => {
     type: requestTypeLabels[request.type],
     createdAt: request.createdAt && formatDate(request?.createdAt),
     deletedAt: request.deletedAt && formatDate(request.deletedAt),
-    respondedAt: canShowResponseDate(request?.status) && formatDate(new Date(request.respondedAt)),
+    respondedAt:
+      request.respondedAt &&
+      canShowResponseDate(request?.status) &&
+      formatDate(new Date(request.respondedAt)),
     generatedFile: <FileDownloadContainer url={request.generatedFile} />,
   };
 };
