@@ -441,6 +441,12 @@ class Api {
     });
   };
 
+  deleteObservationForm = async (id: string): Promise<Form> =>
+    await this.delete({
+      resource: Resources.FORMS,
+      id,
+    });
+
   getTenantUsers = async ({
     filter,
     page,
