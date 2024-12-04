@@ -11,6 +11,6 @@ export const Container = styled.div`
   align-items: center;
   justify-content: center;
   font-size: 1.4rem;
-  color: #9aa4b2;
+  color: #606773;
   margin-right: 13px;
 `;
