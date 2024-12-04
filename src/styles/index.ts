@@ -26,6 +26,9 @@ export const theme: Theme = {
       tertiary: '#7A7E9F',
       danger: '#FE5B78E6',
     },
+    fields: {
+      borderFocus: '#FEBC1D',
+    },
     tertiaryMedium: '#C6C8D6',
     tertiaryLight: '#F3F3F7',
     new: '#00cae9',
