@@ -67,10 +67,10 @@
   resolved "https://registry.yarnpkg.com/@aplinkosministerija/biip-prettier-config/-/biip-prettier-config-1.1.0.tgz#f62b0dde76107ab3f646cce2d54d02bd783ce388"
   integrity sha512-DxWGfBY2KuK8OgP2KUb96ieGlqE5gYuxI22Yt1FfoIldlDENW5I8kXj+YFB4iG65i7e1neXPZd9RGHmxxDxxSQ==
 
-"@aplinkosministerija/design-system@^0.0.45":
-  version "0.0.45"
-  resolved "https://registry.yarnpkg.com/@aplinkosministerija/design-system/-/design-system-0.0.45.tgz#8ea19332ea639788d1757f2843ae716c45938a48"
-  integrity sha512-zKW5SMGaLqGerJ4sDuR2jq3cOcRyvJNeIgSiCvSS+8V7kPi5vOzj8olHPFzAK/XG7cg4RlketBsgEHqbARHaFA==
+"@aplinkosministerija/design-system@^1.1.5":
+  version "1.1.5"
+  resolved "https://registry.yarnpkg.com/@aplinkosministerija/design-system/-/design-system-1.1.5.tgz#c8115fe68ef8270169b0040af58459b39bec6e15"
+  integrity sha512-Eh/ePa7eEhcw6ZnNN4SYE5Aa5JLPVlhXdGC+yKI+odyyMjsaexSNz7PWrK3BJdrZ6OHlvGEVm6YLmNRIX667UQ==
   dependencies:
     "@mapbox/mapbox-gl-draw" "^1.4.3"
     "@mapbox/mapbox-gl-draw-static-mode" "^1.0.1"
@@ -85,8 +85,10 @@
     date-fns "^3.6.0"
     epsg-index "^2.0.0"
     formik "^2.4.6"
+    lodash "^4.17.21"
     maplibre-gl "^4.3.2"
     numeral "^2.0.6"
+    openapi-fetch "^0.12.2"
     pmtiles "^3.0.6"
     proj4 "^2.11.0"
     react-datepicker "^6.9.0"
@@ -3714,6 +3716,18 @@ onetime@^6.0.0:
   integrity sha512-1FlR+gjXK7X+AsAHso35MnyN5KqGwJRi/31ft6x0M194ht7S+rWAvd7PHss9xSKMzE0asv1pyIHaJYq+BbacAQ==
   dependencies:
     mimic-fn "^4.0.0"
+
+openapi-fetch@^0.12.2:
+  version "0.12.5"
+  resolved "https://registry.yarnpkg.com/openapi-fetch/-/openapi-fetch-0.12.5.tgz#b0cabd3fe2d423f44b83a0ce99a20e1aa4067287"
+  integrity sha512-FnAMWLt0MNL6ComcL4q/YbB1tUgyz5YnYtwA1+zlJ5xcucmK5RlWsgH1ynxmEeu8fGJkYjm8armU/HVpORc9lw==
+  dependencies:
+    openapi-typescript-helpers "^0.0.15"
+
+openapi-typescript-helpers@^0.0.15:
+  version "0.0.15"
+  resolved "https://registry.yarnpkg.com/openapi-typescript-helpers/-/openapi-typescript-helpers-0.0.15.tgz#96ffa762a5e01ef66a661b163d5f1109ed1967ed"
+  integrity sha512-opyTPaunsklCBpTK8JGef6mfPhLSnyy5a0IN9vKtx3+4aExf+KxEqYwIy3hqkedXIB97u357uLMJsOnm3GVjsw==
 
 optionator@^0.9.3:
   version "0.9.3"
