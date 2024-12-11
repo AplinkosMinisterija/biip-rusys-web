@@ -4,16 +4,18 @@ import ReCAPTCHA from 'react-google-recaptcha';
 import { useMutation } from 'react-query';
 import styled from 'styled-components';
 import api from '../api';
-import Button from '../components/buttons/Button';
-import CheckBox from '../components/buttons/CheckBox';
-import PasswordField from '../components/fields/PasswordField';
 import { device } from '../styles';
 import { handleErrorFromServerToast } from '../utils/functions';
 import { useEGatesSign, useUserInfo } from '../utils/hooks';
 import { handleUpdateTokens } from '../utils/loginFunctions';
 import { buttonsTitles, inputLabels, validationTexts } from '../utils/texts';
 import { loginSchema } from '../utils/validation';
-import { TextField } from '@aplinkosministerija/design-system';
+import {
+  CheckBox,
+  PasswordField,
+  TextFieldInput,
+  Button
+} from '@aplinkosministerija/design-system';
 
 interface LoginProps {
   email: string;
@@ -71,7 +73,7 @@ export const Login = () => {
     <Container onSubmit={handleSubmit}>
       {!isProdEnvironment && (
         <>
-          <TextField
+          <TextFieldInput
             value={values.email}
             type="email"
             name="email"
@@ -104,8 +106,8 @@ export const Login = () => {
         </>
       )}
       <Button
-        type="button"
-        leftIcon={<EvvIcon alt="EVV" src="./icons/EVV.svg" />}
+        left={<EvvIcon alt="EVV" src="./icons/EVV.svg" />}
+        width={'100%'}
         loading={eGatesSignLoading}
         onClick={() => eGatesMutation()}
       >

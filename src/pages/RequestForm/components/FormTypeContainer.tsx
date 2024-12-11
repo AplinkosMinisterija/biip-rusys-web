@@ -5,7 +5,12 @@ import { useGetFormTypes } from '../hooks/useGetFormTypes';
 import { TypeContainer } from '../styles';
 import { FormTypeContainerProps } from '../types';
 
-export const FormTypeContainer = ({ handleChange, type, disabled }: FormTypeContainerProps) => {
+export const FormTypeContainer = ({
+  handleChange,
+  type,
+  disabled,
+  label = '',
+}: FormTypeContainerProps) => {
   const formTypes = useGetFormTypes();
 
   const handleChangeType = (formType) => {
@@ -17,7 +22,7 @@ export const FormTypeContainer = ({ handleChange, type, disabled }: FormTypeCont
   };
 
   return (
-    <TypeContainer>
+    <TypeContainer role="radiogroup" aria-labelledby={label}>
       {formTypes.map((formType, index) => (
         <RequestCard
           key={`formTypes-${index}`}

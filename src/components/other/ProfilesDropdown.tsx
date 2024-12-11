@@ -34,12 +34,17 @@ const ProfilesDropdown = () => {
 
   return (
     <Container tabIndex={1} onBlur={handleBlur}>
-      <Select onClick={() => setShowSelect(!showSelect)}>
+      <Select
+        onClick={() => setShowSelect(!showSelect)}
+        tabIndex={0}
+        aria-label={`Open profile select dropdown`}
+        role="button"
+      >
         <SelectContainer>
-          <Name>{currentProfile?.name || '-'}</Name>
-          <Email>{currentProfile?.email || user?.email}</Email>
+          <Name className="child">{currentProfile?.name || '-'}</Name>
+          <Email className="child">{currentProfile?.email || user?.email}</Email>
         </SelectContainer>
-        <DropdownIcon name="miniArrowDown" />
+        <DropdownIcon className="child" name="miniArrowDown" />
       </Select>
       {showSelect && (
         <ProfilesContainer>
@@ -134,13 +139,17 @@ const SelectedIcon = styled(Icon)`
   color: ${({ theme }) => theme.colors.primary};
 `;
 
-const Select = styled.div`
+const Select = styled.button`
   cursor: pointer;
   min-width: 100%;
   height: 31px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  :focus .child,
+  :hover .child {
+    color: ${({ theme }) => theme.colors.secondary};
+  }
 `;
 
 const SelectContainer = styled.div`

@@ -284,3 +284,13 @@ export enum TableItemWidth {
   SMALL = '40px',
   LARGE = '30px',
 }
+
+export enum ButtonColors {
+  PRIMARY = 'primary',
+  SECONDARY = 'secondary',
+  TERTIARY = 'tertiary',
+  DANGER = 'danger',
+  SUCCESS = 'success',
+  TRANSPARENT = 'transparent',
+  DANGER_OUTLINE = 'dangerOutline'
+}

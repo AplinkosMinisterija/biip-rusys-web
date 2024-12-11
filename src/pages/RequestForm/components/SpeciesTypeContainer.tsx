@@ -1,11 +1,11 @@
 import styled from 'styled-components';
-import ButtonsGroup from '../../../components/buttons/ButtonsGroup';
 import FieldWrapper from '../../../components/fields/components/FieldWrapper';
 import { device } from '../../../styles';
 import { getSpeciesTypes } from '../../../utils/functions';
 import { inputLabels, speciesTypeLabels } from '../../../utils/texts';
 import { InnerContainer } from '../styles';
 import { SpeciesTypeContainerProps } from '../types';
+import { ButtonsGroup } from '@aplinkosministerija/design-system';
 
 export const SpeciesTypeContainer = ({
   disabled,

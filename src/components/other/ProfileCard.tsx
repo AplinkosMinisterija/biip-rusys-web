@@ -5,20 +5,32 @@ import Icon from './Icons';
 interface ProfileCardProps {
   name: string;
   email: string;
+  id: string;
+  onSelect: (id: string) => void;
 }
 
-const ProfileCard = ({ name, email }: ProfileCardProps) => {
-  const [onHover, setOnHover] = useState(false);
+const ProfileCard = ({ id, name, email, onSelect }: ProfileCardProps) => {
+  const [showArrow, setShowArrow] = useState(false);
   return (
-    <Container onMouseEnter={() => setOnHover(true)} onMouseLeave={() => setOnHover(false)}>
+    <Container
+      key={id}
+      tabIndex={0}
+      aria-label={`Select profile ${name || email}`}
+      role="button"
+      onClick={() => onSelect(id)}
+      onMouseEnter={() => setShowArrow(true)}
+      onMouseLeave={() => setShowArrow(false)}
+      onFocus={() => setShowArrow(true)}
+      onBlur={() => setShowArrow(false)}
+    >
       <Name>{name}</Name>
       <Email>{email}</Email>
-      {onHover && <StyledIcon name="arrowRight" />}
+      {showArrow && <StyledIcon name="arrowRight" />}
     </Container>
   );
 };
 
-const Container = styled.div`
+const Container = styled.button`
   background-color: white;
   border: 1px solid #cdd5df8f;
   border-radius: 4px;
@@ -26,6 +38,9 @@ const Container = styled.div`
   height: 64px;
   padding: 12px 17px;
   position: relative;
+  text-align: left;
+  left: 0;
+  :focus,
   :hover {
     background-color: #febc1d14;
     box-shadow: 0px 4px 8px ${({ theme }) => `${theme.colors.primary}33`};

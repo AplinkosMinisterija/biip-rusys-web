@@ -1,9 +1,9 @@
+import AsyncSelectField from '../../components/fields/AsyncSelectField';
 import DrawMap from '../../components/map/DrawMap';
 import { StatusModal } from '../../components/other/StatusModal';
 import Api from './../../api';
 import FormHistoryContainer from './../../components/containers/FormHistoryContainer';
 import SimpleContainer from './../../components/containers/SimpleContainer';
-import AsyncSelectField from './../../components/fields/AsyncSelectField';
 import LoaderComponent from './../../components/other/LoaderComponent';
 import FormPageWrapper from './../../components/wrappers/FormikFormPageWrapper';
 import { ColumnOne, ColumnTwo, InnerContainer } from './../../styles/GenericStyledComponents';

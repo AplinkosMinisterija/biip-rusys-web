@@ -1,10 +1,9 @@
 import { addDays } from 'date-fns';
 import { isEqual } from 'lodash';
-import CheckBox from '../../../components/buttons/CheckBox';
-import DatePicker from '../../../components/fields/DatePicker';
 import { RequestTypes } from '../../../utils/constants';
 import { inputLabels } from '../../../utils/texts';
 import { AdditionalFieldsByFormTypeProps } from '../types';
+import { CheckBox, DatePicker } from '@aplinkosministerija/design-system';
 
 export const AdditionalFieldsByFormType = ({
   values,

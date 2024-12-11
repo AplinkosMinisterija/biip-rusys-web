@@ -3,12 +3,11 @@ import { MeasurementUnit } from '../../../components/other/MeasurmentUnit';
 import { Column, IndividualsContainer, StyledSingleCheckBox } from '../styles';
 import { ObservedSpecieDataContainerProps } from '../types';
 import SimpleContainer from './../../../components/containers/SimpleContainer';
-import NumericTextField from './../../../components/fields/NumericTextField';
-import TextAreaField from './../../../components/fields/TextAreaField';
 import { FormTypes, MeasurementUnits } from './../../../utils/constants';
 import { formLabels, inputLabels } from './../../../utils/texts';
 import { SpecieActivity } from './SpecieActivity';
 import { TransectInfoFields } from './TransectInfoFields';
+import { NumericTextField, TextAreaField } from '@aplinkosministerija/design-system';
 
 export const ObservedSpecieDataContainer = ({
   values,
@@ -49,7 +48,7 @@ export const ObservedSpecieDataContainer = ({
               disabled={disabled}
               label={inputLabels.observedSpecieIndividualsQuantity}
               value={values.quantity}
-              rightIcon={<MeasurementUnit unit={inputLabels.quantity} />}
+              right={<MeasurementUnit unit={inputLabels.quantity} />}
               error={errors.quantity}
               name={'quantity'}
               onChange={(e: string) => {

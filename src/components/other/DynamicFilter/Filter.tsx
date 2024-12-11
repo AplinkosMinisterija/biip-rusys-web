@@ -4,13 +4,14 @@ import styled from 'styled-components';
 import { device } from '../../../styles';
 import { handleDateRestriction } from '../../../utils/functions';
 import { buttonsTitles } from '../../../utils/texts';
-import Button, { ButtonColors } from '../../buttons/Button';
+import Button from '../../buttons/Button';
 import AsyncMultiSelect from '../../fields/AsyncMultiSelect';
 import AsyncSelectField from '../../fields/AsyncSelectField';
 import MultiSelect from '../../fields/MultiSelect';
 import SelectField from '../../fields/SelectField';
 import { TextField } from '@aplinkosministerija/design-system';
 import DatePicker from '../../fields/DatePicker';
+import { ButtonColors } from '../../../utils/constants';
 
 export interface LabelsProps {
   [key: string]: string;
@@ -167,7 +168,7 @@ const Filter = ({ values, filters, rowConfig, onSubmit }: LoginLayoutProps) => {
               >
                 {buttonsTitles.clearAll}
               </ClearButton>
-              <StyledButton variant={ButtonColors.PRIMARY} type="submit" onClick={handleSubmit}>
+              <StyledButton type="submit" onClick={handleSubmit}>
                 {buttonsTitles.filter}
               </StyledButton>
             </Row>

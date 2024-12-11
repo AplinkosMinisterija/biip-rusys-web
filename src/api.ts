@@ -19,7 +19,7 @@ const cookies = new Cookies();
 
 interface GetAll {
   resource: string;
-  page?: string;
+  page?: number;
   populate?: string[];
   filter?: string | any;
   query?: string;

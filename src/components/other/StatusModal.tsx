@@ -1,11 +1,10 @@
 import styled from 'styled-components';
 import { device } from '../../styles';
-import { StatusTypes } from '../../utils/constants';
+import { ButtonColors, StatusTypes } from '../../utils/constants';
 import { buttonsTitles, inputLabels } from '../../utils/texts';
-import Button, { ButtonColors } from '../buttons/Button';
-import TextAreaField from '../fields/TextAreaField';
 import Icon from './Icons';
 import Modal from './Modal';
+import { Button, TextAreaField } from '@aplinkosministerija/design-system';
 
 interface StatusModalProps {
   handleChange: any;
@@ -48,24 +47,21 @@ export const StatusModal = ({ handleChange, values, labels }: StatusModalProps) 
         />
 
         <BottomRow>
-          <BackButton
+          <Button
             onClick={handleClose}
             variant={ButtonColors.TRANSPARENT}
-            type="button"
-            height={32}
-            buttonPadding="6px 8px"
+        
           >
             {buttonsTitles.cancel}
-          </BackButton>
-          <BackButton
+          </Button>
+          <Button
             variant={buttonColors[status]}
             color={status === StatusTypes.RETURNED ? 'black' : undefined}
             type="submit"
-            height={32}
-            buttonPadding="6px 8px"
+            
           >
             {actionButtonLabels[status]}
-          </BackButton>
+          </Button>
         </BottomRow>
       </Container>
     </Modal>
@@ -95,8 +91,6 @@ const StyledCloseButton = styled(Icon)`
     display: none;
   }
 `;
-
-const BackButton = styled(Button)``;
 
 const IconContainer = styled.div`
   cursor: pointer;

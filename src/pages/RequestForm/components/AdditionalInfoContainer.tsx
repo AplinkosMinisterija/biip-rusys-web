@@ -1,8 +1,6 @@
+import { CheckBox, DragAndDropUploadField, TextAreaField } from '@aplinkosministerija/design-system';
 import Api from '../../../api';
-import CheckBox from '../../../components/buttons/CheckBox';
 import SimpleContainer from '../../../components/containers/SimpleContainer';
-import DragAndDropUploadField from '../../../components/fields/DragAndDropUploadField';
-import TextAreaField from '../../../components/fields/TextAreaField';
 import { Resources, SpeciesTypes } from '../../../utils/constants';
 import {
   formLabels,
@@ -42,7 +40,7 @@ export const AdditionalInfoComponent = ({
             disabled={disabled}
             error={errors?.files}
             onUpload={handleUploadFile}
-            onChange={(files: File[]) => handleChange('files', files)}
+            onDelete={(files: File[]) => handleChange('files', files)}
             files={values?.files || []}
             label={typeFileLabels[type]}
           />

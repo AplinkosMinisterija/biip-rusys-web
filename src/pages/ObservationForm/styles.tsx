@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import CheckBox from '../../components/buttons/CheckBox';
 import { device } from './../../styles';
+import { CheckBox } from '@aplinkosministerija/design-system';
 
 export const Column = styled.div`
   display: flex;

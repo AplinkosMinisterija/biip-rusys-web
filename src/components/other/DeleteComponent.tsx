@@ -3,10 +3,11 @@ import styled from 'styled-components';
 import { device } from '../../styles';
 import { DeleteInfoProps } from '../../types';
 import { buttonsTitles } from '../../utils/texts';
-import Button, { ButtonColors } from '../buttons/Button';
 import DeleteCard from './DeleteCard';
 import Icon from './Icons';
 import Modal from './Modal';
+import { ButtonColors } from '../../utils/constants';
+import { Button } from '@aplinkosministerija/design-system';
 
 export const DeleteComponent = ({ deleteInfo }: { deleteInfo?: DeleteInfoProps }) => {
   const [showModal, setShowModal] = useState(false);
@@ -26,17 +27,13 @@ export const DeleteComponent = ({ deleteInfo }: { deleteInfo?: DeleteInfoProps }
   return (
     <>
       <DeleteButtonContainer>
-        <DeleteButton
+        <Button
           onClick={() => setShowModal(true)}
-          variant={ButtonColors.TRANSPARENT}
-          type="button"
-          leftIcon={<StyledIcon name="deleteItem" />}
-          height={32}
-          buttonPadding="6px 8px"
-          color="black"
+          variant={ButtonColors.DANGER_OUTLINE}
+          left={<StyledIcon name="deleteItem" />}
         >
           {buttonsTitles.delete}
-        </DeleteButton>
+        </Button>
       </DeleteButtonContainer>
       <Modal onClose={() => setShowModal(false)} visible={showModal}>
         <DeleteCard
@@ -64,13 +61,5 @@ const DeleteButtonContainer = styled.div`
 const StyledIcon = styled(Icon)`
   cursor: pointer;
   font-size: 1.8rem;
-  color: ${({ theme }) => theme.colors.danger};
   margin-right: 8px;
-`;
-
-const DeleteButton = styled(Button)`
-  button {
-    border-color: ${({ theme }) => theme.colors.danger};
-    color: ${({ theme }) => theme.colors.danger};
-  }
 `;

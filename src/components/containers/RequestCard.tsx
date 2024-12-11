@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
 import styled from 'styled-components';
+import { useKeyAction } from '../../state/hooks';
 
 export interface RequestCardProps {
   title: string;
@@ -10,18 +10,20 @@ export interface RequestCardProps {
 }
 
 const RequestCard = ({ title, selected, description, onClick, disabled }: RequestCardProps) => {
-  const [onHover, setOnHover] = useState(false);
+  const handleOnKeyDown = useKeyAction(onClick, disabled);
 
   return (
     <Container
-      selected={selected || onHover}
+      role="radio"
+      aria-checked={selected}
+      tabIndex={disabled ? -1 : 0}
+      selected={selected}
       onClick={() => !disabled && onClick()}
       disabled={disabled}
-      onMouseEnter={() => !disabled && setOnHover(true)}
-      onMouseLeave={() => !disabled && setOnHover(false)}
+      onKeyDown={handleOnKeyDown(title)}
     >
       <Row>
-        <Circle selected={selected || onHover} />
+        <Circle selected={selected} />
         <Column>
           <Title>{title}</Title>
           <Description>{description}</Description>
@@ -40,15 +42,9 @@ const Container = styled.div<{ selected: boolean; disabled: boolean }>`
   border-radius: 8px;
   padding: 20px;
   border-color: ${({ theme, selected }) => (selected ? theme.colors.primary : theme.colors.border)};
-
-  ${({ disabled }) =>
-    !disabled &&
-    `
-    :hover {
-    background-color: #fffdf6;
-    border-color: ${({ theme }) => theme.colors.primary};
+    &:hover {
+      opacity: ${({ disabled }) => (disabled ? 0.48 : 0.6)};
   }
-`};
 `;
 
 const Circle = styled.div<{ selected: boolean }>`
