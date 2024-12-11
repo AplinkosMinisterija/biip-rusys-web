@@ -1,4 +1,4 @@
-  import { useState } from 'react';
+import { useRef, useState } from 'react';
 import styled from 'styled-components';
 import { device } from '../../styles';
 import { FileProps } from '../../types';
@@ -38,9 +38,9 @@ const PhotoUploadField = ({
 }: PhotoUploadFieldProps) => {
   const [selectedPhotoIndex, setSelectedPhotoIndex] = useState(-1);
   const [loading, setLoading] = useState(false);
+  const inputRef = useRef<any>(null);
 
   const selectedPhoto = photos?.[selectedPhotoIndex];
-
   const handleSetFiles = async (currentFiles: File[]) => {
     const isValidFileTypes = validateFileTypes(currentFiles);
     if (!isValidFileTypes) return handleErrorToast(validationTexts.badFileTypes);
@@ -72,6 +72,14 @@ const PhotoUploadField = ({
         return { ...photo, main: photoIndex === index };
       })
       .sort((x, y) => Number(y.main) - Number(x.main));
+  };
+
+  const handleOnKeyDown = (e: React.KeyboardEvent) => {
+    if ((e.key === 'Enter' || e.key === ' ') && !disabled) {
+      e.stopPropagation();
+      e.preventDefault();
+      inputRef?.current?.click();
+    }
   };
 
   return (
@@ -130,11 +138,19 @@ const PhotoUploadField = ({
       </Modal>
 
       {!disabled && (
-        <StyledButton type="button" error={!!error}>
+        <StyledButton
+          role="button"
+          aria-label={'Upload photo'}
+          tabIndex={0}
+          type="button"
+          onKeyDown={handleOnKeyDown}
+          error={!!error}
+        >
           <StyledIcon name="photo" />
           <StyledCloseIconContainer />
           <StyledInput
-            aria-label="nuotraukos"
+            ref={inputRef}
+            tabIndex={-1}
             disabled={disabled}
             value={undefined}
             multiple={true}
@@ -174,7 +190,6 @@ export const StyledImg = styled.img<{ disabled: boolean }>`
 
 const StyledInput = styled.input``;
 const StyledText = styled.div`
-  color: #7a7e9f;
   font-size: 1rem;
   line-height: 10px;
   margin-top: 8px;
@@ -192,6 +207,8 @@ const StyledButton = styled.button<{
   border-radius: 5px;
   background-color: #eeebe53d;
   position: relative;
+  color: #697586;
+
   input {
     position: absolute;
     top: 0;
@@ -203,12 +220,18 @@ const StyledButton = styled.button<{
     width: 133px;
     height: 100px;
   }
+  &:focus,
+  &:hover {
+    color: ${({ theme }) => theme.colors.secondary};
+    border-width: 2px;
+    border-color: ${({ theme }) => theme.colors.secondary};
+    border-style: dashed;
+  }
 `;
 
 const StyledIcon = styled(Icon)`
   cursor: pointer;
   font-size: 2.4rem;
-  color: #697586;
 `;
 
 const StyledArrow = styled(Icon)`

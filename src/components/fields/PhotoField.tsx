@@ -42,10 +42,33 @@ const PhotoField = ({
     }
   };
 
+  const enablePhotoDelete = !isOpen && !disabled && !loading;
+
+  const handleOnKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.stopPropagation();
+      e.preventDefault();
+      onImageClick && onImageClick();
+    }
+  };
+
   return (
-    <ImageContainer main={isMain} isOpen={!!isOpen} onClick={onImageClick} key={`photo-${index}`}>
-      {!isOpen && !disabled && !loading && (
-        <StyledCloseIconContainer onClick={handleRemove}>
+    <ImageContainer
+      tabIndex={0}
+      aria-label={'Photo'}
+      main={isMain}
+      isOpen={!!isOpen}
+      onClick={onImageClick}
+      key={`photo-${index}`}
+      onKeyDown={handleOnKeyDown}
+    >
+      {enablePhotoDelete && (
+        <StyledCloseIconContainer
+          role="button"
+          tabIndex={0}
+          aria-label={'Delete photo'}
+          onClick={handleRemove}
+        >
           <StyledCloseIcon name="close" />
         </StyledCloseIconContainer>
       )}
@@ -96,14 +119,16 @@ const StyledCloseIcon = styled(Icon)`
   font-size: 2.4rem;
   color: ${({ theme }) => theme.colors.danger};
 `;
-const StyledCloseIconContainer = styled.div`
+const StyledCloseIconContainer = styled.button`
   position: absolute;
   top: 0px;
   right: 0px;
-  opacity: 0;
-  display: none;
+  opacity: 1;
+  display: block;
   cursor: pointer;
   z-index: 10;
+  &:focus {
+    outline: 2px solid ${({ theme }) => theme.colors.secondary};
 `;
 
 const MainPhotoBackground = styled.div`
@@ -164,15 +189,6 @@ const ImageContainer = styled.div<{
   min-height: 100px;
   border-radius: 4px;
   border: ${({ main }) => (main ? '2px solid #FEBC1D' : 'none')};
-
-  ${({ isOpen }) =>
-    !isOpen &&
-    `
-   &:hover ${StyledCloseIconContainer} {
-    opacity: 1;
-    display:block;
-  }
-  `}
 `;
 
 export default PhotoField;
