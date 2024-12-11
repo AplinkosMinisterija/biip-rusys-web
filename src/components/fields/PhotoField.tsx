@@ -55,7 +55,7 @@ const PhotoField = ({
   return (
     <ImageContainer
       tabIndex={0}
-      aria-label={'Photo'}
+      aria-label={enablePhotoDelete ? 'Photo' : 'Photo, press enter to open'}
       main={isMain}
       isOpen={!!isOpen}
       onClick={onImageClick}
