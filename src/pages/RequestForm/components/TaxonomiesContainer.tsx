@@ -1,10 +1,10 @@
+import { MapField } from '@aplinkosministerija/design-system';
 import { isEmpty, isEqual } from 'lodash';
 import SimpleContainer from '../../../components/containers/SimpleContainer';
 import Tree from '../../../components/fields/TreeSelect';
-import DrawMap from '../../../components/map/DrawMap';
-import { RequestTypes } from '../../../utils/constants';
+import { mapsHost, RequestTypes } from '../../../utils/constants';
 import { inputLabels } from '../../../utils/texts';
-import { getMapQueryString } from '../function';
+import { getMapPath } from '../function';
 import { useSpeciesTree } from '../hooks/useSpeciesTree';
 import { Container } from '../styles';
 import { SpeciesTaxonomiesProps } from '../types';
@@ -17,7 +17,7 @@ const SpeciesTaxonomiesContainer = ({
   disabled,
 }: SpeciesTaxonomiesProps) => {
   const options = useSpeciesTree();
-  const mapQueryString = getMapQueryString(disabled);
+  const mapPath = getMapPath(disabled);
 
   return (
     <>
@@ -42,11 +42,14 @@ const SpeciesTaxonomiesContainer = ({
             />
           )}
           {!isEqual(values.type, RequestTypes.CHECK) && (
-            <DrawMap
+            <MapField
+              mapHost={mapsHost}
               value={values?.geom}
-              queryString={mapQueryString}
+              mapPath={mapPath}
               error={errors?.geom}
-              onSave={(data) => onChange('geom', data)}
+              onChange={(data) => {
+                onChange('geom', data);
+              }}
               height={'300px'}
             />
           )}

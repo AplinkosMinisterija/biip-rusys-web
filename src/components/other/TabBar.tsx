@@ -1,3 +1,4 @@
+import { useKeyAction } from '@aplinkosministerija/design-system';
 import { map } from 'lodash';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
@@ -17,29 +18,39 @@ export interface Tab {
 
 const TabBar = ({ tabs, activeTabValue }: TabBarProps) => {
   const navigate = useNavigate();
+  const handleKeyDown = useKeyAction((tab) => handleNavigate(tab));
 
-  if (tabs.length < 2) return <></>;
+  if (tabs.length < 2) return null;
+
+  const handleNavigate = (tab) => {
+    navigate({
+      ...(tab.route && {
+        pathname: tab.route,
+      }),
+      ...(tab.search && {
+        search: tab.search,
+      }),
+    });
+  };
 
   return (
-    <Container>
-      {map(tabs, (tab) => (
-        <TabButton
-          key={tab.value}
-          isActive={tab.value === activeTabValue}
-          onClick={() =>
-            navigate({
-              ...(tab.route && {
-                pathname: tab.route,
-              }),
-              ...(tab.search && {
-                search: tab.search,
-              }),
-            })
-          }
-        >
-          <TabLabel>{tab.label}</TabLabel>
-        </TabButton>
-      ))}
+    <Container role="tablist" aria-label="Navigation Tabs">
+      {map(tabs, (tab) => {
+        const isSelected = tab.value === activeTabValue;
+        return (
+          <TabButton
+            key={tab.value}
+            role="tab"
+            tabIndex={0}
+            aria-selected={isSelected}
+            isActive={isSelected}
+            onClick={() => handleNavigate(tab)}
+            onKeyDown={handleKeyDown(tab)}
+          >
+            <TabLabel>{tab.label}</TabLabel>
+          </TabButton>
+        );
+      })}
     </Container>
   );
 };
@@ -58,10 +69,10 @@ const TabButton = styled.div<{ isActive: boolean }>`
     `2px ${isActive ? theme.colors.primary : 'transparent'} solid`};
   margin-right: 24px;
   cursor: pointer;
+  padding: 8px 0;
 `;
 
 const TabLabel = styled.span`
-  margin: 8px 0;
   color: #121926;
   font-size: 1.4rem;
 `;

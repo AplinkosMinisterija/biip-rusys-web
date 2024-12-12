@@ -5,8 +5,7 @@ import { DeleteInfoProps } from '../../types';
 import { buttonsTitles } from '../../utils/texts';
 import DeleteCard from './DeleteCard';
 import Icon from './Icons';
-import Modal from './Modal';
-import { Button } from '@aplinkosministerija/design-system';
+import { Button, Modal } from '@aplinkosministerija/design-system';
 
 export const DeleteComponent = ({ deleteInfo }: { deleteInfo?: DeleteInfoProps }) => {
   const [showModal, setShowModal] = useState(false);

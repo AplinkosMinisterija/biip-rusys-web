@@ -7,9 +7,8 @@ import { inputLabels, validationTexts } from '../../utils/texts';
 import { validateFileTypes } from '../../utils/validation';
 import Icon from '../other/Icons';
 import Loader from '../other/Loader';
-import Modal from '../other/Modal';
 import PhotoField from './PhotoField';
-import { useKeyAction } from '@aplinkosministerija/design-system';
+import { Modal, useKeyAction } from '@aplinkosministerija/design-system';
 
 export interface PhotoUploadFieldProps {
   name: string;

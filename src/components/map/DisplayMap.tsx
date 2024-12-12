@@ -73,7 +73,6 @@ const DisplayMap = ({ height, error, places = [], fullScreen = false }: MapProps
 
   const handleToggle = (e) => {
     e.preventDefault();
-
     setShowModal(!showModal);
   };
 
@@ -99,10 +98,20 @@ const DisplayMap = ({ height, error, places = [], fullScreen = false }: MapProps
 
   return (
     <>
-      {loading ? <LoaderComponent /> : null}
-      <Container showModal={showFullScreen} error={!!error}>
+      {loading && <LoaderComponent />}
+      <Container
+        role={showFullScreen ? 'dialog' : undefined}
+        aria-modal={showFullScreen}
+        showModal={showFullScreen}
+        error={!!error}
+      >
         <InnerContainer showModal={showFullScreen}>
-          <StyledButton popup={showFullScreen} type="button" onClick={handleToggle}>
+          <StyledButton
+            popup={showFullScreen}
+            type="button"
+            onClick={handleToggle}
+            aria-label={showFullScreen ? 'Exit fullscreen' : 'Enter fullscreen'}
+          >
             <StyledIconContainer>
               <StyledIcon name={showFullScreen ? 'exitFullScreen' : 'fullscreen'} />
             </StyledIconContainer>
@@ -113,17 +122,21 @@ const DisplayMap = ({ height, error, places = [], fullScreen = false }: MapProps
             title={'Radaviečių žemėlapis'}
             ref={iframeRef}
             src={fullUrl.toString()}
-            width={'100%'}
+            width="100%"
             height={showFullScreen ? '100%' : `${height || '230px'}`}
             style={{ border: 0 }}
-            allowFullScreen={true}
+            allowFullScreen
             onLoad={handleLoadMap}
             aria-hidden="false"
-            tabIndex={1}
+            tabIndex={0}
           />
         </InnerContainer>
       </Container>
-      {error && <ErrorMessage>{error}</ErrorMessage>}
+      {error && (
+        <ErrorMessage aria-live="assertive" role="alert">
+          {error}
+        </ErrorMessage>
+      )}
     </>
   );
 };

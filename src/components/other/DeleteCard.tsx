@@ -1,8 +1,8 @@
+import { Button, useKeyAction } from '@aplinkosministerija/design-system';
 import styled from 'styled-components';
 import { ButtonVariants, device } from '../../styles';
 import { buttonsTitles } from '../../utils/texts';
 import Icon from './Icons';
-import { Button } from '@aplinkosministerija/design-system';
 
 interface ActionContainerInterface {
   onClose: () => void;
@@ -23,34 +23,42 @@ const DeleteCard = ({
   title,
   loading = false,
 }: ActionContainerInterface) => {
+  const handleKeyDown = useKeyAction(() => onClose());
+
   return (
-    <>
-      <Container tabIndex={0}>
-        <IconContainer onClick={() => onClose()}>
-          <StyledCloseButton name={'close'} />
-        </IconContainer>
-        <Title>{title}</Title>
-        <Description>
-          {descriptionFirstPart} <Name>{name}</Name> {descriptionSecondPart}
-        </Description>
-        <BottomRow>
-          <StyledButton
-            onClick={() => onClose()}
-            variant={ButtonVariants.TRANSPARENT}            
-          >
-            {buttonsTitles.cancel}
-          </StyledButton>
-          <StyledButton
-            onClick={() => onClick()}
-            variant={ButtonVariants.DANGER}
-            loading={loading}
-            disabled={loading}
-          >
-            {buttonsTitles.delete}
-          </StyledButton>
-        </BottomRow>
-      </Container>
-    </>
+    <Container role="dialog" aria-labelledby={title}>
+      <IconContainer
+        onClick={() => onClose()}
+        tabIndex={0}
+        role="button"
+        aria-label="Close delete modal"
+        onKeyDown={handleKeyDown()}
+      >
+        <StyledCloseButton name={'close'} />
+      </IconContainer>
+      <Title>{title}</Title>
+      <Description>
+        {descriptionFirstPart} <Name>{name}</Name> {descriptionSecondPart}
+      </Description>
+      <BottomRow>
+        <StyledButton
+          onClick={() => onClose()}
+          variant={ButtonVariants.TRANSPARENT}
+          aria-label="Cancel"
+        >
+          {buttonsTitles.cancel}
+        </StyledButton>
+        <StyledButton
+          onClick={() => onClick()}
+          variant={ButtonVariants.DANGER}
+          loading={loading}
+          disabled={loading}
+          aria-label="Delete"
+        >
+          {buttonsTitles.delete}
+        </StyledButton>
+      </BottomRow>
+    </Container>
   );
 };
 
@@ -63,7 +71,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   position: relative;
-
+  outline: none; /* Prevent outline when focused by mouse */
   @media ${device.mobileL} {
     padding: 40px 16px 32px 16px;
     width: 100%;

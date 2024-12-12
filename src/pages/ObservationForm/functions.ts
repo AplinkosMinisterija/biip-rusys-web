@@ -53,15 +53,15 @@ export const getAnimalEvolutionOptions = (activity?: AnimalActivity) =>
     return false;
   });
 
-export const getMapQueryString = (disabled = false) => {
-  const queryString = `?`;
+export const getMapPath = (disabled = false) => {
   const param = new URLSearchParams();
+  let path = '/edit';
 
   if (disabled) {
     param.append('preview', 'true');
-    return queryString + param;
+  } else {
+    param.append('buffer', 'true');
   }
 
-  param.append('buffer', 'true');
-  return queryString + param;
+  return `${path}?${param}`;
 };

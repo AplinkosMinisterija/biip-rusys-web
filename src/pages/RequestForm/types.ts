@@ -1,3 +1,4 @@
+import { FeatureCollection } from '@aplinkosministerija/design-system';
 import { FileProps, FormHistory, HandleChangeType } from '../../types';
 import { RequestTypes, SpeciesTypes, StatusTypes } from '../../utils/constants';
 
@@ -16,7 +17,7 @@ export interface RequestFormProps {
   receiveDate?: Date;
   exactCoordinates?: boolean;
   comment?: string;
-  geom: string;
+  geom: FeatureCollection;
   speciesTypes: SpeciesTypes[];
 }
 

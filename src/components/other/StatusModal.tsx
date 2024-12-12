@@ -1,10 +1,9 @@
+import { Button, Modal, TextAreaField, useKeyAction } from '@aplinkosministerija/design-system';
 import styled from 'styled-components';
 import { device } from '../../styles';
 import { ButtonColors, StatusTypes } from '../../utils/constants';
 import { buttonsTitles, inputLabels } from '../../utils/texts';
 import Icon from './Icons';
-import Modal from './Modal';
-import { Button, TextAreaField } from '@aplinkosministerija/design-system';
 
 interface StatusModalProps {
   handleChange: any;
@@ -28,37 +27,40 @@ export const buttonColors = {
 
 export const StatusModal = ({ handleChange, values, labels }: StatusModalProps) => {
   const handleClose = () => handleChange('status', '');
+  const handleKeyDown = useKeyAction(() => handleClose());
   const { status = '', comment } = values;
 
   return (
     <Modal onClose={handleClose} visible={!!values.status}>
       <Container>
-        <IconContainer onClick={handleClose}>
+        <IconContainer
+          onClick={handleClose}
+          tabIndex={0}
+          role="button"
+          aria-label="Close status modal"
+          onKeyDown={handleKeyDown()}
+        >
           <StyledCloseButton name={'close'} />
         </IconContainer>
-        <Title>{labels?.[status]} </Title>
+        <Title>{labels?.[status]}</Title>
 
         <TextAreaField
           label={inputLabels.comment}
           value={comment}
           rows={2}
-          name={'comment'}
+          name="comment"
           onChange={(comment) => handleChange('comment', comment)}
         />
 
         <BottomRow>
-          <Button
-            onClick={handleClose}
-            variant={ButtonColors.TRANSPARENT}
-        
-          >
+          <Button onClick={handleClose} variant={ButtonColors.TRANSPARENT} aria-label="Cancel">
             {buttonsTitles.cancel}
           </Button>
           <Button
             variant={buttonColors[status]}
             color={status === StatusTypes.RETURNED ? 'black' : undefined}
             type="submit"
-            
+            aria-label={actionButtonLabels[status]}
           >
             {actionButtonLabels[status]}
           </Button>
@@ -112,3 +114,5 @@ const Title = styled.div`
   margin-bottom: 20px;
   color: #231f20;
 `;
+
+export default StatusModal;
