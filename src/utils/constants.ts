@@ -292,5 +292,6 @@ export enum ButtonColors {
   DANGER = 'danger',
   SUCCESS = 'success',
   TRANSPARENT = 'transparent',
-  DANGER_OUTLINE = 'dangerOutline'
+  DANGER_OUTLINE = 'dangerOutline',
+  TEXT_ONLY = 'textOnly',
 }

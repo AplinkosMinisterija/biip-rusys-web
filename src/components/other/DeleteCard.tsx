@@ -1,8 +1,7 @@
 import styled from 'styled-components';
-import { device } from '../../styles';
+import { ButtonVariants, device } from '../../styles';
 import { buttonsTitles } from '../../utils/texts';
 import Icon from './Icons';
-import { ButtonColors } from '../../utils/constants';
 import { Button } from '@aplinkosministerija/design-system';
 
 interface ActionContainerInterface {
@@ -37,13 +36,13 @@ const DeleteCard = ({
         <BottomRow>
           <StyledButton
             onClick={() => onClose()}
-            variant={ButtonColors.TRANSPARENT}            
+            variant={ButtonVariants.TRANSPARENT}            
           >
             {buttonsTitles.cancel}
           </StyledButton>
           <StyledButton
             onClick={() => onClick()}
-            variant={ButtonColors.DANGER}
+            variant={ButtonVariants.DANGER}
             loading={loading}
             disabled={loading}
           >

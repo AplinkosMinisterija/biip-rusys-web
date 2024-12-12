@@ -8,6 +8,8 @@ import { handleSelectProfile } from '../../utils/loginFunctions';
 import { slugs } from '../../utils/routes';
 import { buttonsTitles, inputLabels } from '../../utils/texts';
 import Icon from './Icons';
+import { Button, useKeyAction } from '@aplinkosministerija/design-system';
+import { ButtonVariants } from '../../styles';
 
 export const slugToIcon = {
   [slugs.requests]: 'description',
@@ -32,10 +34,19 @@ const ProfilesDropdown = () => {
     }
   };
 
+  const navigateOnTabSelect = (navigateTo: string) => {
+    handleNavigate(navigateTo, navigate, setShowSelect);
+  };
+
+  const handleKeyDownOnDropdownSelect = useKeyAction((show) => setShowSelect(show), false);
+  const handleKeyDown = useKeyAction((profileId) => handleSelectProfile(profileId), false);
+  const handleKeyDownOnTab = useKeyAction((navigateTo) => navigateOnTabSelect(navigateTo), false);
+
   return (
     <Container tabIndex={1} onBlur={handleBlur}>
       <Select
         onClick={() => setShowSelect(!showSelect)}
+        onKeyDown={handleKeyDownOnDropdownSelect(!showSelect)}
         tabIndex={0}
         aria-label={`Open profile select dropdown`}
         role="button"
@@ -58,10 +69,14 @@ const ProfilesDropdown = () => {
             return (
               <ProfileContainer
                 key={`profile-${index}`}
+                tabIndex={0}
+                role="button"
+                onKeyDown={handleKeyDown(profile.id)}
                 onClick={() => {
                   handleSelectProfile(profile.id);
                 }}
                 selected={selected}
+                aria-label={`Select profile ${(profile?.name, profile?.email || user?.email)}`}
               >
                 <div>
                   <Name>{profile?.name || '-'}</Name>
@@ -77,8 +92,11 @@ const ProfilesDropdown = () => {
             .map((route, index) => (
               <Tab
                 key={`routes-${index}`}
-                onClick={() => handleNavigate(route.slug, navigate, setShowSelect)}
-                selected={location.pathname.includes(route.slug)}
+                onClick={() => navigateOnTabSelect(route.slug)}
+                selected={location.pathname.endsWith(route.slug)}
+                tabIndex={0}
+                role="button"
+                onKeyDown={handleKeyDownOnTab(route.slug)}
               >
                 <TabIconContainer>
                   <TabIcon name={slugToIcon[route.slug]} />
@@ -87,9 +105,14 @@ const ProfilesDropdown = () => {
               </Tab>
             ))}
           <Hr />
-          <BottomRow onClick={() => mutateAsync()}>
-            <StyledLogoutIcon name="exit" />
-            <Name>{buttonsTitles.logout}</Name>
+          <BottomRow
+            variant={ButtonVariants.TEXT_ONLY}
+            left={<StyledLogoutIcon name="exit" />}
+            onClick={() => mutateAsync()}
+            tabIndex={0}
+            role="button"
+          >
+            {buttonsTitles.logout}
           </BottomRow>
         </ProfilesContainer>
       )}
@@ -98,7 +121,6 @@ const ProfilesDropdown = () => {
 };
 
 const StyledLogoutIcon = styled(Icon)`
-  color: #121926;
   font-size: 2rem;
 `;
 
@@ -111,11 +133,8 @@ const TabIcon = styled(Icon)`
   font-size: 1.7rem;
 `;
 
-const BottomRow = styled.div`
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  gap: 9px;
+const BottomRow = styled(Button)`
+  padding: 0px 4px;
 `;
 
 const Hr = styled.div`
@@ -153,7 +172,7 @@ const SelectWrapper = styled.div`
   gap: 16px;
 `;
 
-const Select = styled.button`
+const Select = styled.div`
   cursor: pointer;
   min-width: 100%;
   height: 31px;
@@ -165,7 +184,6 @@ const Select = styled.button`
 
 const Name = styled.div`
   font-size: 1.4rem;
-  color: #121926;
   line-height: 17px;
 `;
 

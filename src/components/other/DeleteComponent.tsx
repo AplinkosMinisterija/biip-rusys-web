@@ -1,12 +1,11 @@
 import { useState } from 'react';
 import styled from 'styled-components';
-import { device } from '../../styles';
+import { ButtonVariants, device } from '../../styles';
 import { DeleteInfoProps } from '../../types';
 import { buttonsTitles } from '../../utils/texts';
 import DeleteCard from './DeleteCard';
 import Icon from './Icons';
 import Modal from './Modal';
-import { ButtonColors } from '../../utils/constants';
 import { Button } from '@aplinkosministerija/design-system';
 
 export const DeleteComponent = ({ deleteInfo }: { deleteInfo?: DeleteInfoProps }) => {
@@ -29,7 +28,7 @@ export const DeleteComponent = ({ deleteInfo }: { deleteInfo?: DeleteInfoProps }
       <DeleteButtonContainer>
         <Button
           onClick={() => setShowModal(true)}
-          variant={ButtonColors.DANGER_OUTLINE}
+          variant={ButtonVariants.DANGER_OUTLINE}
           left={<StyledIcon name="deleteItem" />}
         >
           {buttonsTitles.delete}

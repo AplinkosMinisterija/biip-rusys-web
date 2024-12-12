@@ -1,4 +1,4 @@
-import AsyncSelectField from '../../components/fields/AsyncSelectField';
+import { AsyncSelectField } from '@aplinkosministerija/design-system';
 import DrawMap from '../../components/map/DrawMap';
 import { StatusModal } from '../../components/other/StatusModal';
 import Api from './../../api';

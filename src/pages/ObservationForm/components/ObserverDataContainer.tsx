@@ -1,8 +1,7 @@
-import { CheckBox, DatePicker, TextField } from '@aplinkosministerija/design-system';
+import { AsyncSelectField, CheckBox, DatePicker, TextField } from '@aplinkosministerija/design-system';
 import { Column, Row } from '../styles';
 import { ObserverDataContainerProps } from '../types';
 import SimpleContainer from './../../../components/containers/SimpleContainer';
-import AsyncSelectField from './../../../components/fields/AsyncSelectField';
 import { Sources } from './../../../types';
 import { getSourcesList } from './../../../utils/functions';
 import { formLabels, inputLabels } from './../../../utils/texts';

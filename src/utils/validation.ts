@@ -11,9 +11,10 @@ import {
 
 import { phoneNumberRegexPattern } from '@aplinkosministerija/design-system';
 import { isEqual } from 'lodash';
-import { availableMimeTypes } from '../components/fields/DragAndDropUploadField';
 import { availablePhotoMimeTypes } from '../components/fields/PhotoUploadField';
 import { Species } from '../types';
+
+export const availableMimeTypes = ['image/png', 'image/jpg', 'image/jpeg', 'application/pdf'];
 
 export const validateForm = Yup.object().shape(
   {

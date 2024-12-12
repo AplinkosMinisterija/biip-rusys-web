@@ -13,6 +13,7 @@ export enum ButtonVariants {
   SUCCESS = 'success',
   TRANSPARENT = 'transparent',
   DANGER_OUTLINE = 'dangerOutline',
+  TEXT_ONLY = 'textOnly'
 }
 
 export const palette = {
@@ -74,6 +75,18 @@ export const theme: Theme = {
         border: palette.mistyCloud,
         hover: palette.transparent,
         hoverText: 'rgba(18, 25, 38, 0.5)',
+        icon: palette.midnightBlue,
+        count: {
+          background: palette.grey,
+          text: palette.white,
+        },
+      },
+      [ButtonVariants.TEXT_ONLY]: {
+        background: palette.transparent,
+        text: palette.midnightBlue,
+        border: palette.transparent,
+        hover: palette.transparent,
+        hoverText: palette.secondary,
         icon: palette.midnightBlue,
         count: {
           background: palette.grey,
