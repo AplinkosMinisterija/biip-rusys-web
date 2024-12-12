@@ -100,6 +100,7 @@ const FormPageWrapper = ({
                       onClick={() => navigate(url as string)}
                       left={<StyledBackIcon name="back" />}
                       variant={ButtonColors.TRANSPARENT}
+                      disabled={loading}
                     >
                       {buttonsTitles.back}
                     </Button>

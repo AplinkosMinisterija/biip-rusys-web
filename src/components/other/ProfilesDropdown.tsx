@@ -40,11 +40,13 @@ const ProfilesDropdown = () => {
         aria-label={`Open profile select dropdown`}
         role="button"
       >
-        <SelectContainer>
-          <Name className="child">{currentProfile?.name || '-'}</Name>
-          <Email className="child">{currentProfile?.email || user?.email}</Email>
-        </SelectContainer>
-        <DropdownIcon className="child" name="miniArrowDown" />
+        <SelectWrapper>
+          <SelectContainer>
+            <Name>{currentProfile?.name || '-'}</Name>
+            <Email>{currentProfile?.email || user?.email}</Email>
+          </SelectContainer>
+          <DropdownIcon name="miniArrowDown" />
+        </SelectWrapper>
       </Select>
       {showSelect && (
         <ProfilesContainer>
@@ -139,21 +141,26 @@ const SelectedIcon = styled(Icon)`
   color: ${({ theme }) => theme.colors.primary};
 `;
 
+const SelectContainer = styled.div`
+  width: 100%;
+`;
+
+const SelectWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+`;
+
 const Select = styled.button`
   cursor: pointer;
   min-width: 100%;
   height: 31px;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  :focus .child,
-  :hover .child {
-    color: ${({ theme }) => theme.colors.secondary};
+  :focus ${SelectWrapper}, :hover ${SelectWrapper} {
+    opacity: 0.6;
   }
-`;
-
-const SelectContainer = styled.div`
-  width: 100%;
 `;
 
 const Name = styled.div`

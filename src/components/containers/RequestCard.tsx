@@ -1,5 +1,5 @@
+import { useKeyAction } from '@aplinkosministerija/design-system';
 import styled from 'styled-components';
-import { useKeyAction } from '../../state/hooks';
 
 export interface RequestCardProps {
   title: string;

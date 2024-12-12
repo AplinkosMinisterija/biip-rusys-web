@@ -9,6 +9,7 @@ import Icon from '../other/Icons';
 import Loader from '../other/Loader';
 import Modal from '../other/Modal';
 import PhotoField from './PhotoField';
+import { useKeyAction } from '@aplinkosministerija/design-system';
 
 export interface PhotoUploadFieldProps {
   name: string;
@@ -74,14 +75,12 @@ const PhotoUploadField = ({
       .sort((x, y) => Number(y.main) - Number(x.main));
   };
 
-  const handleOnKeyDown = (e: React.KeyboardEvent) => {
-    if ((e.key === 'Enter' || e.key === ' ') && !disabled) {
-      e.stopPropagation();
-      e.preventDefault();
-      inputRef?.current?.click();
-    }
+  const onButtonClick = () => {
+    if (disabled) return;
+    inputRef?.current?.click();
   };
 
+  const handleKeyDown = useKeyAction(onButtonClick, false);
   return (
     <Container>
       {photos.map((photo: File | FileProps | any, index: number) => {
@@ -142,15 +141,14 @@ const PhotoUploadField = ({
           role="button"
           aria-label={'Upload photo'}
           tabIndex={0}
-          type="button"
-          onKeyDown={handleOnKeyDown}
+          onClick={onButtonClick}
+          onKeyDown={handleKeyDown()}
           error={!!error}
         >
           <StyledIcon name="photo" />
           <StyledCloseIconContainer />
           <StyledInput
             ref={inputRef}
-            tabIndex={-1}
             disabled={disabled}
             value={undefined}
             multiple={true}
@@ -188,14 +186,16 @@ export const StyledImg = styled.img<{ disabled: boolean }>`
   max-width: 100%;
 `;
 
-const StyledInput = styled.input``;
+const StyledInput = styled.input`
+  display: none;
+`;
 const StyledText = styled.div`
   font-size: 1rem;
   line-height: 10px;
   margin-top: 8px;
 `;
 
-const StyledButton = styled.button<{
+const StyledButton = styled.div<{
   error: boolean;
 }>`
   border-width: ${({ error }) => (error ? '1px' : '2px ')};
@@ -206,26 +206,14 @@ const StyledButton = styled.button<{
   padding: 1rem;
   border-radius: 5px;
   background-color: #eeebe53d;
-  position: relative;
   color: #697586;
-
-  input {
-    position: absolute;
-    top: 0;
-    right: 0;
-    margin: 0;
-    padding: 0;
-    cursor: pointer;
-    opacity: 0;
-    width: 133px;
-    height: 100px;
-  }
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   &:focus,
   &:hover {
-    color: ${({ theme }) => theme.colors.secondary};
-    border-width: 2px;
-    border-color: ${({ theme }) => theme.colors.secondary};
-    border-style: dashed;
+    opacity: 50%;
   }
 `;
 

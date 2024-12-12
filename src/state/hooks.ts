@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 import { useQuery } from 'react-query';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
@@ -42,17 +42,4 @@ export const useGenericTablePageHooks = () => {
   const location = useLocation();
 
   return { page, navigate, dispatch, location };
-};
-
-export const useKeyAction = (action: (option?: any) => void, disabled = false) => {
-  return useCallback(
-    (option?: any) => (e: React.KeyboardEvent) => {
-      if ((e.key === 'Enter' || e.key === ' ') && !disabled) {
-        e.stopPropagation();
-        e.preventDefault();
-        action(option);
-      }
-    },
-    [action, disabled],
-  );
 };

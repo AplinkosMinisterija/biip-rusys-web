@@ -13,8 +13,8 @@ import { loginSchema } from '../utils/validation';
 import {
   CheckBox,
   PasswordField,
-  TextFieldInput,
-  Button
+  Button,
+  TextField
 } from '@aplinkosministerija/design-system';
 
 interface LoginProps {
@@ -73,7 +73,7 @@ export const Login = () => {
     <Container onSubmit={handleSubmit}>
       {!isProdEnvironment && (
         <>
-          <TextFieldInput
+          <TextField
             value={values.email}
             type="email"
             name="email"

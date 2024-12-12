@@ -37,14 +37,14 @@ export default Menu;
 
 const Tab = styled.button`
   font-size: 1.6rem;
-  color: #121926;
+  color: ${({ theme }) => theme.colors.midnightBlue};
   cursor: pointer;
   display: flex;
   align-items: center;
   gap: 4px;
   :focus,
   :hover {
-    color: ${({ theme }) => theme.colors.secondary};
+    opacity: 0.6;
   }
 `;
 

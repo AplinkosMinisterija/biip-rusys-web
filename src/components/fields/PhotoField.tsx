@@ -6,6 +6,7 @@ import { FileProps } from '../../types';
 import { handleErrorFromServerToast } from '../../utils/functions';
 import Icon from '../other/Icons';
 import LoaderComponent from '../other/LoaderComponent';
+import { useKeyAction } from '@aplinkosministerija/design-system';
 
 export interface PhotoFieldProps {
   photo: FileProps | File | any;
@@ -34,9 +35,7 @@ const PhotoField = ({
 
   const isMain = photo.main;
 
-  const handleRemove = (e) => {
-    e.stopPropagation();
-
+  const handleRemove = () => {
     if (!isEmpty(photos) && onChange) {
       onChange([...photos.slice(0, index as number), ...photos.slice((index as number) + 1)]);
     }
@@ -44,13 +43,8 @@ const PhotoField = ({
 
   const enablePhotoDelete = !isOpen && !disabled && !loading;
 
-  const handleOnKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.stopPropagation();
-      e.preventDefault();
-      onImageClick && onImageClick();
-    }
-  };
+  const handleKeyDown = useKeyAction(() => onImageClick && onImageClick(), false);
+  const handleKeyDownOnRemove = useKeyAction(handleRemove, false);
 
   return (
     <ImageContainer
@@ -58,16 +52,21 @@ const PhotoField = ({
       aria-label={enablePhotoDelete ? 'Photo' : 'Photo, press enter to open'}
       main={isMain}
       isOpen={!!isOpen}
-      onClick={onImageClick}
       key={`photo-${index}`}
-      onKeyDown={handleOnKeyDown}
+      role="button"
+      onClick={onImageClick}
+      onKeyDown={handleKeyDown()}
     >
       {enablePhotoDelete && (
         <StyledCloseIconContainer
           role="button"
           tabIndex={0}
           aria-label={'Delete photo'}
-          onClick={handleRemove}
+          onClick={(e) => {
+            e.stopPropagation();
+            handleRemove();
+          }}
+          onKeyDown={handleKeyDownOnRemove()}
         >
           <StyledCloseIcon name="close" />
         </StyledCloseIconContainer>
@@ -119,6 +118,7 @@ const StyledCloseIcon = styled(Icon)`
   font-size: 2.4rem;
   color: ${({ theme }) => theme.colors.danger};
 `;
+
 const StyledCloseIconContainer = styled.button`
   position: absolute;
   top: 0px;
@@ -166,7 +166,6 @@ export const StyledImg = styled.img<{
   opacity: 1;
   $display: ${({ $display }) => ($display ? 'block' : 'none')};
   max-width: 100%;
-
   transition: 0.5s ease;
   backface-visibility: hidden;
 

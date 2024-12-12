@@ -12,7 +12,7 @@ export enum ButtonVariants {
   DANGER = 'danger',
   SUCCESS = 'success',
   TRANSPARENT = 'transparent',
-  DANGER_OUTLINE = 'dangerOutline'
+  DANGER_OUTLINE = 'dangerOutline',
 }
 
 export const palette = {
@@ -72,7 +72,7 @@ export const theme: Theme = {
         text: palette.midnightBlue,
         border: palette.transparent,
         hover: palette.transparent,
-        hoverText: palette.secondary,
+        hoverText: 'rgba(18, 25, 38, 0.5)',
         icon: palette.midnightBlue,
         count: {
           background: palette.grey,
