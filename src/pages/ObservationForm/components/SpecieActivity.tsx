@@ -2,8 +2,6 @@ import { isEmpty, isEqual } from 'lodash';
 import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import NumericTextField from '../../../components/fields/NumericTextField';
-import TextField from '../../../components/fields/TextField';
 import { device } from '../../../styles';
 import {
   crustaceanMethodTypeOptions,
@@ -14,7 +12,6 @@ import {
 } from '../../../utils/functions';
 import { getAnimalActivityOptions, getAnimalEvolutionOptions, setPlaceholder } from '../functions';
 import { SpecieActivityProps } from '../types';
-import SelectField from './../../../components/fields/SelectField';
 import {
   FormTypes,
   MammalMethodType,
@@ -34,6 +31,7 @@ import {
   plantEvolutionStateLabels,
   shortMeasurementUnitsLabels,
 } from './../../../utils/texts';
+import { NumericTextField, SelectField, TextField } from '@aplinkosministerija/design-system';
 
 export const SpecieActivity = ({
   values,
@@ -186,7 +184,7 @@ export const SpecieActivity = ({
                 label={methodValue?.label}
                 wholeNumber={methodValue?.wholeNumber}
                 value={values.methodValue}
-                rightIcon={
+                right={
                   methodValue?.measurementUnit && (
                     <MeasurementUnit>{methodValue?.measurementUnit}</MeasurementUnit>
                   )

@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { device } from '../../styles';
-import Button, { ButtonColors } from '../buttons/Button';
+import { Button } from '@aplinkosministerija/design-system';
 
 interface PageWrapperProps {
   children: JSX.Element;
@@ -28,8 +28,6 @@ const PageWrapper = ({ children, title, buttonInfo }: PageWrapperProps) => {
             navigate(url);
           }}
           disabled={loading}
-          padding="0"
-          variant={ButtonColors.PRIMARY}
         >
           {label}
         </Button>

@@ -5,17 +5,38 @@ declare module 'styled-components' {
   export interface DefaultTheme extends Theme {}
 }
 
+export enum ButtonVariants {
+  PRIMARY = 'primary',
+  SECONDARY = 'secondary',
+  TERTIARY = 'tertiary',
+  DANGER = 'danger',
+  SUCCESS = 'success',
+  TRANSPARENT = 'transparent',
+  DANGER_OUTLINE = 'dangerOutline',
+}
+
+export const palette = {
+  primary: '#FEBC1D',
+  returned: '#FEBC1D',
+  secondary: '#b55007',
+  tertiary: '#7A7E9F',
+  danger: '#FE5B78',
+  transparent: 'transparent',
+  success: '#4FB922',
+  confirmed: '#4FB922',
+  submitted: '#4FB922',
+  tertiaryLight: '#F3F3F7',
+  border: '#D3D2D2',
+  label: '#231F20',
+  error: '#FE5B78',
+  white: '#ffffff',
+  grey: '#B3B5C4',
+  midnightBlue: '#121926',
+};
+
 export const theme: Theme = {
   colors: {
-    primary: '#FEBC1D',
-    returned: '#FEBC1D',
-    secondary: '#13C9E7',
-    tertiary: '#7A7E9F',
-    danger: '#FE5B78',
-    transparent: 'transparent',
-    success: '#4FB922',
-    confirmed: '#4FB922',
-    submitted: '#4FB922',
+    ...palette,
     hover: {
       submitted: '#4FB922',
       confirmed: '#4FB922',
@@ -29,21 +50,56 @@ export const theme: Theme = {
     fields: {
       borderFocus: '#FEBC1D',
     },
-    tertiaryMedium: '#C6C8D6',
-    tertiaryLight: '#F3F3F7',
-    new: '#00cae9',
-    not_finished: '#fea700',
-    finished: '#60b456',
-    late: '#FE5B78',
-    input: '#F3F3F7',
-    border: '#D3D2D2',
-    label: '#231F20',
-    error: '#FE5B78',
-    light: '#f3f3f7',
-    white: '#ffffff',
-    darkerWhite: '#A4A7BD',
-    pending: '#fea700',
-    grey: '#B3B5C4',
+    text: {
+      primary: palette.midnightBlue,
+      focus: palette.secondary,
+    },
+    buttons: {
+      [ButtonVariants.PRIMARY]: {
+        background: palette.primary,
+        text: palette.label,
+        border: palette.transparent,
+        hover: palette.primary,
+        hoverText: palette.white,
+        icon: palette.white,
+        count: {
+          background: palette.white,
+          text: palette.primary,
+        },
+      },
+      [ButtonVariants.TRANSPARENT]: {
+        background: palette.transparent,
+        text: palette.midnightBlue,
+        border: palette.transparent,
+        hover: palette.transparent,
+        hoverText: 'rgba(18, 25, 38, 0.5)',
+        icon: palette.midnightBlue,
+        count: {
+          background: palette.grey,
+          text: palette.white,
+        },
+      },
+      [ButtonVariants.DANGER_OUTLINE]: {
+        background: palette.transparent,
+        text: palette.danger,
+        border: palette.danger,
+        hover: palette.transparent,
+        hoverText: palette.secondary,
+        hoverBorder: palette.secondary,
+      },
+      [ButtonVariants.DANGER]: {
+        background: palette.danger,
+        text: palette.white,
+        border: palette.danger,
+        hover: palette.danger + 'E6',
+        hoverText: palette.white,
+        icon: palette.white,
+        count: {
+          background: palette.white,
+          text: palette.danger,
+        },
+      },
+    },
   },
   height: {
     fields: 4,

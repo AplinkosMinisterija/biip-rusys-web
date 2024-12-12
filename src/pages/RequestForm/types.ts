@@ -45,6 +45,7 @@ export interface FormTypeContainerProps {
   handleChange: HandleChangeType;
   type?: RequestTypes;
   disabled: boolean;
+  label?: string;
 }
 
 export interface AdditionalInfoComponentProps {

@@ -3,14 +3,13 @@ import styled from 'styled-components';
 import { MeasurementUnit } from '../../../components/other/MeasurmentUnit';
 import { device } from '../../../styles';
 import { TransectInfoFieldsProps } from '../types';
-import ButtonsGroup from './../../../components/buttons/ButtonsGroup';
-import NumericTextField from './../../../components/fields/NumericTextField';
 import { MeasurementUnits } from './../../../utils/constants';
 import {
   inputLabels,
   measurementUnitsLabels,
   shortMeasurementUnitsLabels,
 } from './../../../utils/texts';
+import { ButtonsGroup, NumericTextField } from '@aplinkosministerija/design-system';
 
 export const TransectInfoFields = ({
   disabled,
@@ -38,7 +37,7 @@ export const TransectInfoFields = ({
         disabled={disabled}
         label={inputLabels.length}
         value={height}
-        rightIcon={<MeasurementUnit unit={shortMeasurementUnitsLabels[unit]} />}
+        right={<MeasurementUnit unit={shortMeasurementUnitsLabels[unit]} />}
         error={errors?.height}
         name={'height'}
         onChange={(height) => {
@@ -49,7 +48,7 @@ export const TransectInfoFields = ({
         disabled={disabled}
         label={inputLabels.width}
         value={width}
-        rightIcon={<MeasurementUnit unit={shortMeasurementUnitsLabels[unit]} />}
+        right={<MeasurementUnit unit={shortMeasurementUnitsLabels[unit]} />}
         error={errors?.width}
         name={'width'}
         onChange={(width) => {

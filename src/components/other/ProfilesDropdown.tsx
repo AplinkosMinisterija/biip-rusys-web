@@ -34,12 +34,19 @@ const ProfilesDropdown = () => {
 
   return (
     <Container tabIndex={1} onBlur={handleBlur}>
-      <Select onClick={() => setShowSelect(!showSelect)}>
-        <SelectContainer>
-          <Name>{currentProfile?.name || '-'}</Name>
-          <Email>{currentProfile?.email || user?.email}</Email>
-        </SelectContainer>
-        <DropdownIcon name="miniArrowDown" />
+      <Select
+        onClick={() => setShowSelect(!showSelect)}
+        tabIndex={0}
+        aria-label={`Open profile select dropdown`}
+        role="button"
+      >
+        <SelectWrapper>
+          <SelectContainer>
+            <Name>{currentProfile?.name || '-'}</Name>
+            <Email>{currentProfile?.email || user?.email}</Email>
+          </SelectContainer>
+          <DropdownIcon name="miniArrowDown" />
+        </SelectWrapper>
       </Select>
       {showSelect && (
         <ProfilesContainer>
@@ -134,17 +141,26 @@ const SelectedIcon = styled(Icon)`
   color: ${({ theme }) => theme.colors.primary};
 `;
 
-const Select = styled.div`
+const SelectContainer = styled.div`
+  width: 100%;
+`;
+
+const SelectWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+`;
+
+const Select = styled.button`
   cursor: pointer;
   min-width: 100%;
   height: 31px;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
-
-const SelectContainer = styled.div`
-  width: 100%;
+  :focus ${SelectWrapper}, :hover ${SelectWrapper} {
+    opacity: 0.6;
+  }
 `;
 
 const Name = styled.div`

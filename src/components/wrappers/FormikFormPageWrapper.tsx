@@ -6,9 +6,10 @@ import styled from 'styled-components';
 import { device } from '../../styles';
 import { DeleteInfoProps } from '../../types';
 import { buttonsTitles, validationTexts } from '../../utils/texts';
-import Button, { ButtonColors } from '../buttons/Button';
 import { DeleteComponent } from '../other/DeleteComponent';
 import Icon from '../other/Icons';
+import { ButtonColors } from '../../utils/constants';
+import { Button } from '@aplinkosministerija/design-system';
 
 interface FormPageWrapperProps {
   renderForm: (
@@ -97,12 +98,9 @@ const FormPageWrapper = ({
                   {back && (
                     <Button
                       onClick={() => navigate(url as string)}
-                      leftIcon={<StyledBackIcon name="back" />}
+                      left={<StyledBackIcon name="back" />}
                       variant={ButtonColors.TRANSPARENT}
-                      type="button"
-                      height={32}
-                      buttonPadding="6px 8px"
-                      color="black"
+                      disabled={loading}
                     >
                       {buttonsTitles.back}
                     </Button>
@@ -120,12 +118,9 @@ const FormPageWrapper = ({
                   <Button
                     aria-label={submitButtonText}
                     onClick={() => handleSubmit()}
-                    type="button"
-                    color="black"
-                    height={32}
-                    buttonPadding="6px 8px"
+                    type="submit"
                     loading={loading}
-                    disabled={disabled}
+                    disabled={disabled || loading}
                   >
                     {submitButtonText}
                   </Button>
@@ -171,10 +166,8 @@ const StyledForm = styled(Form)<{ two_column: number }>`
 
 const StyledBackIcon = styled(Icon)`
   cursor: pointer;
-
   font-size: 1.1rem;
   align-self: center;
-  color: #000000;
 `;
 
 const Row = styled.div<{ titleRowWidth?: number }>`

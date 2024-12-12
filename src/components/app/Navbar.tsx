@@ -15,6 +15,9 @@ const Menu = () => {
           {externalRoutes.map((route, index) => (
             <Tab
               key={`menu-${index}`}
+              tabIndex={0}
+              aria-label={`tab-${route.label}`}
+              role="button"
               onClick={() =>
                 route.internal ? navigate(route.slug) : window.open(route.slug, '_blank')
               }
@@ -32,13 +35,17 @@ const Menu = () => {
 
 export default Menu;
 
-const Tab = styled.div`
+const Tab = styled.button`
   font-size: 1.6rem;
-  color: #121926;
+  color: ${({ theme }) => theme.colors.midnightBlue};
   cursor: pointer;
   display: flex;
   align-items: center;
   gap: 4px;
+  :focus,
+  :hover {
+    opacity: 0.6;
+  }
 `;
 
 const TabContainer = styled.div`

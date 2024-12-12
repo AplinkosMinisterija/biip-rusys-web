@@ -1,4 +1,4 @@
-  import { useState } from 'react';
+import { useRef, useState } from 'react';
 import styled from 'styled-components';
 import { device } from '../../styles';
 import { FileProps } from '../../types';
@@ -9,6 +9,7 @@ import Icon from '../other/Icons';
 import Loader from '../other/Loader';
 import Modal from '../other/Modal';
 import PhotoField from './PhotoField';
+import { useKeyAction } from '@aplinkosministerija/design-system';
 
 export interface PhotoUploadFieldProps {
   name: string;
@@ -38,9 +39,9 @@ const PhotoUploadField = ({
 }: PhotoUploadFieldProps) => {
   const [selectedPhotoIndex, setSelectedPhotoIndex] = useState(-1);
   const [loading, setLoading] = useState(false);
+  const inputRef = useRef<any>(null);
 
   const selectedPhoto = photos?.[selectedPhotoIndex];
-
   const handleSetFiles = async (currentFiles: File[]) => {
     const isValidFileTypes = validateFileTypes(currentFiles);
     if (!isValidFileTypes) return handleErrorToast(validationTexts.badFileTypes);
@@ -74,6 +75,12 @@ const PhotoUploadField = ({
       .sort((x, y) => Number(y.main) - Number(x.main));
   };
 
+  const onButtonClick = () => {
+    if (disabled) return;
+    inputRef?.current?.click();
+  };
+
+  const handleKeyDown = useKeyAction(onButtonClick, false);
   return (
     <Container>
       {photos.map((photo: File | FileProps | any, index: number) => {
@@ -130,11 +137,18 @@ const PhotoUploadField = ({
       </Modal>
 
       {!disabled && (
-        <StyledButton type="button" error={!!error}>
+        <StyledButton
+          role="button"
+          aria-label={'Upload photo'}
+          tabIndex={0}
+          onClick={onButtonClick}
+          onKeyDown={handleKeyDown()}
+          error={!!error}
+        >
           <StyledIcon name="photo" />
           <StyledCloseIconContainer />
           <StyledInput
-            aria-label="nuotraukos"
+            ref={inputRef}
             disabled={disabled}
             value={undefined}
             multiple={true}
@@ -172,15 +186,16 @@ export const StyledImg = styled.img<{ disabled: boolean }>`
   max-width: 100%;
 `;
 
-const StyledInput = styled.input``;
+const StyledInput = styled.input`
+  display: none;
+`;
 const StyledText = styled.div`
-  color: #7a7e9f;
   font-size: 1rem;
   line-height: 10px;
   margin-top: 8px;
 `;
 
-const StyledButton = styled.button<{
+const StyledButton = styled.div<{
   error: boolean;
 }>`
   border-width: ${({ error }) => (error ? '1px' : '2px ')};
@@ -191,24 +206,20 @@ const StyledButton = styled.button<{
   padding: 1rem;
   border-radius: 5px;
   background-color: #eeebe53d;
-  position: relative;
-  input {
-    position: absolute;
-    top: 0;
-    right: 0;
-    margin: 0;
-    padding: 0;
-    cursor: pointer;
-    opacity: 0;
-    width: 133px;
-    height: 100px;
+  color: #697586;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  &:focus,
+  &:hover {
+    opacity: 50%;
   }
 `;
 
 const StyledIcon = styled(Icon)`
   cursor: pointer;
   font-size: 2.4rem;
-  color: #697586;
 `;
 
 const StyledArrow = styled(Icon)`

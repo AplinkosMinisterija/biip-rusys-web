@@ -6,6 +6,7 @@ import { FileProps } from '../../types';
 import { handleErrorFromServerToast } from '../../utils/functions';
 import Icon from '../other/Icons';
 import LoaderComponent from '../other/LoaderComponent';
+import { useKeyAction } from '@aplinkosministerija/design-system';
 
 export interface PhotoFieldProps {
   photo: FileProps | File | any;
@@ -34,18 +35,39 @@ const PhotoField = ({
 
   const isMain = photo.main;
 
-  const handleRemove = (e) => {
-    e.stopPropagation();
-
+  const handleRemove = () => {
     if (!isEmpty(photos) && onChange) {
       onChange([...photos.slice(0, index as number), ...photos.slice((index as number) + 1)]);
     }
   };
 
+  const enablePhotoDelete = !isOpen && !disabled && !loading;
+
+  const handleKeyDown = useKeyAction(() => onImageClick && onImageClick(), false);
+  const handleKeyDownOnRemove = useKeyAction(handleRemove, false);
+
   return (
-    <ImageContainer main={isMain} isOpen={!!isOpen} onClick={onImageClick} key={`photo-${index}`}>
-      {!isOpen && !disabled && !loading && (
-        <StyledCloseIconContainer onClick={handleRemove}>
+    <ImageContainer
+      tabIndex={0}
+      aria-label={enablePhotoDelete ? 'Photo' : 'Photo, press enter to open'}
+      main={isMain}
+      isOpen={!!isOpen}
+      key={`photo-${index}`}
+      role="button"
+      onClick={onImageClick}
+      onKeyDown={handleKeyDown()}
+    >
+      {enablePhotoDelete && (
+        <StyledCloseIconContainer
+          role="button"
+          tabIndex={0}
+          aria-label={'Delete photo'}
+          onClick={(e) => {
+            e.stopPropagation();
+            handleRemove();
+          }}
+          onKeyDown={handleKeyDownOnRemove()}
+        >
           <StyledCloseIcon name="close" />
         </StyledCloseIconContainer>
       )}
@@ -96,14 +118,17 @@ const StyledCloseIcon = styled(Icon)`
   font-size: 2.4rem;
   color: ${({ theme }) => theme.colors.danger};
 `;
-const StyledCloseIconContainer = styled.div`
+
+const StyledCloseIconContainer = styled.button`
   position: absolute;
   top: 0px;
   right: 0px;
-  opacity: 0;
-  display: none;
+  opacity: 1;
+  display: block;
   cursor: pointer;
   z-index: 10;
+  &:focus {
+    outline: 2px solid ${({ theme }) => theme.colors.secondary};
 `;
 
 const MainPhotoBackground = styled.div`
@@ -141,7 +166,6 @@ export const StyledImg = styled.img<{
   opacity: 1;
   $display: ${({ $display }) => ($display ? 'block' : 'none')};
   max-width: 100%;
-
   transition: 0.5s ease;
   backface-visibility: hidden;
 
@@ -164,15 +188,6 @@ const ImageContainer = styled.div<{
   min-height: 100px;
   border-radius: 4px;
   border: ${({ main }) => (main ? '2px solid #FEBC1D' : 'none')};
-
-  ${({ isOpen }) =>
-    !isOpen &&
-    `
-   &:hover ${StyledCloseIconContainer} {
-    opacity: 1;
-    display:block;
-  }
-  `}
 `;
 
 export default PhotoField;
