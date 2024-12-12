@@ -1,3 +1,4 @@
+import { Columns } from '@aplinkosministerija/design-system';
 import { useMediaQuery } from '@material-ui/core';
 import { isEmpty, isEqual } from 'lodash';
 import { useState } from 'react';
@@ -9,7 +10,7 @@ import { actions as tenantAction } from '../state/tenant/reducer';
 import { actions as userAction } from '../state/user/reducer';
 import { actions } from '../state/users/reducer';
 import { device } from '../styles';
-import { Columns, Tenant, User } from '../types';
+import { Tenant, User } from '../types';
 import { ServerErrorCodes } from './constants';
 import {
   handleErrorFromServerToast,

@@ -1,4 +1,4 @@
-import { FilterInputTypes } from '../../components/other/DynamicFilter/Filter';
+import { FilterInputTypes } from '@aplinkosministerija/design-system';
 import { userFilterLabels } from '../../utils/texts';
 
 export const filterConfig = () => ({

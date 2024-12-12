@@ -1,8 +1,8 @@
+import { TableData, TableRow } from '@aplinkosministerija/design-system';
 import { useState } from 'react';
 import { useQuery } from 'react-query';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
-import { TableData, TableRow } from '../components/tables/table';
 import { handleErrorFromServerToast } from '../utils/functions';
 import type { AppDispatch, RootState } from './store';
 

@@ -1,7 +1,7 @@
+import { TableRow } from '@aplinkosministerija/design-system';
 import TableItem from '../components/fields/TableItem';
 import TableStatusRowItem from '../components/fields/TableStatusRowItem';
 import FileDownloadContainer from '../components/other/FileDownloadContainer';
-import { TableRow } from '../components/tables/table';
 import { Form, Request } from '../types';
 import { colorsByStatus } from './constants';
 import { formatDate } from './format';

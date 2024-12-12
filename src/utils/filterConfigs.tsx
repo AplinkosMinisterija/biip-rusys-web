@@ -1,4 +1,4 @@
-import { FilterInputTypes } from '../components/other/DynamicFilter/Filter';
+import { FilterInputTypes } from '@aplinkosministerija/design-system';
 import { User } from '../types';
 import {
   getObservationFormStatusTypes,
@@ -16,29 +16,29 @@ export const myObservationFilterConfig = {
     label: formFiltersLabels.method,
     key: 'method',
     optionLabel: (option) => option?.label,
-    inputType: FilterInputTypes.singleselect,
+    inputType: FilterInputTypes.singleSelect,
     options: getMethodOptions(),
   },
   evolution: {
     label: formFiltersLabels.evolution,
     key: 'evolution',
     optionLabel: (option) => option?.label,
-    inputType: FilterInputTypes.singleselect,
+    inputType: FilterInputTypes.singleSelect,
     options: getEvolutionOptions(),
   },
   activity: {
     label: formFiltersLabels.activity,
     key: 'activity',
     optionLabel: (option) => option?.label,
-    inputType: FilterInputTypes.singleselect,
+    inputType: FilterInputTypes.singleSelect,
     options: getActivities(),
   },
   source: {
     label: formFiltersLabels.source,
     key: 'source',
-    inputType: FilterInputTypes.asyncSelect,
-    api: getSourcesList,
-    optionLabel: (option) => option.name,
+    inputType: FilterInputTypes.asyncSingleSelect,
+    optionsApi: getSourcesList,
+    optionLabel: (option) => option?.name,
   },
   dateFrom: {
     label: formFiltersLabels.dateFrom,
@@ -60,18 +60,18 @@ export const myObservationFilterConfig = {
     label: formFiltersLabels.species,
     key: 'species',
     inputType: FilterInputTypes.asyncMultiSelect,
-    api: getSpeciesList,
+    optionsApi: getSpeciesList,
     optionLabel: (option) => speciesOptionLabel(option),
-    getOptionValue: (option) => option.speciesId,
+    getOptionValue: (option) => option?.speciesId,
   },
 };
 
-export const observationFilterConfig = (users?: User[]) => ({
+export const observationFilterConfig = (users: User[] = []) => ({
   ...myObservationFilterConfig,
   createdBy: {
     label: formFiltersLabels.users,
     key: 'createdBy',
-    inputType: FilterInputTypes.singleselect,
+    inputType: FilterInputTypes.singleSelect,
     optionLabel: (option: User) => `${option?.firstName} ${option?.lastName}`,
     options: users,
   },
@@ -123,7 +123,7 @@ export const requestFilterConfig = (users: User[]) => ({
   createdBy: {
     label: formFiltersLabels.users,
     key: 'createdBy',
-    inputType: FilterInputTypes.singleselect,
+    inputType: FilterInputTypes.singleSelect,
     optionLabel: (option: User) => `${option?.firstName} ${option?.lastName}`,
     options: users,
   },

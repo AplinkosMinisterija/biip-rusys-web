@@ -1,28 +1,39 @@
-import { isEmpty } from 'lodash';
+import {
+  ColumnButtonProps,
+  Columns,
+  DynamicFilterProps,
+  NotFoundInfoProps,
+  useStorage,
+} from '@aplinkosministerija/design-system';
 import Api from '../../../api';
-import { ColumnButtonProps } from '../../../components/other/ColumnButton';
-import { DynamicFilterProps } from '../../../components/other/DynamicFilter';
-import { NotFoundProps } from '../../../components/other/NotFound';
 import { ButtonInfo } from '../../../components/wrappers/PageWrapper';
-import { actions as columnActions } from '../../../state/columns/reducer';
-import { actions } from '../../../state/filters/reducer';
-import { useAppSelector, useGenericTablePageHooks, useTableData } from '../../../state/hooks';
+import { useGenericTablePageHooks, useTableData } from '../../../state/hooks';
 import { observationFilterConfig, observationRowConfig } from '../../../utils/filterConfigs';
 import { mapObservationFilters } from '../../../utils/filters';
 import { useIsTenantUser, useUsers } from '../../../utils/hooks';
 import { mapObservationList } from '../../../utils/mapFunctions';
 import { slugs } from '../../../utils/routes';
 import { getActiveTab, getObservationTabs } from '../../../utils/tabs';
-import { buttonsTitles, emptyStateLabels, emptyStateUrlLabels } from '../../../utils/texts';
+import {
+  buttonsTitles,
+  emptyStateLabels,
+  emptyStateUrlLabels,
+  observationFormLabels,
+  validationTexts,
+} from '../../../utils/texts';
 
 export const useData = () => {
-  const { location, dispatch, navigate, page } = useGenericTablePageHooks();
-  const filters = useAppSelector((state) => state.filters.formFilters);
-  const columns = useAppSelector((state) => state.columns.observation);
+  const { location, navigate, page } = useGenericTablePageHooks();
   const isTenantUser = useIsTenantUser();
   const users = useUsers();
   const tabs = getObservationTabs(isTenantUser);
   const activeTabValue = getActiveTab(tabs, location);
+  const { value: filters, setValue: setFilters } = useStorage('formFilters', {}, true);
+  const { value: columns, setValue: setColumns } = useStorage<Columns>(
+    'formColumns',
+    observationFormLabels,
+    true,
+  );
 
   const { tableData, loading } = useTableData({
     endpoint: () =>
@@ -44,21 +55,31 @@ export const useData = () => {
   const filterInfo: DynamicFilterProps = {
     loading,
     filterConfig: observationFilterConfig(users),
-    isFilterApplied: !isEmpty(filters),
     rowConfig: observationRowConfig,
-    onSetFilters: (filters: any) => dispatch(actions.setFormFilters(filters)),
+    onSetFilters: setFilters,
     filters: filters,
+    texts: {
+      clearAll: buttonsTitles.clearAll,
+      filter: buttonsTitles.filter,
+    },
   };
 
   const columnInfo: ColumnButtonProps = {
     columns,
-    handleToggle: (key) => dispatch(columnActions.toggleObservationColumns(key)),
+    onToggle: setColumns,
+    texts: {
+      columns: buttonsTitles.columns,
+      atLeastOneColumn: validationTexts.atLeastOneColumn,
+    },
   };
 
-  const notFoundInfo: NotFoundProps = {
+  const notFoundInfo: NotFoundInfoProps = {
     url: slugs.newForm,
-    urlLabel: emptyStateUrlLabels.form,
-    label: emptyStateLabels.form,
+    urlText: emptyStateUrlLabels.form,
+    text: emptyStateLabels.form,
+    onClick: () => {
+      navigate(slugs.newForm);
+    },
   };
 
   return {

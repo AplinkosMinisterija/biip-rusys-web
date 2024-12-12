@@ -1,5 +1,5 @@
-import { createGlobalStyle } from 'styled-components';
 import { Theme } from '@aplinkosministerija/design-system';
+import { createGlobalStyle } from 'styled-components';
 
 declare module 'styled-components' {
   export interface DefaultTheme extends Theme {}
@@ -32,6 +32,7 @@ export const palette = {
   white: '#ffffff',
   grey: '#B3B5C4',
   midnightBlue: '#121926',
+  mistyCloud: '#CDD5DF',
 };
 
 export const theme: Theme = {
@@ -70,7 +71,7 @@ export const theme: Theme = {
       [ButtonVariants.TRANSPARENT]: {
         background: palette.transparent,
         text: palette.midnightBlue,
-        border: palette.transparent,
+        border: palette.mistyCloud,
         hover: palette.transparent,
         hoverText: 'rgba(18, 25, 38, 0.5)',
         icon: palette.midnightBlue,
@@ -104,6 +105,9 @@ export const theme: Theme = {
   height: {
     fields: 4,
     buttons: 4,
+  },
+  radius: {
+    fields: 0.2,
   },
 };
 

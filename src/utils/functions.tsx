@@ -1,9 +1,9 @@
+import { Columns } from '@aplinkosministerija/design-system';
 import { map } from 'lodash';
 import { NavigateFunction } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import Api from '../api';
-import { FilterConfig } from '../components/other/DynamicFilter/Filter';
-import { Columns, Profile, Tenant, User } from '../types';
+import { Profile, Tenant, User } from '../types';
 import {
   CrustaceanMethodType,
   FishMethodType,
@@ -125,14 +125,6 @@ export const getSortedColumns = (columns: Columns, isMobile: boolean) =>
     isMobile ? sortMobile(columns, key, key2) : sortDesktop(columns, key, key2),
   );
 
-export const getActiveColumns = (orderedColumns: Columns) =>
-  Object.keys(orderedColumns).reduce((obj, key) => {
-    if (orderedColumns[key].show) {
-      obj[key] = orderedColumns[key];
-    }
-    return obj;
-  }, {});
-
 export const handleToggleColumns = (columns: Columns, key: string) => {
   columns[key].show = !columns[key].show;
 };
@@ -165,21 +157,6 @@ export const handleNavigate = (
 ) => {
   navigate(slug);
   show(false);
-};
-
-export const handleDateRestriction = (filter: FilterConfig, values: any) => {
-  if (filter?.key?.includes('From')) {
-    const dateTo = filter?.key?.replace('From', 'To');
-    if (values?.[dateTo]) {
-      return { maxDate: new Date(values[dateTo]) };
-    }
-  }
-  if (filter?.key?.includes('To')) {
-    const dateFrom = filter?.key?.replace('To', 'From');
-    if (values?.[dateFrom]) {
-      return { minDate: new Date(values[dateFrom]) };
-    }
-  }
 };
 
 export const plantAbundanceTypeOptions = Object.keys(PlantAbundanceType);

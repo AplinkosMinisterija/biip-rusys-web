@@ -1,5 +1,7 @@
+import { DesignSystemProvider } from '@aplinkosministerija/design-system';
 import * as Sentry from '@sentry/react';
 import { useEffect } from 'react';
+import 'react-datepicker/dist/react-datepicker.css';
 import ReactDOM from 'react-dom/client';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { Provider } from 'react-redux';
@@ -50,8 +52,10 @@ root.render(
       <PersistGate persistor={persistor}>
         <BrowserRouter>
           <ThemeProvider theme={theme}>
-            <GlobalStyle />
-            <App />
+            <DesignSystemProvider>
+              <GlobalStyle />
+              <App />
+            </DesignSystemProvider>
           </ThemeProvider>
         </BrowserRouter>
       </PersistGate>
