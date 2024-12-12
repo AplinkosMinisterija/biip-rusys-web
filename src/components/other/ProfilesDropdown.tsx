@@ -109,8 +109,10 @@ const ProfilesDropdown = () => {
             variant={ButtonVariants.TEXT_ONLY}
             left={<StyledLogoutIcon name="exit" />}
             onClick={() => mutateAsync()}
+            tabIndex={0}
+            role="button"
           >
-            <Name>{buttonsTitles.logout}</Name>
+            {buttonsTitles.logout}
           </BottomRow>
         </ProfilesContainer>
       )}
