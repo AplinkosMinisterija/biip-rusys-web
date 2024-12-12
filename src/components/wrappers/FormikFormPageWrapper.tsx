@@ -3,12 +3,11 @@ import { isEmpty } from 'lodash';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { device } from '../../styles';
+import { ButtonVariants, device } from '../../styles';
 import { DeleteInfoProps } from '../../types';
 import { buttonsTitles, validationTexts } from '../../utils/texts';
 import { DeleteComponent } from '../other/DeleteComponent';
 import Icon from '../other/Icons';
-import { ButtonColors } from '../../utils/constants';
 import { Button } from '@aplinkosministerija/design-system';
 
 interface FormPageWrapperProps {
@@ -99,7 +98,7 @@ const FormPageWrapper = ({
                     <Button
                       onClick={() => navigate(url as string)}
                       left={<StyledBackIcon name="back" />}
-                      variant={ButtonColors.TRANSPARENT}
+                      variant={ButtonVariants.TRANSPARENT}
                       disabled={loading}
                     >
                       {buttonsTitles.back}
