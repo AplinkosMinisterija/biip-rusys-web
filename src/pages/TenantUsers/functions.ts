@@ -1,4 +1,4 @@
-import { TableRow } from '../../components/tables/table';
+import { TableRow } from '@aplinkosministerija/design-system';
 import { TenantUserProps } from '../../types';
 import { roleLabels } from '../../utils/texts';
 

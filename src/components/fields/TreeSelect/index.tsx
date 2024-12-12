@@ -1,12 +1,15 @@
+import {
+  CheckBox,
+  FieldWrapper,
+  MultiTextField,
+  useKeyAction,
+} from '@aplinkosministerija/design-system';
 import { isEmpty } from 'lodash';
 import { useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { SpeciesTypes } from '../../../utils/constants';
 import { inputLabels } from '../../../utils/texts';
-import TreeSelectCheckBox from '../../buttons/TreeSelectCheckBox';
 import Icon from '../../other/Icons';
-import FieldWrapper from '../components/FieldWrapper';
-import MultiTextField from '../components/MultiTextFieldInput';
 import { TaxonomyTree, TreeOption } from './functions';
 
 interface TreeProps {
@@ -40,36 +43,53 @@ const Tree = ({ treeData, values, onChange, disabled, error, label, speciesTypes
   const [treeOptions, setTreeOptions] = useState<TreeOption[]>([]);
   const [input, setInput] = useState('');
   const [showSelect, setShowSelect] = useState(false);
+  const handleOnExpandKeyDown = useKeyAction((item) => handleExpand(item), disabled);
+  const handleExpand = (item) => {
+    item.toggleExpanded();
+    setTreeOptions([...globalTreeFunctions.items]);
+  };
+
+  const handleToggle = (item) => {
+    item.toggleSelected();
+    setTreeOptions([...globalTreeFunctions.items]);
+    onChange(globalTreeFunctions.toJson());
+  };
 
   const GenerateTree = (list: TreeOption[]) => {
     const generateLeafs = list.map((item, index) => {
       return (
-        <div key={index + item.name}>
+        <div
+          key={index + item.name}
+          role="treeitem"
+          aria-expanded={!!item.items && item.expanded}
+          aria-selected={item.selected}
+        >
           <Row>
             {!!item.items && item.items.length > 0 ? (
               <IconContainer
-                onClick={() => {
-                  item.toggleExpanded();
-                  setTreeOptions([...globalTreeFunctions.items]);
-                }}
+                onClick={() => handleExpand(item)}
+                tabIndex={0}
+                role="button"
+                aria-label={`Toggle ${item.name}`}
+                onKeyDown={handleOnExpandKeyDown(item)}
               >
                 <Arrow expanded={item?.expanded} name="dropdownArrow" />
               </IconContainer>
             ) : (
               <IconContainer />
             )}
-            <StyledCheckbox
+            <CheckBox
               intermediate={item.intermediate}
               onChange={() => {
-                item.toggleSelected();
-                setTreeOptions([...globalTreeFunctions.items]);
-                onChange(globalTreeFunctions.toJson());
+                handleToggle(item);
               }}
               value={item.selected}
               label={item.name}
             />
           </Row>
-          {!!item.items && item.expanded && <CheckBoxRow>{GenerateTree(item.items)}</CheckBoxRow>}
+          {!!item.items && item.expanded && (
+            <CheckBoxRow role="group">{GenerateTree(item.items)}</CheckBoxRow>
+          )}
         </div>
       );
     });
@@ -90,7 +110,7 @@ const Tree = ({ treeData, values, onChange, disabled, error, label, speciesTypes
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [speciesTypes, globalTreeFunctions]);
 
-  const handleInputChange = (input) => {
+  const handleInputChange = (input: string) => {
     setInput(input);
     globalTreeFunctions.search(input);
     setTreeOptions([...globalTreeFunctions.items]);
@@ -140,8 +160,6 @@ const Option = styled.div`
     background: #f3f3f7 0% 0% no-repeat padding-box;
   }
 `;
-
-const StyledCheckbox = styled(TreeSelectCheckBox)``;
 
 const OptionContainer = styled.div`
   z-index: 999;

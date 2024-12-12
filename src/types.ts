@@ -61,19 +61,6 @@ export interface AuthState {
   loggedIn: boolean;
 }
 
-export type Column = {
-  label: string;
-  mobileOrder?: number;
-  desktopOrder?: number;
-  show: boolean;
-  visible?: boolean;
-  width?: TableItemWidth;
-};
-
-export type Columns = {
-  [key: string]: Column;
-};
-
 export type Taxonomy = Species | Phylum | Class | Kingdom;
 
 export type AccessTaxonomies = Taxonomy[] & {
