@@ -130,7 +130,7 @@ export const handleToggleColumns = (columns: Columns, key: string) => {
 };
 
 export const getSpeciesList = async (input: string, page: number) => {
-  return await Api.speciesSearch({ search: input, page: page.toString() });
+  return await Api.speciesSearch({ search: input, page: page?.toString() });
 };
 
 export const taxonomyOptionLabel = (taxonomy) =>
@@ -142,7 +142,7 @@ export const speciesOptionLabel = (option) =>
 export const getSourcesList = async (input: string, page: number) => {
   return await Api.getSources({
     filter: { name: input },
-    page: page.toString(),
+    page: page?.toString(),
   });
 };
 
