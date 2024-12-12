@@ -21,7 +21,7 @@ const TenantUsers = () => {
       <>
         <Row>
           <InnerRow>
-            <DynamicFilter {...filterInfo} loading={loading} />
+            <DynamicFilter {...filterInfo} />
             <ColumnButton {...columnInfo} variant={ButtonVariants.TRANSPARENT} />
           </InnerRow>
         </Row>
