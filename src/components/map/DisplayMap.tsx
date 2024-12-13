@@ -5,7 +5,7 @@ import { createSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 import Cookies from 'universal-cookie';
 import api from '../../api';
-import { device } from '../../styles';
+import { ButtonVariants, device } from '../../styles';
 import { Url } from '../../utils/constants';
 import { handleErrorFromServerToast } from '../../utils/functions';
 import Icon from '../other/Icons';
@@ -110,6 +110,7 @@ const DisplayMap = ({ height, error, places = [], fullScreen = false }: MapProps
             popup={showFullScreen}
             type="button"
             onClick={handleToggle}
+            variant={ButtonVariants.TRANSPARENT}
             aria-label={showFullScreen ? 'Exit fullscreen' : 'Enter fullscreen'}
           >
             <StyledIconContainer>
@@ -206,7 +207,9 @@ const StyledButton = styled(Button)<{ popup: boolean }>`
   z-index: 10;
   right: ${({ popup }) => (popup ? 28 : 11)}px;
   top: ${({ popup }) => (popup ? 28 : 15)}px;
-  min-width: 28px;
+  width: 28px;
+  padding: 0;
+  background-color: white;
 
   height: 28px;
   @media ${device.mobileL} {
