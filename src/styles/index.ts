@@ -13,12 +13,11 @@ export enum ButtonVariants {
   SUCCESS = 'success',
   TRANSPARENT = 'transparent',
   DANGER_OUTLINE = 'dangerOutline',
-  TEXT_ONLY = 'textOnly'
+  TEXT_ONLY = 'textOnly',
 }
 
 export const palette = {
   primary: '#FEBC1D',
-  returned: '#FEBC1D',
   secondary: '#b55007',
   tertiary: '#7A7E9F',
   danger: '#FE5B78',
@@ -26,7 +25,6 @@ export const palette = {
   success: '#4FB922',
   confirmed: '#4FB922',
   submitted: '#4FB922',
-  tertiaryLight: '#F3F3F7',
   border: '#D3D2D2',
   label: '#231F20',
   error: '#FE5B78',
@@ -34,21 +32,13 @@ export const palette = {
   grey: '#B3B5C4',
   midnightBlue: '#121926',
   mistyCloud: '#CDD5DF',
+  filterText: '#b55007',
+  filterBackground: '#fef3c6',
 };
 
 export const theme: Theme = {
   colors: {
     ...palette,
-    hover: {
-      submitted: '#4FB922',
-      confirmed: '#4FB922',
-      success: '#4FB922',
-      returned: '#FEBC1D',
-      primary: '#FEBC1D',
-      secondary: '#13C9E78F',
-      tertiary: '#7A7E9F',
-      danger: '#FE5B78E6',
-    },
     fields: {
       borderFocus: '#FEBC1D',
     },
