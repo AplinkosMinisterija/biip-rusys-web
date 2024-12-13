@@ -1,3 +1,4 @@
+import { Button } from '@aplinkosministerija/design-system';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useQuery, useQueryClient } from 'react-query';
 import { createSearchParams } from 'react-router-dom';
@@ -7,7 +8,6 @@ import api from '../../api';
 import { device } from '../../styles';
 import { Url } from '../../utils/constants';
 import { handleErrorFromServerToast } from '../../utils/functions';
-import Button from '../buttons/Button';
 import Icon from '../other/Icons';
 import LoaderComponent from '../other/LoaderComponent';
 

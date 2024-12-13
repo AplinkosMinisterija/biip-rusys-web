@@ -17,7 +17,7 @@ export interface RequestFormProps {
   receiveDate?: Date;
   exactCoordinates?: boolean;
   comment?: string;
-  geom: FeatureCollection;
+  geom?: FeatureCollection;
   speciesTypes: SpeciesTypes[];
 }
 
@@ -38,7 +38,7 @@ export interface RequestFormServerProps {
     exactCoordinates?: boolean | undefined;
     description: string | undefined;
   };
-  geom?: string | undefined;
+  geom?: FeatureCollection | undefined;
   type: RequestTypes | undefined;
 }
 

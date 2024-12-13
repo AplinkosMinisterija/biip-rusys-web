@@ -130,7 +130,7 @@ export const useData = () => {
     type: request?.type || RequestTypes.GET,
     status: undefined,
     comment: '',
-    geom: request?.geom || '',
+    geom: request?.geom || undefined,
     speciesTypes: request?.speciesTypes || [SpeciesTypes.ENDANGERED],
   };
 

@@ -1,3 +1,4 @@
+import { FeatureCollection } from '@aplinkosministerija/design-system';
 import {
   AnimalActivity,
   AnimalEvolutionState,
@@ -239,7 +240,7 @@ export interface Request {
   error?: string;
   history: FormHistory[];
   canEdit: boolean;
-  geom?: string;
+  geom?: FeatureCollection;
   speciesTypes?: SpeciesTypes[];
 }
 

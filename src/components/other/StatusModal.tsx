@@ -1,6 +1,6 @@
 import { Button, Modal, TextAreaField, useKeyAction } from '@aplinkosministerija/design-system';
 import styled from 'styled-components';
-import { device } from '../../styles';
+import { ButtonVariants, device } from '../../styles';
 import { ButtonColors, StatusTypes } from '../../utils/constants';
 import { buttonsTitles, inputLabels } from '../../utils/texts';
 import Icon from './Icons';
@@ -19,10 +19,10 @@ export const actionButtonLabels = {
 };
 
 export const buttonColors = {
-  [StatusTypes.SUBMITTED]: ButtonColors.PRIMARY,
-  [StatusTypes.APPROVED]: ButtonColors.SUCCESS,
-  [StatusTypes.RETURNED]: ButtonColors.PRIMARY,
-  [StatusTypes.REJECTED]: ButtonColors.DANGER,
+  [StatusTypes.SUBMITTED]: ButtonVariants.PRIMARY,
+  [StatusTypes.APPROVED]: ButtonVariants.SUCCESS,
+  [StatusTypes.RETURNED]: ButtonVariants.PRIMARY,
+  [StatusTypes.REJECTED]: ButtonVariants.DANGER,
 };
 
 export const StatusModal = ({ handleChange, values, labels }: StatusModalProps) => {
