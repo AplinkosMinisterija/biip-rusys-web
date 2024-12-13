@@ -125,7 +125,9 @@ const TenantUserForm = () => {
                   name="personalCode"
                   value={values.personalCode}
                   error={errors.personalCode}
-                  onChange={(code) => handleChange('personalCode', code.replace(/\s/g, ''))}
+                  onChange={(code) =>
+                    handleChange('personalCode', code?.toString().replace(/\s/g, ''))
+                  }
                 />
               )}
               <PhoneField

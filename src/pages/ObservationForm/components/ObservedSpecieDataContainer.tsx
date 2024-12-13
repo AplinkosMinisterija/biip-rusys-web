@@ -1,3 +1,4 @@
+import { NumericTextField, TextAreaField } from '@aplinkosministerija/design-system';
 import { isEmpty, isEqual } from 'lodash';
 import { MeasurementUnit } from '../../../components/other/MeasurmentUnit';
 import { Column, IndividualsContainer, StyledSingleCheckBox } from '../styles';
@@ -7,7 +8,6 @@ import { FormTypes, MeasurementUnits } from './../../../utils/constants';
 import { formLabels, inputLabels } from './../../../utils/texts';
 import { SpecieActivity } from './SpecieActivity';
 import { TransectInfoFields } from './TransectInfoFields';
-import { NumericTextField, TextAreaField } from '@aplinkosministerija/design-system';
 
 export const ObservedSpecieDataContainer = ({
   values,
@@ -51,8 +51,8 @@ export const ObservedSpecieDataContainer = ({
               right={<MeasurementUnit unit={inputLabels.quantity} />}
               error={errors.quantity}
               name={'quantity'}
-              onChange={(e: string) => {
-                handleChange('quantity', e);
+              onChange={(quantity: number) => {
+                handleChange('quantity', quantity?.toString());
               }}
             />
             {hasTransect && (

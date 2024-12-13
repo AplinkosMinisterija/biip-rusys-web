@@ -1,3 +1,4 @@
+import { NumericTextField, SelectField, TextField } from '@aplinkosministerija/design-system';
 import { isEmpty, isEqual } from 'lodash';
 import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
@@ -31,7 +32,6 @@ import {
   plantEvolutionStateLabels,
   shortMeasurementUnitsLabels,
 } from './../../../utils/texts';
-import { NumericTextField, SelectField, TextField } from '@aplinkosministerija/design-system';
 
 export const SpecieActivity = ({
   values,
@@ -190,8 +190,8 @@ export const SpecieActivity = ({
                   )
                 }
                 error={errors?.methodValue}
-                onChange={(e) => {
-                  handleChange('methodValue', e);
+                onChange={(methodValue:number) => {
+                  handleChange('methodValue', methodValue?.toString());
                 }}
               />
             )}
