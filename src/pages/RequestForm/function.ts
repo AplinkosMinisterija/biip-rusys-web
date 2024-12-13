@@ -57,18 +57,18 @@ export const getFormTypes = (isTenantUser: boolean) => {
   return formTypes;
 };
 
-export const getMapQueryString = (disabled = false) => {
-  const queryString = `?`;
+export const getMapPath = (disabled = false) => {
   const param = new URLSearchParams();
+  let path = '/edit';
 
   if (disabled) {
     param.append('preview', 'true');
-    return queryString + param;
+  } else {
+    param.append('types[]', 'polygon');
+    param.append('multi', 'true');
   }
 
-  param.append('types[]', 'polygon');
-  param.append('multi', 'true');
-  return queryString + param;
+  return `${path}?${param}`;
 };
 
 export const getScope = (isDeletedRequest: boolean) => (isDeletedRequest ? 'deleted' : '');

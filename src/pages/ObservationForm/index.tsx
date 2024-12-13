@@ -1,6 +1,6 @@
-import { AsyncSelectField } from '@aplinkosministerija/design-system';
-import DrawMap from '../../components/map/DrawMap';
+import { AsyncSelectField, MapField } from '@aplinkosministerija/design-system';
 import { StatusModal } from '../../components/other/StatusModal';
+import { mapsHost, Url } from '../../utils/constants';
 import Api from './../../api';
 import FormHistoryContainer from './../../components/containers/FormHistoryContainer';
 import SimpleContainer from './../../components/containers/SimpleContainer';
@@ -72,11 +72,12 @@ const ObservationForm = () => {
             setValues={setValues}
           />
           <SimpleContainer title={formLabels.map}>
-            <DrawMap
+            <MapField
+              mapHost={mapsHost}
               value={values?.geom}
-              queryString={mapQueryString}
+              mapPath={mapQueryString}
               error={errors?.geom}
-              onSave={(data) => handleChange('geom', data)}
+              onChange={(data) => handleChange('geom', data)}
               height={'300px'}
             />
           </SimpleContainer>

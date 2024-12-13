@@ -223,7 +223,7 @@ export enum SpeciesTypes {
   INVASIVE = 'INVASIVE',
 }
 
-const mapsHost = import.meta.env.VITE_MAPS_HOST;
+export const mapsHost = import.meta.env.VITE_MAPS_HOST;
 export const Url = {
   DRAW: `${mapsHost}/edit`,
   SPECIES: `${mapsHost}/rusys`,

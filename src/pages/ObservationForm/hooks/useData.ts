@@ -7,7 +7,7 @@ import {
   deleteDescriptionSecondPart,
   deleteTitles,
 } from '../../../utils/texts';
-import { getMapQueryString } from '../functions';
+import { getMapPath } from '../functions';
 import { FormProps, FormServerProps } from '../types';
 import { default as api, default as Api } from './../../../api';
 import { StatusTypes } from './../../../utils/constants';
@@ -50,7 +50,7 @@ export const useData = () => {
   };
 
   const disabled = !!observationForm && !observationForm?.canEdit;
-  const mapQueryString = getMapQueryString(disabled);
+  const mapQueryString = getMapPath(disabled);
 
   const formMutation = useMutation(
     (values: FormServerProps) =>

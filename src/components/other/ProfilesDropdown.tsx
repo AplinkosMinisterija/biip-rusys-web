@@ -1,15 +1,15 @@
+import { Button, useKeyAction } from '@aplinkosministerija/design-system';
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { useAppSelector } from '../../state/hooks';
+import { ButtonVariants } from '../../styles';
 import { handleNavigate } from '../../utils/functions';
 import { useFilteredRoutes, useGetCurrentProfile, useLogoutMutation } from '../../utils/hooks';
 import { handleSelectProfile } from '../../utils/loginFunctions';
 import { slugs } from '../../utils/routes';
 import { buttonsTitles, inputLabels } from '../../utils/texts';
 import Icon from './Icons';
-import { Button, useKeyAction } from '@aplinkosministerija/design-system';
-import { ButtonVariants } from '../../styles';
 
 export const slugToIcon = {
   [slugs.requests]: 'description',
@@ -48,8 +48,10 @@ const ProfilesDropdown = () => {
         onClick={() => setShowSelect(!showSelect)}
         onKeyDown={handleKeyDownOnDropdownSelect(!showSelect)}
         tabIndex={0}
-        aria-label={`Open profile select dropdown`}
+        aria-label="Open profile select dropdown"
         role="button"
+        aria-haspopup="menu"
+        aria-expanded={showSelect}
       >
         <SelectWrapper>
           <SelectContainer>
@@ -60,8 +62,8 @@ const ProfilesDropdown = () => {
         </SelectWrapper>
       </Select>
       {showSelect && (
-        <ProfilesContainer>
-          <Profiles>{inputLabels.profiles}</Profiles>
+        <ProfilesContainer role="menu" aria-label="Profile selection">
+          <Profiles id="profiles-label">{inputLabels.profiles}</Profiles>
 
           {user?.profiles?.map((profile, index) => {
             const selected = profile.id === currentProfile?.id;
@@ -70,16 +72,15 @@ const ProfilesDropdown = () => {
               <ProfileContainer
                 key={`profile-${index}`}
                 tabIndex={0}
-                role="button"
-                onKeyDown={handleKeyDown(profile.id)}
-                onClick={() => {
-                  handleSelectProfile(profile.id);
-                }}
+                role="menuitem"
                 selected={selected}
-                aria-label={`Select profile ${(profile?.name, profile?.email || user?.email)}`}
+                aria-selected={selected}
+                aria-labelledby={`profile-${index}-name`}
+                onKeyDown={handleKeyDown(profile.id)}
+                onClick={() => handleSelectProfile(profile.id)}
               >
                 <div>
-                  <Name>{profile?.name || '-'}</Name>
+                  <Name id={`profile-${index}-name`}>{profile?.name || '-'}</Name>
                   <Email>{profile?.email || user?.email}</Email>
                 </div>
                 {selected && <SelectedIcon name="active" />}
@@ -95,7 +96,8 @@ const ProfilesDropdown = () => {
                 onClick={() => navigateOnTabSelect(route.slug)}
                 selected={location.pathname.endsWith(route.slug)}
                 tabIndex={0}
-                role="button"
+                role="menuitem"
+                aria-current={location.pathname.endsWith(route.slug) ? 'page' : undefined}
                 onKeyDown={handleKeyDownOnTab(route.slug)}
               >
                 <TabIconContainer>
@@ -110,7 +112,8 @@ const ProfilesDropdown = () => {
             left={<StyledLogoutIcon name="exit" />}
             onClick={() => mutateAsync()}
             tabIndex={0}
-            role="button"
+            role="menuitem"
+            aria-label="Log out"
           >
             {buttonsTitles.logout}
           </BottomRow>

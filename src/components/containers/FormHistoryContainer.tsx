@@ -3,10 +3,10 @@ import { useEffect, useRef } from 'react';
 import { useInfiniteQuery } from 'react-query';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import { device } from '../../styles';
+import { ButtonVariants, device } from '../../styles';
 import { FormHistory } from '../../types';
 import { intersectionObserverConfig } from '../../utils/configs';
-import { ButtonColors, HistoryTypes } from '../../utils/constants';
+import { HistoryTypes } from '../../utils/constants';
 import { formatDateAndTime } from '../../utils/format';
 import { handleErrorFromServerToast } from '../../utils/functions';
 import { formLabels } from '../../utils/texts';
@@ -20,13 +20,13 @@ interface FormHistoryContainerProps {
   name: string;
 }
 type HistoryContainerColorsType = {
-  [key in HistoryTypes]: ButtonColors | null;
+  [key in HistoryTypes]: ButtonVariants | null;
 };
 
 const historyContainerColors: HistoryContainerColorsType = {
-  [HistoryTypes.APPROVED]: ButtonColors.SUCCESS,
-  [HistoryTypes.RETURNED]: ButtonColors.PRIMARY,
-  [HistoryTypes.REJECTED]: ButtonColors.DANGER,
+  [HistoryTypes.APPROVED]: ButtonVariants.SUCCESS,
+  [HistoryTypes.RETURNED]: ButtonVariants.PRIMARY,
+  [HistoryTypes.REJECTED]: ButtonVariants.DANGER,
   [HistoryTypes.CREATED]: null,
   [HistoryTypes.UPDATED]: null,
   [HistoryTypes.DELETED]: null,
@@ -151,7 +151,7 @@ const Container = styled.div`
   }
 `;
 
-const IMG = styled.img<{ variant: ButtonColors }>`
+const IMG = styled.img<{ variant: ButtonVariants }>`
   width: 16px;
   height: 16px;
   background-color: ${({ theme, variant }) => theme.colors[variant]};
