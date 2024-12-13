@@ -1,3 +1,4 @@
+import { ButtonsGroup, NumericTextField } from '@aplinkosministerija/design-system';
 import { isEmpty } from 'lodash';
 import styled from 'styled-components';
 import { MeasurementUnit } from '../../../components/other/MeasurmentUnit';
@@ -9,7 +10,6 @@ import {
   measurementUnitsLabels,
   shortMeasurementUnitsLabels,
 } from './../../../utils/texts';
-import { ButtonsGroup, NumericTextField } from '@aplinkosministerija/design-system';
 
 export const TransectInfoFields = ({
   disabled,
@@ -40,8 +40,8 @@ export const TransectInfoFields = ({
         right={<MeasurementUnit unit={shortMeasurementUnitsLabels[unit]} />}
         error={errors?.height}
         name={'height'}
-        onChange={(height) => {
-          handleChange('transect.height', height);
+        onChange={(height: number) => {
+          handleChange('transect.height', height?.toString());
         }}
       />
       <NumericTextField
@@ -51,8 +51,8 @@ export const TransectInfoFields = ({
         right={<MeasurementUnit unit={shortMeasurementUnitsLabels[unit]} />}
         error={errors?.width}
         name={'width'}
-        onChange={(width) => {
-          handleChange('transect.width', width);
+        onChange={(width: number) => {
+          handleChange('transect.width', width?.toString());
         }}
       />
     </UnitContainer>
