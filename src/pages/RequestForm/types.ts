@@ -38,7 +38,7 @@ export interface RequestFormServerProps {
     exactCoordinates?: boolean | undefined;
     description: string | undefined;
   };
-  geom?: FeatureCollection | undefined;
+  geom?: FeatureCollection;
   type: RequestTypes | undefined;
 }
 
