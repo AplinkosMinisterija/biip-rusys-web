@@ -125,7 +125,10 @@ export const useData = () => {
     quantity: observationForm?.quantity?.toString() || '',
     method: observationForm?.method || '',
     methodValue: observationForm?.methodValue || '',
-    transect: observationForm?.transect || undefined,
+    transect:
+      observationForm?.transect && Object.keys(observationForm?.transect).length
+        ? observationForm?.transect
+        : undefined,
     description: observationForm?.description || '',
     observedAt: observationForm?.observedAt || new Date(),
     photos: observationForm?.photos || [],
