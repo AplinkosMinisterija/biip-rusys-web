@@ -1,3 +1,4 @@
+import { isEmpty } from 'lodash';
 import { useMutation, useQuery } from 'react-query';
 import { useNavigate, useParams } from 'react-router-dom';
 import { DeleteInfoProps } from '../../../types';
@@ -28,6 +29,9 @@ export const useData = () => {
       refetchOnWindowFocus: false,
     },
   );
+
+  const getTransectValue = () =>
+    !isEmpty(observationForm?.transect) ? observationForm?.transect : undefined;
 
   const deleteForm = useMutation(() => api.deleteObservationForm(id), {
     onError: () => {
@@ -89,14 +93,6 @@ export const useData = () => {
       transect,
     } = values;
 
-    const getTransectValue = () => {
-      if (isNew(id)) {
-        return transect;
-      }
-
-      return transect || null;
-    };
-
     const params: FormServerProps = {
       quantity,
       species: species?.speciesId,
@@ -111,7 +107,7 @@ export const useData = () => {
       photos,
       evolution,
       activity,
-      transect: getTransectValue(),
+      transect,
     };
 
     return await formMutation.mutateAsync(params);
@@ -125,10 +121,7 @@ export const useData = () => {
     quantity: observationForm?.quantity?.toString() || '',
     method: observationForm?.method || '',
     methodValue: observationForm?.methodValue || '',
-    transect:
-      observationForm?.transect && Object.keys(observationForm?.transect).length
-        ? observationForm?.transect
-        : undefined,
+    transect: getTransectValue(),
     description: observationForm?.description || '',
     observedAt: observationForm?.observedAt || new Date(),
     photos: observationForm?.photos || [],
