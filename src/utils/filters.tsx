@@ -22,6 +22,8 @@ export const mapMyObservationFilters = (filters: FormFilters): FormFiltersProps 
         $in: filters.species.map((specie) => specie.speciesId),
       });
 
+    filters?.noQuantityReason?.id && (params.noQuantityReason = filters.noQuantityReason.id);
+
     filters?.method && (params.method = filters?.method?.id);
     filters?.activity && (params.activity = filters?.activity?.id);
     filters?.evolution && (params.evolution = filters?.evolution?.id);

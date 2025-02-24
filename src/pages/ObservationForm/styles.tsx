@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { device } from './../../styles';
-import { CheckBox } from '@aplinkosministerija/design-system';
+import { CheckBox, RadioOptions } from '@aplinkosministerija/design-system';
 
 export const Column = styled.div`
   display: flex;
@@ -19,9 +19,10 @@ export const Row = styled.div`
 
 export const IndividualsContainer = styled.div`
   display: flex;
-  gap: 16px;
-  padding-bottom: 0;
-  @media ${device.mobileL} {
+  column-gap: 16px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+  @media ${device.mobileXL} {
     flex-direction: column;
   }
 `;
@@ -30,5 +31,12 @@ export const StyledSingleCheckBox = styled(CheckBox)`
   margin-top: 35px;
   @media ${device.mobileL} {
     margin-top: 0;
+  }
+`;
+
+export const StyledRadioOptions = styled(RadioOptions)`
+  margin-top: -2px;
+  label {
+    padding-right: 1px;
   }
 `;

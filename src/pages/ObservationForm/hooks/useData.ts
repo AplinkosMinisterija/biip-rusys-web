@@ -91,6 +91,7 @@ export const useData = () => {
       evolution,
       activity,
       transect,
+      noQuantityReason,
     } = values;
 
     const params: FormServerProps = {
@@ -108,6 +109,7 @@ export const useData = () => {
       evolution,
       activity,
       transect,
+      noQuantityReason,
     };
 
     return await formMutation.mutateAsync(params);
@@ -130,6 +132,7 @@ export const useData = () => {
     isCorrectFormInformation: disabled,
     evolution: observationForm?.evolution,
     activity: observationForm?.activity,
+    noQuantityReason: observationForm?.noQuantityReason,
   };
 
   return {

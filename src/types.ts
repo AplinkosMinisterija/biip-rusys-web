@@ -12,7 +12,6 @@ import {
   RolesTypes,
   SpeciesTypes,
   StatusTypes,
-  TableItemWidth,
   TaxonomyOptions,
 } from './utils/constants';
 
@@ -134,6 +133,11 @@ export interface SpeciesSearchProp {
   taxonomy: SpeciesSearchProp;
 }
 
+export enum FormNoQuantityReason {
+  CLEANUP = 'CLEANUP',
+  RESEARCH = 'RESEARCH',
+}
+
 export interface ListResultProps<T> {
   rows?: T[];
   totalPages?: number;
@@ -215,6 +219,7 @@ export interface Form {
   observedAt: Date;
   evolution?: AnimalEvolutionState | PlantEvolutionState;
   activity?: AnimalActivity;
+  noQuantityReason?: FormNoQuantityReason;
 }
 
 export interface Request {
@@ -305,6 +310,8 @@ export interface FormFilters {
   dateTo?: string;
   state?: { id: StatusTypes; label: string }[];
   status?: { id: FormStatusTypes; label: string }[];
+  noQuantityReason?: { id: FormNoQuantityReason; label: string };
+
   createdBy?: User;
   species?: SpeciesSearchProp[];
   source?: Sources;
@@ -325,4 +332,5 @@ export interface FormFiltersProps {
   source?: string;
   eunis?: string;
   activity?: string;
+  noQuantityReason?: FormNoQuantityReason;
 }

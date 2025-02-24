@@ -5,6 +5,7 @@ import {
   AnimalActivity,
   FormTypes,
   MammalMethodType,
+  PlantAbundanceType,
   RequestTypes,
   SpeciesTypes,
 } from './constants';
@@ -12,6 +13,7 @@ import {
 import { phoneNumberRegexPattern } from '@aplinkosministerija/design-system';
 import { isEqual } from 'lodash';
 import { availablePhotoMimeTypes } from '../components/fields/PhotoUploadField';
+import { getIsInvasivePlant } from '../pages/ObservationForm/functions';
 import { Species } from '../types';
 
 export const availableMimeTypes = ['image/png', 'image/jpg', 'image/jpeg', 'application/pdf'];
@@ -45,6 +47,26 @@ export const validateForm = Yup.object().shape(
       .nullable(),
 
     description: Yup.string().required(validationTexts.requireText).nullable(),
+    noQuantityReason: Yup.string().when(['species', 'quantity', 'method'], {
+      is: (species: Species, quantity: string, method: string) => {
+        const isInvasiveFormType = [
+          FormTypes.INVASIVE_CRUSTACEAN,
+          FormTypes.INVASIVE_FISH,
+          FormTypes.INVASIVE,
+          FormTypes.INVASIVE_MOLLUSK,
+          FormTypes.INVASIVE_MAMMAL,
+          FormTypes.INVASIVE_PLANT,
+        ].includes(species?.formType);
+
+        const validateNoQuantityReasonField =
+          getIsInvasivePlant(species) && isInvasiveFormType
+            ? method === PlantAbundanceType.VALUE_0
+            : parseInt(quantity) === 0;
+
+        return validateNoQuantityReasonField;
+      },
+      then: Yup.string().required(validationTexts.requireSelect).nullable(),
+    }),
     geom: Yup.object().required(validationTexts.requireMap).nullable(),
     observedBy: Yup.string().required(validationTexts.requireText).nullable(),
     observedAt: Yup.date().required(validationTexts.requireSelect).nullable(),
