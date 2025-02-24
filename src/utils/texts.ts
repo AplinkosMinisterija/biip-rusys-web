@@ -1,3 +1,4 @@
+import { FormNoQuantityReason } from '../types';
 import {
   AnimalActivity,
   AnimalEvolutionState,
@@ -53,6 +54,7 @@ export const formFiltersLabels = {
   species: 'Rūšis',
   users: 'Pateikė',
   type: 'Tipas',
+  noQuantityReason: 'Gausumo nebuvimo priežastis',
 };
 
 export const userFilterLabels = {
@@ -619,6 +621,7 @@ export const mammalMethodTypeLabels = {
 };
 
 export const plantAbundanceTypeLabels = {
+  [PlantAbundanceType.VALUE_0]: '0 - nerasta ne vieno individo.',
   [PlantAbundanceType.VALUE_1]:
     '1 - pasitaiko tik pavienių individų, jie užima 0,1% buveinės ploto.',
   [PlantAbundanceType.VALUE_2]:
@@ -639,4 +642,9 @@ export const plantAbundanceTypeLabels = {
     '9 - augalai sudaro didelius sąžalynus ir užima nuo 60% iki 80% buveinės ploto.',
   [PlantAbundanceType.VALUE_10]:
     '10 - augalai sudaro beveik ištisinį sąžalyną ir užima daugiau kaip 80% buveinės ploto.',
+};
+
+export const formNoQuantityReasonLabels = {
+  [FormNoQuantityReason.CLEANUP]: 'Invazinė rūšis išnaikinta',
+  [FormNoQuantityReason.RESEARCH]: 'Buvo vykdomas tyrimas',
 };

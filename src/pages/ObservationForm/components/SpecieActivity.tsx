@@ -11,7 +11,14 @@ import {
   molluskMethodTypeOptions,
   plantAbundanceTypeOptions,
 } from '../../../utils/functions';
-import { getAnimalActivityOptions, getAnimalEvolutionOptions, setPlaceholder } from '../functions';
+import {
+  getAnimalActivityOptions,
+  getAnimalEvolutionOptions,
+  getShowNoQuantityReasonField,
+  setPlaceholder,
+} from '../functions';
+import { noQuantityOptions } from '../options';
+import { StyledRadioOptions } from '../styles';
 import { SpecieActivityProps } from '../types';
 import {
   FormTypes,
@@ -146,9 +153,22 @@ export const SpecieActivity = ({
   };
   if (!values.species) return <></>;
 
+  const isInvasiveFormType =
+    formType &&
+    [
+      FormTypes.INVASIVE_CRUSTACEAN,
+      FormTypes.INVASIVE_FISH,
+      FormTypes.INVASIVE,
+      FormTypes.INVASIVE_MOLLUSK,
+      FormTypes.INVASIVE_MAMMAL,
+      FormTypes.INVASIVE_PLANT,
+    ].includes(formType);
+
+  const showNoQuantityReasonField = getShowNoQuantityReasonField(isInvasiveFormType, values);
+
   if (hasMethod)
     return (
-      <Row repeat={isInvasivePlant ? '1' : '2'}>
+      <Row repeat={!showNoQuantityReasonField && isInvasivePlant ? '1' : '2'}>
         <SelectField
           disabled={disabled}
           label={isInvasivePlant ? inputLabels.abundance : inputLabels.method}
@@ -158,10 +178,21 @@ export const SpecieActivity = ({
           onChange={(e) => {
             handleChange('method', e);
             handleChange('methodValue', '');
+            handleChange('noQuantityReason', undefined);
           }}
           options={method[formType]}
           getOptionLabel={(e: string) => methodLabels[formType][e]}
         />
+        {showNoQuantityReasonField && (
+          <StyledRadioOptions
+            value={values.noQuantityReason}
+            disabled={disabled}
+            label={' '}
+            options={noQuantityOptions}
+            error={errors.noQuantityReason}
+            onChange={(option) => handleChange('noQuantityReason', option)}
+          />
+        )}
         {showMethodValue && (
           <>
             {isOtherMethod ? (
@@ -190,7 +221,7 @@ export const SpecieActivity = ({
                   )
                 }
                 error={errors?.methodValue}
-                onChange={(methodValue:number) => {
+                onChange={(methodValue: number) => {
                   handleChange('methodValue', methodValue?.toString());
                 }}
               />

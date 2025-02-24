@@ -1,6 +1,7 @@
 import { FilterInputTypes } from '@aplinkosministerija/design-system';
 import { User } from '../types';
 import {
+  getNoQuantityOptions,
   getObservationFormStatusTypes,
   getRequestStatusTypes,
   getRequestTypes,
@@ -64,6 +65,13 @@ export const myObservationFilterConfig = {
     optionLabel: (option) => speciesOptionLabel(option),
     getOptionValue: (option) => option?.speciesId,
   },
+  noQuantityReason: {
+    label: formFiltersLabels.noQuantityReason,
+    key: 'noQuantityReason',
+    optionLabel: (option) => option?.label,
+    inputType: FilterInputTypes.singleSelect,
+    options: getNoQuantityOptions(),
+  },
 };
 
 export const observationFilterConfig = (users: User[] = []) => ({
@@ -87,6 +95,7 @@ export const observationRowConfig = [
   ['method'],
   ['evolution'],
   ['activity'],
+  ['noQuantityReason'],
 ];
 
 export const deletedRequestFilterConfig = {

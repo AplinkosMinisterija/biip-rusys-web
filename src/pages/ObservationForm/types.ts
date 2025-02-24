@@ -1,4 +1,10 @@
-import { HandleChangeType, Sources, SpeciesSearchProp, Transect } from './../../types';
+import {
+  FormNoQuantityReason,
+  HandleChangeType,
+  Sources,
+  SpeciesSearchProp,
+  Transect,
+} from './../../types';
 import {
   AnimalActivity,
   AnimalEvolutionState,
@@ -23,6 +29,7 @@ export interface FormProps {
   comment?: string;
   evolution?: AnimalEvolutionState | PlantEvolutionState;
   activity?: AnimalActivity;
+  noQuantityReason?: FormNoQuantityReason;
 }
 
 export interface FormServerProps {
@@ -40,6 +47,7 @@ export interface FormServerProps {
   comment?: string;
   evolution?: AnimalEvolutionState | PlantEvolutionState;
   activity: AnimalActivity | undefined;
+  noQuantityReason?: FormNoQuantityReason;
 }
 
 export interface SpecieActivityProps {

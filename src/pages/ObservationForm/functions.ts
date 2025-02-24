@@ -3,6 +3,7 @@ import {
   AnimalActivity,
   AnimalEvolutionState,
   FormTypes,
+  PlantAbundanceType,
   PlantEvolutionState,
 } from './../../utils/constants';
 import { isNew } from './../../utils/functions';
@@ -64,4 +65,11 @@ export const getMapPath = (disabled = false) => {
   }
 
   return `${path}?${param}`;
+};
+
+export const getShowNoQuantityReasonField = (isInvasiveFormType, values) => {
+  return (
+    isInvasiveFormType &&
+    (parseInt(values?.quantity) === 0 || values.method === PlantAbundanceType.VALUE_0)
+  );
 };

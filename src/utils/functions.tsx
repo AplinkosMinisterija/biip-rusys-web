@@ -3,7 +3,7 @@ import { map } from 'lodash';
 import { NavigateFunction } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import Api from '../api';
-import { Profile, Tenant, User } from '../types';
+import { FormNoQuantityReason, Profile, Tenant, User } from '../types';
 import {
   CrustaceanMethodType,
   FishMethodType,
@@ -17,6 +17,7 @@ import {
   TaxonomyOptions,
 } from './constants';
 import {
+  formNoQuantityReasonLabels,
   observationFormStatusLabels,
   requestStatusLabels,
   requestTypeLabels,
@@ -68,6 +69,12 @@ export const getObservationFormStatusTypes = () =>
   map(StatusTypes, (Status) => ({
     id: Status,
     label: observationFormStatusLabels[Status],
+  }));
+
+export const getNoQuantityOptions = () =>
+  map(FormNoQuantityReason, (Status) => ({
+    id: Status,
+    label: formNoQuantityReasonLabels[Status],
   }));
 
 export const getRequestStatusTypes = () =>
