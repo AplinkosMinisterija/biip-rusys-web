@@ -55,7 +55,7 @@ export const validateForm = Yup.object().shape(
           FormTypes.INVASIVE_MOLLUSK,
           FormTypes.INVASIVE_MAMMAL,
           FormTypes.INVASIVE_PLANT,
-        ].includes(species.formType);
+        ].includes(species?.formType);
 
         const validateNoQuantityReasonField =
           isInvasiveFormType && (parseInt(quantity) === 0 || method === PlantAbundanceType.VALUE_0);
