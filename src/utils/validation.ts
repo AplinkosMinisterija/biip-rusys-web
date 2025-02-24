@@ -13,6 +13,7 @@ import {
 import { phoneNumberRegexPattern } from '@aplinkosministerija/design-system';
 import { isEqual } from 'lodash';
 import { availablePhotoMimeTypes } from '../components/fields/PhotoUploadField';
+import { getIsInvasivePlant } from '../pages/ObservationForm/functions';
 import { Species } from '../types';
 
 export const availableMimeTypes = ['image/png', 'image/jpg', 'image/jpeg', 'application/pdf'];
@@ -58,7 +59,9 @@ export const validateForm = Yup.object().shape(
         ].includes(species?.formType);
 
         const validateNoQuantityReasonField =
-          isInvasiveFormType && (parseInt(quantity) === 0 || method === PlantAbundanceType.VALUE_0);
+          getIsInvasivePlant(species) && isInvasiveFormType
+            ? method === PlantAbundanceType.VALUE_0
+            : parseInt(quantity) === 0;
 
         return validateNoQuantityReasonField;
       },

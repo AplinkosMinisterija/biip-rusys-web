@@ -54,7 +54,6 @@ export const ObservedSpecieDataContainer = ({
 
   const showNoQuantityReasonField = getShowNoQuantityReasonField(isInvasiveFormType, values);
 
-
   return (
     <SimpleContainer title={formLabels.informationAboutObservedSpecieIndividuals}>
       <Column>
