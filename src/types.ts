@@ -8,6 +8,7 @@ import {
   KingdomTypes,
   MeasurementUnits,
   PlantEvolutionState,
+  RequestDocumentType,
   RequestTypes,
   RolesTypes,
   SpeciesTypes,
@@ -247,6 +248,7 @@ export interface Request {
   canEdit: boolean;
   geom?: FeatureCollection;
   speciesTypes?: SpeciesTypes[];
+  documentTypes?: RequestDocumentType[];
 }
 
 export interface FormHistory {

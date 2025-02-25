@@ -34,6 +34,7 @@ export const palette = {
   mistyCloud: '#CDD5DF',
   filterText: '#b55007',
   filterBackground: '#fef3c6',
+  amberYellow: '#FEBC1D1F',
 };
 
 export const theme: Theme = {

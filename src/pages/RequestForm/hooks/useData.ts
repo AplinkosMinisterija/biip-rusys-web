@@ -84,6 +84,7 @@ export const useData = () => {
       receiveDate,
       exactCoordinates,
       accessDate,
+      documentTypes,
       speciesTypes,
     } = values;
 
@@ -98,6 +99,7 @@ export const useData = () => {
       }),
       files,
       speciesTypes,
+      documentTypes,
       comment,
       notifyEmail,
       data: {
@@ -132,6 +134,7 @@ export const useData = () => {
     comment: '',
     geom: request?.geom || undefined,
     speciesTypes: request?.speciesTypes || [SpeciesTypes.ENDANGERED],
+    documentTypes: request?.documentTypes || [],
   };
 
   const showFileComponent =

@@ -1,51 +1,83 @@
 import styled from 'styled-components';
-import * as Texts from '../../utils/texts';
+import { buttonsTitles } from '../../utils/texts';
 import Icon from './Icons';
 
-export interface FileDownloadContainerProps {
-  url: string;
-  showFileName?: boolean;
+export interface FileDownloadProps {
+  url?: string;
+  fileName?: string;
+  onDownload?: () => void;
+  downloadButtonTitle?: string;
 }
 
-const FileDownloadContainer = ({ url, showFileName }: FileDownloadContainerProps) => {
-  if (url) {
-    return (
-      <>
-        {showFileName && <FileName>{url.replace(/^.*[\\/]/, '')}</FileName>}
+const FilesToDownload = ({ onDownload, url, fileName, downloadButtonTitle }: FileDownloadProps) => {
+  if (!onDownload && !url) return <></>;
 
-        <Container
-          onClick={(e) => {
-            e.stopPropagation();
-          }}
-        >
-          <DownloadContainer target={'_blank'} href={url} download>
-            {Texts.buttonsTitles.download}
+  return (
+    <Container
+      onClick={(e) => {
+        e.stopPropagation();
+      }}
+    >
+      {onDownload ? (
+        <DownloadButton onClick={onDownload}>
+          {fileName && <FileName>{fileName}</FileName>}
+          <InnerContainer>
+            {downloadButtonTitle || buttonsTitles.downLoad}
             <StyledIcon name={'download'} />
-          </DownloadContainer>
-        </Container>
-      </>
-    );
-  } else {
-    return null;
-  }
+          </InnerContainer>
+        </DownloadButton>
+      ) : (
+        <DownloadContainer target={'_blank'} href={url} download>
+          {fileName && <FileName>{fileName}</FileName>}
+          <InnerContainer>
+            {downloadButtonTitle || buttonsTitles.downLoad}
+            <StyledIcon name={'download'} />
+          </InnerContainer>
+        </DownloadContainer>
+      )}
+    </Container>
+  );
 };
 
 const Container = styled.div`
-  cursor: pointer;
   font-size: 1.6rem;
 `;
 
+const InnerContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+`;
+
 const FileName = styled.div`
-  max-width: 200px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  margin-right: 20px;
+`;
+
+const DownloadButton = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding: 0;
+  width: 100%;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  color: inherit;
+  text-decoration: none;
+  &:hover {
+    opacity: 50%;
+  }
 `;
 
 const DownloadContainer = styled.a`
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
+  padding: 0;
+  width: 100%;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
   color: inherit;
   text-decoration: none;
   &:hover {
@@ -58,4 +90,4 @@ const StyledIcon = styled(Icon)`
   font-weight: 900;
 `;
 
-export default FileDownloadContainer;
+export default FilesToDownload;

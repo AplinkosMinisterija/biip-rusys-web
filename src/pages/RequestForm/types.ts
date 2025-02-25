@@ -1,6 +1,11 @@
 import { FeatureCollection } from '@aplinkosministerija/design-system';
 import { FileProps, FormHistory, HandleChangeType } from '../../types';
-import { RequestTypes, SpeciesTypes, StatusTypes } from '../../utils/constants';
+import {
+  RequestDocumentType,
+  RequestTypes,
+  SpeciesTypes,
+  StatusTypes,
+} from '../../utils/constants';
 
 export interface RequestFormProps {
   notifyEmail?: string;
@@ -19,6 +24,7 @@ export interface RequestFormProps {
   comment?: string;
   geom?: FeatureCollection;
   speciesTypes: SpeciesTypes[];
+  documentTypes: RequestDocumentType[];
 }
 
 export interface RequestFormServerProps {
