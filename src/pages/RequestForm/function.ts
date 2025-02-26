@@ -72,3 +72,8 @@ export const getMapPath = (disabled = false) => {
 };
 
 export const getScope = (isDeletedRequest: boolean) => (isDeletedRequest ? 'deleted' : '');
+
+export const getFileName = (id: string) => {
+  const amountOfCharacters = 7;
+  return String(id).padStart(amountOfCharacters, '0');
+};

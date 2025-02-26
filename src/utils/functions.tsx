@@ -10,6 +10,7 @@ import {
   MammalMethodType,
   MolluskMethodType,
   PlantAbundanceType,
+  RequestDocumentType,
   RequestTypes,
   RolesTypes,
   SpeciesTypes,
@@ -64,6 +65,7 @@ export const bytesToMb = (bytes: number) => {
 };
 
 export const getSpeciesTypes = () => map(SpeciesTypes, (type) => type);
+export const getRequestDocumentTypes = () => map(RequestDocumentType, (status) => status);
 
 export const getObservationFormStatusTypes = () =>
   map(StatusTypes, (Status) => ({

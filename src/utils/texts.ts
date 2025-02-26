@@ -11,6 +11,7 @@ import {
   MushroomEvolutionState,
   PlantAbundanceType,
   PlantEvolutionState,
+  RequestDocumentType,
   RequestTypes,
   RolesTypes,
   ServerErrors,
@@ -219,6 +220,8 @@ export const menuLabels = {
 export const buttonsTitles = {
   download: 'Atsisiųsti',
   returnToLogin: 'Grįžti į prisijungimo langą',
+  downLoadGeoJson: 'Atsisiųsti GeoJSON',
+  downLoad: 'Atsisiųsti PDF',
   or: 'Arba',
   eLogin: 'Prisijungti per el. valdžios vartus',
   fillOutRequest: 'Pildyti prašymą',
@@ -275,7 +278,7 @@ export const formLabels = {
   name: 'Pavadinimas',
   description: 'Aprašymas',
   gallery: 'Galerija',
-
+  documentNo: 'Išrašas Nr.',
   directives: 'Direktyvos',
   mainPhoto: 'Pagrindinė nuotrauka',
   scientificClassification: 'Mokslinė klasifikacija',
@@ -289,6 +292,7 @@ export const formLabels = {
   additionalInfo: 'Papildoma informacija',
   contactInfo: 'Prašymo teikėjo kontaktinė informacija',
   documents: 'Dokumentai',
+  selectExcerptFormat: 'Pasirinkite išrašo formatą',
 };
 
 export const inputLabels = {
@@ -518,6 +522,7 @@ export const validationTexts = {
   photoNotUploaded: 'Nuotrauka neįkelta',
   requirePhotos: 'Privalote įkelti nuotrauką',
   requireSpeciesType: 'Privalote pasirinkti bent vieną rūšių tipą',
+  selectAtLeastOne: 'Privalote pasirinkti bent vieną',
   requireText: 'Privalomas laukelis',
   requireSelect: 'Privalote pasirinkti',
   badEmailFormat: 'Blogas el. pašto adresas',
@@ -647,4 +652,9 @@ export const plantAbundanceTypeLabels = {
 export const formNoQuantityReasonLabels = {
   [FormNoQuantityReason.CLEANUP]: 'Invazinė rūšis išnaikinta',
   [FormNoQuantityReason.RESEARCH]: 'Buvo vykdomas tyrimas',
+};
+
+export const documentTypeLabels = {
+  [RequestDocumentType.GEOJSON]: 'GeoJSON formatas',
+  [RequestDocumentType.PDF]: 'PDF formatas',
 };

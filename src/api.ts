@@ -523,6 +523,11 @@ class Api {
       pageSize,
     });
 
+  getGeoJson = async (id: string) =>
+    await this.getOne({
+      resource: `${Resources.REQUESTS}/${id}/geojson`,
+    });
+
   getMapToken = async () =>
     await this.getOne({
       resource: Resources.MAPS_AUTH,

@@ -224,6 +224,11 @@ export enum SpeciesTypes {
   INVASIVE = 'INVASIVE',
 }
 
+export enum RequestDocumentType {
+  PDF = 'PDF',
+  GEOJSON = 'GEOJSON',
+}
+
 export const mapsHost = import.meta.env.VITE_MAPS_HOST;
 export const Url = {
   DRAW: `${mapsHost}/edit`,

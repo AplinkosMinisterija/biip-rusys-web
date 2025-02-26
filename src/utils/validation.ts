@@ -187,6 +187,12 @@ export const validateRequestForm = Yup.object().shape({
     .required(validationTexts.requireText)
     .nullable(),
   taxonomies: Yup.array().min(1, validationTexts.requireSelect).nullable(),
+  documentTypes: Yup.array().when('type', {
+    is: (type) => {
+      return type.includes(RequestTypes.GET_ONCE);
+    },
+    then: Yup.array().min(1, validationTexts.selectAtLeastOne).nullable(),
+  }),
   description: Yup.string().required(validationTexts.requireText).nullable(),
   isCorrectFormInformation: Yup.boolean()
     .required(validationTexts.requireSelect)
