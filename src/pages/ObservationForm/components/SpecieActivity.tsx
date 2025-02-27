@@ -183,7 +183,7 @@ export const SpecieActivity = ({
           options={method[formType]}
           getOptionLabel={(e: string) => methodLabels[formType][e]}
         />
-        {showNoQuantityReasonField && (
+        {isInvasivePlant && showNoQuantityReasonField && (
           <StyledRadioOptions
             value={values.noQuantityReason}
             disabled={disabled}

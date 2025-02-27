@@ -70,7 +70,7 @@ export const getMapPath = (disabled = false) => {
 export const getIsInvasivePlant = (species) => isEqual(FormTypes.INVASIVE_PLANT, species?.formType);
 
 export const getShowNoQuantityReasonField = (isInvasiveFormType, values) => {
-  return getIsInvasivePlant(values?.species) && isInvasiveFormType
+  return getIsInvasivePlant(values?.species)
     ? values.method === PlantAbundanceType.VALUE_0
-    : parseInt(values?.quantity) === 0;
+    : isInvasiveFormType && parseInt(values?.quantity) === 0;
 };

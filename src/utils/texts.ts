@@ -626,7 +626,7 @@ export const mammalMethodTypeLabels = {
 };
 
 export const plantAbundanceTypeLabels = {
-  [PlantAbundanceType.VALUE_0]: '0 - nerasta ne vieno individo.',
+  [PlantAbundanceType.VALUE_0]: '0 - nerasta nė vieno individo.',
   [PlantAbundanceType.VALUE_1]:
     '1 - pasitaiko tik pavienių individų, jie užima 0,1% buveinės ploto.',
   [PlantAbundanceType.VALUE_2]:
