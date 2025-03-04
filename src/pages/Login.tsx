@@ -10,12 +10,7 @@ import { useEGatesSign, useUserInfo } from '../utils/hooks';
 import { handleUpdateTokens } from '../utils/loginFunctions';
 import { buttonsTitles, inputLabels, validationTexts } from '../utils/texts';
 import { loginSchema } from '../utils/validation';
-import {
-  CheckBox,
-  PasswordField,
-  Button,
-  TextField
-} from '@aplinkosministerija/design-system';
+import { CheckBox, PasswordField, Button, TextField } from '@aplinkosministerija/design-system';
 
 interface LoginProps {
   email: string;

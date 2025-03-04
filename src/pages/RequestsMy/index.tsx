@@ -32,7 +32,7 @@ const RequestsMy = () => {
         <TabBar tabs={tabs} activeTabValue={activeTabValue} />
         <Row>
           <InnerRow>
-            <DynamicFilter {...filterInfo}  />
+            <DynamicFilter {...filterInfo} />
             <ColumnButton {...columnInfo} variant={ButtonVariants.TRANSPARENT} />
           </InnerRow>
         </Row>

@@ -42,8 +42,8 @@ const Container = styled.div<{ selected: boolean; disabled: boolean }>`
   border-radius: 8px;
   padding: 20px;
   border-color: ${({ theme, selected }) => (selected ? theme.colors.primary : theme.colors.border)};
-    &:hover {
-      opacity: ${({ disabled }) => (disabled ? 0.48 : 0.6)};
+  &:hover {
+    opacity: ${({ disabled }) => (disabled ? 0.48 : 0.6)};
   }
 `;
 

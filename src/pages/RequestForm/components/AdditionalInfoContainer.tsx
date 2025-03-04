@@ -1,4 +1,8 @@
-import { CheckBox, DragAndDropUploadField, TextAreaField } from '@aplinkosministerija/design-system';
+import {
+  CheckBox,
+  DragAndDropUploadField,
+  TextAreaField,
+} from '@aplinkosministerija/design-system';
 import Api from '../../../api';
 import SimpleContainer from '../../../components/containers/SimpleContainer';
 import { Resources, SpeciesTypes } from '../../../utils/constants';
