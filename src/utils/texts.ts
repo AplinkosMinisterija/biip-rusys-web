@@ -303,7 +303,7 @@ export const inputLabels = {
   respondentsNumber: 'Respondentų skaičius',
   daysNumber: 'Dienų skaičius',
   daysNumberTrapsNumber: 'Dienų skaičius * Spąstų skaičius',
-  drivenDistance: 'Nuvažiuotas astumas',
+  drivenDistance: 'Nuvažiuotas atstumas',
   specifyOtherMethod: 'Nurodykite kitą metodą',
   noData: 'Nėra duomenų',
   chooseOption: 'Pasirinkite',
