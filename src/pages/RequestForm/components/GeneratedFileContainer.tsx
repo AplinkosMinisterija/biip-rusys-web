@@ -6,21 +6,19 @@ import { RequestDocumentType } from '../../../utils/constants';
 import { buttonsTitles, formLabels, inputLabels } from '../../../utils/texts';
 
 export const GeneratedFileComponent = ({
-  generatedFile,
-  onDownloadGeoJson,
-  loadingGeoJson,
+  generatedFilePdf,
+  generatedFileGeojson,
   fileName,
   documentTypes,
 }: {
-  generatedFile?: string;
+  generatedFilePdf?: string;
+  generatedFileGeojson?: string;
   fileName?: string;
-  onDownloadGeoJson?: () => void;
-  loadingGeoJson?: boolean;
   documentTypes: RequestDocumentType[];
 }) => {
-  const renderLoader = () => (
+  const renderLoader = ({ loadingLabel }) => (
     <Container>
-      <Loader size={30} /> {inputLabels.generating}
+      <Loader size={30} /> {loadingLabel}
     </Container>
   );
 
@@ -29,8 +27,9 @@ export const GeneratedFileComponent = ({
     onDownload?: () => void,
     loading?: boolean,
     title?: string,
+    loadingLabel?: string,
   ) => {
-    if (loading) return renderLoader();
+    if (loading) return renderLoader({ loadingLabel });
 
     return (
       <InnerContainer>
@@ -48,14 +47,20 @@ export const GeneratedFileComponent = ({
     <SimpleContainer title={formLabels.documents}>
       <FileContainer>
         {documentTypes.includes(RequestDocumentType.PDF) &&
-          renderFileDownload(generatedFile, undefined, !generatedFile)}
-        {documentTypes.includes(RequestDocumentType.GEOJSON) &&
-          onDownloadGeoJson &&
           renderFileDownload(
+            generatedFilePdf,
             undefined,
-            onDownloadGeoJson,
-            loadingGeoJson,
+            !generatedFilePdf,
+            '',
+            inputLabels.pdfGenerating,
+          )}
+        {documentTypes.includes(RequestDocumentType.GEOJSON) &&
+          renderFileDownload(
+            generatedFileGeojson,
+            undefined,
+            !generatedFileGeojson,
             buttonsTitles.downLoadGeoJson,
+            inputLabels.geojsonGenerating,
           )}
       </FileContainer>
     </SimpleContainer>

@@ -121,6 +121,7 @@ export const useData = () => {
     notifyEmail: request?.notifyEmail || currentProfile?.email || userEmail || '',
     files: request?.files || [],
     generatedFile: request?.generatedFile || '',
+    generatedFileGeojson: request?.generatedFileGeojson || '',
     taxonomies: request?.taxonomies || [],
     description: request?.data?.description || '',
     isCorrectFormInformation: disabled,

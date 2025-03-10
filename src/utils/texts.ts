@@ -298,6 +298,8 @@ export const formLabels = {
 export const inputLabels = {
   area: 'Plotas',
   generating: 'Išrašas kuriamas',
+  pdfGenerating: 'PDF išrašas kuriamas',
+  geojsonGenerating: 'GeoJSON išrašas kuriamas',
   method: 'Metodas',
   abundance: 'Gausumas',
   respondentsNumber: 'Respondentų skaičius',

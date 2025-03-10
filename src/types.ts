@@ -225,6 +225,7 @@ export interface Form {
 
 export interface Request {
   notifyEmail: string;
+  generatedFileGeojson: string;
   id: string;
   status: StatusTypes;
   generatedFile: string;
