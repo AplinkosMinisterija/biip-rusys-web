@@ -10,6 +10,7 @@ import {
 export interface RequestFormProps {
   notifyEmail?: string;
   taxonomies?: any[];
+  generatedFileGeojson: string;
   files: FileProps[];
   generatedFile: string;
   description?: string;

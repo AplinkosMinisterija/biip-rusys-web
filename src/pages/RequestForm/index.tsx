@@ -25,7 +25,6 @@ import { GeneratedFileComponent } from './components/GeneratedFileContainer';
 import SpeciesTaxonomiesContainer from './components/TaxonomiesContainer';
 import { getFileName } from './function';
 import { useData } from './hooks/useData';
-import { useGeoJson } from './hooks/useGeojson';
 import { RequestFormProps } from './types';
 
 const RequestForm = () => {
@@ -39,7 +38,6 @@ const RequestForm = () => {
     showFileComponent,
     handleSubmit,
   } = useData();
-  const { requestGeoJson, isLoadingGeoJson } = useGeoJson(id);
   const fileName = getFileName(id);
 
   const renderForm = (values: RequestFormProps, errors: any, handleChange: any) => {
@@ -108,9 +106,8 @@ const RequestForm = () => {
           <ColumnTwo>
             {showFileComponent && (
               <GeneratedFileComponent
-                onDownloadGeoJson={requestGeoJson}
-                loadingGeoJson={isLoadingGeoJson}
-                generatedFile={values.generatedFile}
+                generatedFilePdf={values.generatedFile}
+                generatedFileGeojson={values.generatedFileGeojson}
                 documentTypes={values.documentTypes}
                 fileName={`${formLabels.documentNo}${fileName}`}
               />
