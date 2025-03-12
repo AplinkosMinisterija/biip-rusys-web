@@ -42,3 +42,14 @@ export const Grid = styled.div<{ column?: number }>`
     grid-template-columns: repeat(1, 1fr);
   }
 `;
+
+export const FlexEndRow = styled.div`
+  display: flex;
+  gap: 18px;
+  justify-content: flex-end;
+  width: 100%;
+  @media ${device.mobileL} {
+    gap: 0px;
+    flex-direction: column;
+  }
+`;
