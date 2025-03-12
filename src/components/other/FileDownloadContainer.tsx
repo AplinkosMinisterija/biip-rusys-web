@@ -22,7 +22,7 @@ const FilesToDownload = ({ onDownload, url, fileName, downloadButtonTitle }: Fil
         <DownloadButton onClick={onDownload}>
           {fileName && <FileName>{fileName}</FileName>}
           <InnerContainer>
-            {downloadButtonTitle || buttonsTitles.downLoad}
+            {downloadButtonTitle || buttonsTitles.downloadPDF}
             <StyledIcon name={'download'} />
           </InnerContainer>
         </DownloadButton>
@@ -30,7 +30,7 @@ const FilesToDownload = ({ onDownload, url, fileName, downloadButtonTitle }: Fil
         <DownloadContainer target={'_blank'} href={url} download>
           {fileName && <FileName>{fileName}</FileName>}
           <InnerContainer>
-            {downloadButtonTitle || buttonsTitles.downLoad}
+            {downloadButtonTitle || buttonsTitles.downloadPDF}
             <StyledIcon name={'download'} />
           </InnerContainer>
         </DownloadContainer>

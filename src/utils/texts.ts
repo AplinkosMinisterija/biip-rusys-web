@@ -139,11 +139,16 @@ export const commonRequestsLabels = {
     desktopOrder: 5,
     show: true,
   },
-
   generatedFile: {
     label: '',
     mobileOrder: 7,
     desktopOrder: 7,
+    show: true,
+  },
+  generatedFileGeojson: {
+    label: '',
+    mobileOrder: 8,
+    desktopOrder: 8,
     show: true,
   },
 };
@@ -219,9 +224,10 @@ export const menuLabels = {
 };
 export const buttonsTitles = {
   download: 'Atsisiųsti',
+  downloadGeoJson: 'Atsisiųsti GeoJSON',
   returnToLogin: 'Grįžti į prisijungimo langą',
   downLoadGeoJson: 'Atsisiųsti GeoJSON',
-  downLoad: 'Atsisiųsti PDF',
+  downloadPDF: 'Atsisiųsti PDF',
   or: 'Arba',
   eLogin: 'Prisijungti per el. valdžios vartus',
   fillOutRequest: 'Pildyti prašymą',

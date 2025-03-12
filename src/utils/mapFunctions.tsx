@@ -6,7 +6,12 @@ import { Form, Request } from '../types';
 import { colorsByStatus } from './constants';
 import { formatDate } from './format';
 import { canShowResponseDate } from './functions';
-import { observationFormStatusLabels, requestStatusLabels, requestTypeLabels } from './texts';
+import {
+  buttonsTitles,
+  observationFormStatusLabels,
+  requestStatusLabels,
+  requestTypeLabels,
+} from './texts';
 
 const mapObservationItem = (form: Form) => {
   return {
@@ -57,6 +62,12 @@ const mapRequestItem = (request: Request) => {
       canShowResponseDate(request?.status) &&
       formatDate(new Date(request.respondedAt)),
     generatedFile: <FileDownloadContainer url={request.generatedFile} />,
+    generatedFileGeojson: (
+      <FileDownloadContainer
+        downloadButtonTitle={buttonsTitles.downloadGeoJson}
+        url={request.generatedFileGeojson}
+      />
+    ),
   };
 };
 
