@@ -2,6 +2,7 @@ import { TableRow } from '@aplinkosministerija/design-system';
 import TableItem from '../components/fields/TableItem';
 import TableStatusRowItem from '../components/fields/TableStatusRowItem';
 import FileDownloadContainer from '../components/other/FileDownloadContainer';
+import { getDownloadUrl, getFileName } from '../pages/RequestForm/function';
 import { FlexEndRow } from '../styles/GenericStyledComponents';
 import { Form, Request } from '../types';
 import { colorsByStatus } from './constants';
@@ -64,10 +65,12 @@ const mapRequestItem = (request: Request) => {
       formatDate(new Date(request.respondedAt)),
     generatedFiles: (
       <FlexEndRow>
-        <FileDownloadContainer url={request.generatedFile} />
+        <FileDownloadContainer
+          url={getDownloadUrl(request.generatedFile, getFileName(request.id), 'pdf')}
+        />
         <FileDownloadContainer
           downloadButtonTitle={buttonsTitles.downloadGeoJson}
-          url={request.generatedFileGeojson}
+          url={getDownloadUrl(request?.generatedFileGeojson, getFileName(request.id), 'geojson')}
         />
       </FlexEndRow>
     ),
