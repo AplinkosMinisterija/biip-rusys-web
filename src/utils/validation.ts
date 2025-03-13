@@ -47,25 +47,27 @@ export const validateForm = Yup.object().shape(
       .nullable(),
 
     description: Yup.string().required(validationTexts.requireText).nullable(),
-    noQuantityReason: Yup.string().when(['species', 'quantity', 'method'], {
-      is: (species: Species, quantity: string, method: string) => {
-        const isInvasiveFormType = [
-          FormTypes.INVASIVE_CRUSTACEAN,
-          FormTypes.INVASIVE_FISH,
-          FormTypes.INVASIVE,
-          FormTypes.INVASIVE_MOLLUSK,
-          FormTypes.INVASIVE_MAMMAL,
-          FormTypes.INVASIVE_PLANT,
-        ].includes(species?.formType);
+    noQuantityReason: Yup.string()
+      .when(['species', 'quantity', 'method'], {
+        is: (species: Species, quantity: string, method: string) => {
+          const isInvasiveFormType = [
+            FormTypes.INVASIVE_CRUSTACEAN,
+            FormTypes.INVASIVE_FISH,
+            FormTypes.INVASIVE,
+            FormTypes.INVASIVE_MOLLUSK,
+            FormTypes.INVASIVE_MAMMAL,
+            FormTypes.INVASIVE_PLANT,
+          ].includes(species?.formType);
 
-        const validateNoQuantityReasonField = getIsInvasivePlant(species)
-          ? method === PlantAbundanceType.VALUE_0
-          : isInvasiveFormType && parseInt(quantity) === 0;
+          const validateNoQuantityReasonField = getIsInvasivePlant(species)
+            ? method === PlantAbundanceType.VALUE_0
+            : isInvasiveFormType && parseInt(quantity) === 0;
 
-        return validateNoQuantityReasonField;
-      },
-      then: Yup.string().required(validationTexts.requireSelect).nullable(),
-    }),
+          return validateNoQuantityReasonField;
+        },
+        then: Yup.string().required(validationTexts.requireSelect).nullable(),
+      })
+      .nullable(),
     geom: Yup.object().required(validationTexts.requireMap).nullable(),
     observedBy: Yup.string().required(validationTexts.requireText).nullable(),
     observedAt: Yup.date().required(validationTexts.requireSelect).nullable(),
