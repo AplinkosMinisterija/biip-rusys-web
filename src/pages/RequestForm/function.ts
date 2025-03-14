@@ -6,6 +6,7 @@ import {
   deleteDescriptionFirstPart,
   deleteDescriptionSecondPart,
   deleteTitles,
+  formLabels,
 } from '../../utils/texts';
 
 export const getDeleteInfo = (
@@ -75,5 +76,17 @@ export const getScope = (isDeletedRequest: boolean) => (isDeletedRequest ? 'dele
 
 export const getFileName = (id: string) => {
   const amountOfCharacters = 7;
-  return String(id).padStart(amountOfCharacters, '0');
+
+  return `${formLabels.documentNo}${String(id).padStart(amountOfCharacters, '0')}`;
+};
+
+
+export const getDownloadUrl = (url?: string, fileName?: string, extension?: string): string => {
+  if (!url || !fileName || !extension) return '';
+
+  return `${url}?download=${encodeURIComponent(removeDiacritics(fileName))}.${extension}`;
+};
+
+const removeDiacritics = (str: string): string => {
+  return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 };
