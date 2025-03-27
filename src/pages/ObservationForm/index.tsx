@@ -73,6 +73,7 @@ const ObservationForm = () => {
           />
           <SimpleContainer title={formLabels.map}>
             <MapField
+              allow="geolocation *"
               mapHost={mapsHost}
               value={values?.geom}
               mapPath={mapQueryString}
