@@ -43,6 +43,7 @@ const SpeciesTaxonomiesContainer = ({
           )}
           {!isEqual(values.type, RequestTypes.CHECK) && (
             <MapField
+              allow="geolocation *"
               mapHost={mapsHost}
               value={values?.geom}
               mapPath={mapPath}
