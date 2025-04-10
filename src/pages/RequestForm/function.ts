@@ -31,7 +31,7 @@ export const getDeleteInfo = (
 export const getFormTypes = (isTenantUser: boolean) => {
   const formTypes = [
     {
-      title: 'Gauti išrašą',
+      title: 'Gauti išrašą/Atsisiųsti duomenis',
       description:
         'Suteikiama galimybė gauti išrašą apie jums priklausančioje teritorijoje esančias saugomas/invazines rūšis.',
       value: RequestTypes.GET_ONCE,
