@@ -56,7 +56,7 @@ export const getAnimalEvolutionOptions = (activity?: AnimalActivity) =>
 
 export const getMapPath = (disabled = false) => {
   const param = new URLSearchParams();
-  let path = '/edit';
+  const path = '/edit';
 
   if (disabled) {
     param.append('preview', 'true');

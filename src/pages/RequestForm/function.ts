@@ -31,7 +31,7 @@ export const getDeleteInfo = (
 export const getFormTypes = (isTenantUser: boolean) => {
   const formTypes = [
     {
-      title: 'Gauti išrašą',
+      title: 'Gauti išrašą/Atsisiųsti duomenis',
       description:
         'Suteikiama galimybė gauti išrašą apie jums priklausančioje teritorijoje esančias saugomas/invazines rūšis.',
       value: RequestTypes.GET_ONCE,
@@ -60,7 +60,7 @@ export const getFormTypes = (isTenantUser: boolean) => {
 
 export const getMapPath = (disabled = false) => {
   const param = new URLSearchParams();
-  let path = '/edit';
+  const path = '/edit';
 
   if (disabled) {
     param.append('preview', 'true');
@@ -79,7 +79,6 @@ export const getFileName = (id: string) => {
 
   return `${formLabels.documentNo}${String(id).padStart(amountOfCharacters, '0')}`;
 };
-
 
 export const getDownloadUrl = (url?: string, fileName?: string, extension?: string): string => {
   if (!url || !fileName || !extension) return '';
