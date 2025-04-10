@@ -60,7 +60,7 @@ export const getFormTypes = (isTenantUser: boolean) => {
 
 export const getMapPath = (disabled = false) => {
   const param = new URLSearchParams();
-  let path = '/edit';
+  const path = '/edit';
 
   if (disabled) {
     param.append('preview', 'true');
@@ -80,11 +80,15 @@ export const getFileName = (id: string) => {
   return `${formLabels.documentNo}${String(id).padStart(amountOfCharacters, '0')}`;
 };
 
-
 export const getDownloadUrl = (url?: string, fileName?: string, extension?: string): string => {
   if (!url || !fileName || !extension) return '';
 
-  return `${url}?download=${encodeURIComponent(removeDiacritics(fileName))}.${extension}`;
+  return `${url}?download=${encodeURIComponent(
+    removeDiacritics(fileName)
+      .replace(/[.\s]+/g, '-')
+      .toLowerCase()
+      .replace(/[^\w-]/g, ''),
+  )}.${extension}`;
 };
 
 const removeDiacritics = (str: string): string => {
