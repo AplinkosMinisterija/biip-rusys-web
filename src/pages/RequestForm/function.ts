@@ -83,7 +83,12 @@ export const getFileName = (id: string) => {
 export const getDownloadUrl = (url?: string, fileName?: string, extension?: string): string => {
   if (!url || !fileName || !extension) return '';
 
-  return `${url}?download=${encodeURIComponent(removeDiacritics(fileName))}.${extension}`;
+  return `${url}?download=${encodeURIComponent(
+    removeDiacritics(fileName)
+      .replace(/[.\s]+/g, '-')
+      .toLowerCase()
+      .replace(/[^\w-]/g, ''),
+  )}.${extension}`;
 };
 
 const removeDiacritics = (str: string): string => {
