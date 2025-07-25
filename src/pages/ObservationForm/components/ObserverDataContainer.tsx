@@ -53,6 +53,10 @@ export const ObserverDataContainer = ({
             getOptionLabel={(option) => option?.name}
             loadOptions={(input, page) => getSourcesList(input, page)}
             ariaLabelRemove="Pašalinti šaltinį"
+            texts={{
+              resultsCount: (count) => `${count} šaltiniai`,
+              noOptions: 'Nėra rūšių pasirinkimų',
+            }}
           />
         </Row>
         <CheckBox
