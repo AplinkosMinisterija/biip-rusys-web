@@ -1,4 +1,9 @@
-import { AsyncSelectField, CheckBox, DatePicker, TextField } from '@aplinkosministerija/design-system';
+import {
+  AsyncSelectField,
+  CheckBox,
+  DatePicker,
+  TextField,
+} from '@aplinkosministerija/design-system';
 import { Column, Row } from '../styles';
 import { ObserverDataContainerProps } from '../types';
 import SimpleContainer from './../../../components/containers/SimpleContainer';
@@ -26,6 +31,7 @@ export const ObserverDataContainer = ({
             maxDate={new Date()}
             name={'observedAt'}
             onChange={(observedAt?: Date) => handleChange('observedAt', observedAt)}
+            ariaLabelRemove="Pašalinti datą"
           />
           <TextField
             disabled={disabled}
@@ -46,6 +52,7 @@ export const ObserverDataContainer = ({
             }}
             getOptionLabel={(option) => option?.name}
             loadOptions={(input, page) => getSourcesList(input, page)}
+            ariaLabelRemove="Pašalinti šaltinį"
           />
         </Row>
         <CheckBox

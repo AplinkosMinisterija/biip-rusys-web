@@ -31,7 +31,6 @@ const Tree = ({ treeData, values, onChange, disabled, error, label, speciesTypes
     };
 
     return new TaxonomyTree(data);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [treeData]);
 
   const handleBlur = (event: any) => {
@@ -44,6 +43,7 @@ const Tree = ({ treeData, values, onChange, disabled, error, label, speciesTypes
   const [input, setInput] = useState('');
   const [showSelect, setShowSelect] = useState(false);
   const handleOnExpandKeyDown = useKeyAction((item) => handleExpand(item), disabled);
+
   const handleExpand = (item) => {
     item.toggleExpanded();
     setTreeOptions([...globalTreeFunctions.items]);
@@ -56,21 +56,31 @@ const Tree = ({ treeData, values, onChange, disabled, error, label, speciesTypes
   };
 
   const GenerateTree = (list: TreeOption[]) => {
-    const generateLeafs = list.map((item, index) => {
+    return list.map((item, index) => {
+      const optionId = `tree-option-${item.name.replace(/\s+/g, '-').toLowerCase()}-${index}`;
       return (
         <div
-          key={index + item.name}
+          key={optionId}
           role="treeitem"
+          id={optionId}
           aria-expanded={!!item.items && item.expanded}
           aria-selected={item.selected}
+          tabIndex={0}
+          aria-label={item.name}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              item.items?.length ? handleExpand(item) : handleToggle(item);
+            }
+          }}
         >
           <Row>
-            {!!item.items && item.items.length > 0 ? (
+            {!!item.items?.length ? (
               <IconContainer
-                onClick={() => handleExpand(item)}
-                tabIndex={0}
                 role="button"
-                aria-label={`Toggle ${item.name}`}
+                tabIndex={0}
+                aria-label={`Išskleisti arba suskleisti ${item.name}`}
+                onClick={() => handleExpand(item)}
                 onKeyDown={handleOnExpandKeyDown(item)}
               >
                 <Arrow expanded={item?.expanded} name="dropdownArrow" />
@@ -80,9 +90,7 @@ const Tree = ({ treeData, values, onChange, disabled, error, label, speciesTypes
             )}
             <CheckBox
               intermediate={item.intermediate}
-              onChange={() => {
-                handleToggle(item);
-              }}
+              onChange={() => handleToggle(item)}
               value={item.selected}
               label={item.name}
             />
@@ -93,8 +101,6 @@ const Tree = ({ treeData, values, onChange, disabled, error, label, speciesTypes
         </div>
       );
     });
-
-    return generateLeafs;
   };
 
   useEffect(() => {
@@ -107,7 +113,6 @@ const Tree = ({ treeData, values, onChange, disabled, error, label, speciesTypes
     }
     setTreeOptions([...globalTreeFunctions.items]);
     onChange(globalTreeFunctions.toJson());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [speciesTypes, globalTreeFunctions]);
 
   const handleInputChange = (input: string) => {
@@ -136,10 +141,20 @@ const Tree = ({ treeData, values, onChange, disabled, error, label, speciesTypes
           onChange(globalTreeFunctions.toJson());
         }}
         getOptionLabel={(value) => value?.name}
+        aria-expanded={showSelect}
+        aria-controls="tree-options"
+        aria-autocomplete="list"
+        role="combobox"
       />
 
       {showSelect && (
-        <OptionContainer onClick={(e) => e.stopPropagation()}>
+        <OptionContainer
+          onClick={(e) => e.stopPropagation()}
+          id="tree-options"
+          role="tree"
+          aria-label="Galimi medžio pasirinkimai"
+          aria-live="polite"
+        >
           {!isEmpty(treeOptions) ? (
             GenerateTree(treeOptions)
           ) : (
@@ -190,7 +205,7 @@ const CheckBoxRow = styled.div`
 const Arrow = styled(Icon)<{ disabled?: boolean; expanded?: boolean }>`
   font-size: 2.4rem;
   cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
-  transform: ${({ expanded }) => !expanded && `rotate(-90deg)`};
+  transform: ${({ expanded }) => (!expanded ? 'rotate(-90deg)' : 'none')};
 `;
 
 export default Tree;

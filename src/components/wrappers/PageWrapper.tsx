@@ -44,7 +44,7 @@ const Container = styled.div`
   flex-direction: column;
 `;
 
-const Title = styled.div`
+const Title = styled.h1`
   font-size: 3.2rem;
   font-weight: bold;
   letter-spacing: 0px;

@@ -1,3 +1,4 @@
+import { Button } from '@aplinkosministerija/design-system';
 import { Form, Formik, yupToFormErrors } from 'formik';
 import { isEmpty } from 'lodash';
 import { useState } from 'react';
@@ -8,7 +9,6 @@ import { DeleteInfoProps } from '../../types';
 import { buttonsTitles, validationTexts } from '../../utils/texts';
 import { DeleteComponent } from '../other/DeleteComponent';
 import Icon from '../other/Icons';
-import { Button } from '@aplinkosministerija/design-system';
 
 interface FormPageWrapperProps {
   renderForm: (
@@ -97,7 +97,11 @@ const FormPageWrapper = ({
                   {back && (
                     <Button
                       onClick={() => navigate(url as string)}
-                      left={<StyledBackIcon name="back" />}
+                      left={
+                        <IconContainer tabIndex={0} aria-label="Grįžti atgal ikonėlė">
+                          <StyledBackIcon name="back" />
+                        </IconContainer>
+                      }
                       variant={ButtonVariants.TRANSPARENT}
                       disabled={loading}
                     >
@@ -133,6 +137,17 @@ const FormPageWrapper = ({
   );
 };
 
+const IconContainer = styled.div`
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  &:focus {
+    outline: 1px solid ${({ theme }) => theme.colors.primary};
+  }
+`;
+
 const Container = styled.div`
   flex-basis: 1200px;
   margin-bottom: 120px;
@@ -147,7 +162,7 @@ const ButtonContainer = styled.div`
   gap: 12px;
 `;
 
-const Title = styled.div`
+const Title = styled.h1`
   font-size: 3.2rem;
   font-weight: bold;
   color: #121926;
