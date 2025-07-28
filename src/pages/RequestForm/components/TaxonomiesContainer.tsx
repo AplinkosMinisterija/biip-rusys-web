@@ -53,7 +53,7 @@ const SpeciesTaxonomiesContainer = ({
               }}
               height={'300px'}
               accessibilityDescription="Interaktyvus žemėlapis objektų žymėjimui. Žemėlapis nėra visiškai prieinamas naudotojams su regėjimo negalia."
-              accessibilityContact="Dėl žemėlapio duomenų prieinamumo, kreipkitės: pagalba@am.lt"
+              accessibilityContact="Dėl žemėlapio duomenų prieinamumo, kreipkitės: sris@vstt.lt"
             />
           )}
         </Container>
