@@ -52,7 +52,7 @@ const Label = styled.div`
 
 const BottomLabel = styled.div`
   font-size: 1.2rem;
-  color: #697586;
+  color: #4b5565;
   opacity: 1;
   line-height: 12px;
 `;
