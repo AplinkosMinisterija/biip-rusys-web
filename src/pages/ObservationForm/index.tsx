@@ -61,6 +61,7 @@ const ObservationForm = () => {
                 handleUpdateSpecie(species);
               }}
               getOptionLabel={(option) => speciesOptionLabel(option)}
+              getOptionId={(option) => option?.speciesId}
               loadOptions={(input, page) => getSpeciesList(input, page)}
               ariaLabelRemove="Pašalinti"
               texts={{
