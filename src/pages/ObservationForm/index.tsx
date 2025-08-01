@@ -1,6 +1,6 @@
 import { AsyncSelectField, MapField } from '@aplinkosministerija/design-system';
 import { StatusModal } from '../../components/other/StatusModal';
-import { mapsHost, Url } from '../../utils/constants';
+import { mapsHost } from '../../utils/constants';
 import Api from './../../api';
 import FormHistoryContainer from './../../components/containers/FormHistoryContainer';
 import SimpleContainer from './../../components/containers/SimpleContainer';
@@ -61,7 +61,13 @@ const ObservationForm = () => {
                 handleUpdateSpecie(species);
               }}
               getOptionLabel={(option) => speciesOptionLabel(option)}
+              getOptionId={(option) => option?.speciesId}
               loadOptions={(input, page) => getSpeciesList(input, page)}
+              ariaLabelRemove="Pašalinti"
+              texts={{
+                resultsCount: (count) => `${count} Rūšys`,
+                noOptions: 'Nėra rūšių pasirinkimų',
+              }}
             />
           </SimpleContainer>
           <ObservedSpecieDataContainer
@@ -80,6 +86,8 @@ const ObservationForm = () => {
               error={errors?.geom}
               onChange={(data) => handleChange('geom', data)}
               height={'300px'}
+              accessibilityDescription="Interaktyvus žemėlapis objektų žymėjimui. Žemėlapis nėra visiškai prieinamas naudotojams su regėjimo negalia."
+              accessibilityContact="Dėl žemėlapio duomenų prieinamumo, kreipkitės: sris@vstt.lt"
             />
           </SimpleContainer>
           <PhotoContainer
