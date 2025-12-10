@@ -61,6 +61,7 @@ export const getMapPath = (disabled = false) => {
   if (disabled) {
     param.append('preview', 'true');
   } else {
+    param.append('showArea', 'true');
     param.append('buffer', 'true');
   }
 
