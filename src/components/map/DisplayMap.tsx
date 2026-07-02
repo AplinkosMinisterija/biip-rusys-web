@@ -123,8 +123,6 @@ const DisplayMap = ({
             </StyledIconContainer>
           </StyledButton>
 
-          {fullUrl.toString()}
-
           <StyledIframe
             allow="geolocation *"
             title="Radaviečių žemėlapis"
