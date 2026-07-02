@@ -1,6 +1,7 @@
 import { isEmpty } from 'lodash';
 import { useMutation, useQuery } from 'react-query';
 import { useNavigate, useParams } from 'react-router-dom';
+import Cookies from 'universal-cookie';
 import { DeleteInfoProps } from '../../../types';
 import {
   buttonsTitles,
@@ -11,15 +12,18 @@ import {
 import { getMapPath } from '../functions';
 import { FormProps, FormServerProps } from '../types';
 import { default as api, default as Api } from './../../../api';
-import { StatusTypes } from './../../../utils/constants';
-import { handleErrorFromServerToast, isNew } from './../../../utils/functions';
-import { slugs } from './../../../utils/routes';
+import { StatusTypes } from '../../../utils/constants';
+import { handleErrorFromServerToast, isNew } from '../../../utils/functions';
+import { slugs } from '../../../utils/routes';
 import { useGetSpecie } from './useGetSpecie';
+
+const cookies = new Cookies();
 
 export const useData = () => {
   const navigate = useNavigate();
   const { id = '' } = useParams();
   const { specie, specieLoading } = useGetSpecie(id);
+  const mapToken = cookies.get('mapToken');
 
   const { data: observationForm, isFetching } = useQuery(
     ['form', id],
@@ -54,7 +58,22 @@ export const useData = () => {
   };
 
   const disabled = !!observationForm && !observationForm?.canEdit;
-  const mapQueryString = getMapPath(disabled);
+
+  const { data: mapAuth } = useQuery(['mapToken'], () => api.getMapToken(), {
+    onSuccess: ({ token, expires }) => {
+      if (!token) return;
+
+      cookies.set('mapToken', `${token}`, {
+        path: '/',
+        expires: new Date(expires),
+      });
+    },
+    enabled: !mapToken,
+  });
+
+  const mapAuthToken = mapToken || mapAuth?.token;
+  const hasMapAccess = !!mapAuthToken;
+  const mapQueryString = getMapPath(disabled, mapAuthToken);
 
   const formMutation = useMutation(
     (values: FormServerProps) =>
@@ -140,6 +159,7 @@ export const useData = () => {
     deleteInfo,
     loading: isFetching || specieLoading,
     mapQueryString,
+    hasMapAccess,
     initialValues,
     disabled,
     id,

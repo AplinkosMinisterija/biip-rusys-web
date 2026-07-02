@@ -120,7 +120,7 @@ const DisplayMap = ({ height, error, places = [], fullScreen = false }: MapProps
 
           <StyledIframe
             allow="geolocation *"
-            title={'Radaviečių žemėlapis'}
+            title="Radaviečių žemėlapis"
             ref={iframeRef}
             src={fullUrl.toString()}
             width="100%"
@@ -222,7 +222,7 @@ const StyledButton = styled(Button)<{ popup: boolean }>`
     width: 30px;
     height: 30px;
     padding: 0;
-    box-shadow: 0px 18px 41px #121a5529;
+    box-shadow: 0 18px 41px #121a5529;
   }
 `;
 

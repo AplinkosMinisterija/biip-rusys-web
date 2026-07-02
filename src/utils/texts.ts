@@ -285,6 +285,8 @@ export const formLabels = {
   informationAboutObservedSpecie: 'Informacija apie stebėtą rūšį',
   informationAboutObservedSpecieIndividuals: 'Informacija apie stebėtos rūšies individus',
   map: 'Žemėlapis',
+  showClosePlaces: 'Rodyti artimas radavietes',
+  showCurrentPlace: 'Rodyti pažymėtą vietą',
   photos: 'Nuotraukos',
   dataAboutObserver: 'Duomenys apie stebėtoją',
   observationalHistory: 'Stebėjimų istorija',

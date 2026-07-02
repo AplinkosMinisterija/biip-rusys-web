@@ -90,6 +90,14 @@ const FormPageWrapper = ({
         }}
       >
         {({ values, errors, setFieldValue, handleSubmit, setValues }) => {
+          const handleFieldChange = (
+            field: string,
+            value: any,
+            shouldValidate?: boolean | undefined,
+          ) => {
+            setFieldValue(field, value, shouldValidate);
+          };
+
           return (
             <StyledForm two_column={twoColumn ? 1 : 0}>
               <Row>
@@ -112,7 +120,7 @@ const FormPageWrapper = ({
                 </InnerRow>
                 <DeleteComponent deleteInfo={deleteInfo} />
               </Row>
-              {renderForm(values, errors, setFieldValue, setValues)}
+              {renderForm(values, errors, handleFieldChange, setValues)}
               <MessageCointainer>
                 {!isEmpty(errors) && <ErrorMessage>{validationTexts.formFillError}</ErrorMessage>}
               </MessageCointainer>
@@ -188,7 +196,7 @@ const Row = styled.div<{ titleRowWidth?: number }>`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin: 22px 0px;
+  margin: 22px 0;
   flex-wrap: wrap;
   gap: 16px;
   width: '100%';

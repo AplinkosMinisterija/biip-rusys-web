@@ -33,10 +33,43 @@ interface GetAll {
 
 export interface GetAllResponse<T> {
   rows: T[];
+  total?: number;
   totalPages: number;
   page: number;
   pageSize: number;
   error?: any;
+}
+
+export interface NearbySpecies {
+  id: number;
+  speciesId: number;
+  speciesName: string;
+  speciesNameLatin: string;
+  geom: any;
+  distance: number;
+}
+
+export interface NearbySpeciesParams {
+  species?: number;
+  speciesId?: number;
+  geom: any;
+  distance?: number;
+}
+
+export interface NearbyPlace {
+  id: number;
+  code?: string;
+  distance: number;
+  area?: number;
+}
+
+export interface NearbyPlacesParams {
+  species?: number;
+  speciesId?: number;
+  geom: any;
+  page?: number;
+  pageSize?: number;
+  sort?: string[];
 }
 
 interface TableList<T = any> {
@@ -400,6 +433,21 @@ class Api {
       params,
     });
   };
+
+  getNearbySpecies = async (params: NearbySpeciesParams): Promise<{ rows: NearbySpecies[] }> => {
+    return await this.post({
+      resource: `${Resources.FORMS}/nearby-species`,
+      params,
+    });
+  };
+
+  getNearbyPlaces = async (params: NearbyPlacesParams): Promise<GetAllResponse<NearbyPlace>> => {
+    return await this.post({
+      resource: `${Resources.FORMS}/nearby-places`,
+      params,
+    });
+  };
+
   uploadFiles = async (resource: Resources, files: File[] = []): Promise<any> => {
     if (isEmpty(files)) return [];
 
