@@ -14,6 +14,7 @@ export interface MapProps {
   geom?: any;
   places?: (string | undefined)[];
   fullScreen?: boolean;
+  showAmateur?: boolean;
   speciesId?: string | number;
 }
 
@@ -23,6 +24,7 @@ const DisplayMap = ({
   geom,
   places = [],
   fullScreen = false,
+  showAmateur = true,
   speciesId,
 }: MapProps) => {
   const [showModal, setShowModal] = useState(false);
@@ -38,12 +40,20 @@ const DisplayMap = ({
 
     const queryString = createSearchParams();
     queryString.append('auth', mapToken);
-    queryString.append('amateur', 'true');
+    if (showAmateur) {
+      queryString.append('amateur', 'true');
+    }
     if (speciesId) {
       queryString.append('species', `${speciesId}`);
     }
     setQueryString(queryString.toString());
-  }, [mapToken, isFetching, speciesId]);
+  }, [mapToken, isFetching, showAmateur, speciesId]);
+
+  useEffect(() => {
+    if (!queryString) return;
+
+    console.log('[DisplayMap] Opening iframe URL:', fullUrl);
+  }, [fullUrl, queryString]);
 
   const handleLoadMap = () => {
     setLoading(false);
@@ -112,6 +122,8 @@ const DisplayMap = ({
               <StyledIcon name={showFullScreen ? 'exitFullScreen' : 'fullscreen'} />
             </StyledIconContainer>
           </StyledButton>
+
+          {fullUrl.toString()}
 
           <StyledIframe
             allow="geolocation *"

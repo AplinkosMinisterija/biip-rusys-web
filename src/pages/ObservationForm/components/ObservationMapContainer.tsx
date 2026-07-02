@@ -45,7 +45,7 @@ export const ObservationMapContainer = ({
       }
     >
       {showClosePlaces ? (
-        <DisplayMap height="300px" geom={values?.geom} speciesId={speciesId} />
+        <DisplayMap height="300px" geom={values?.geom} showAmateur={false} speciesId={speciesId} />
       ) : (
         <MapField
           allow="geolocation *"
