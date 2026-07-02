@@ -53,13 +53,13 @@ export const ObservationMapContainer = ({
     <SimpleContainer
       title={formLabels.map}
       additionalComponent={
-          <ToggleMapLink
+        values.species?.speciesId?<ToggleMapLink
             onClick={(e) => {
               e.preventDefault();
               setShowClosePlaces(!showClosePlaces);
             }}
           >{showClosePlaces ? formLabels.showCurrentPlace : formLabels.showClosePlaces}
-          </ToggleMapLink>
+          </ToggleMapLink>:false
       }
     >
       {showClosePlaces ? (
