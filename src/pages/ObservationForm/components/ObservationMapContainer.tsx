@@ -6,6 +6,7 @@ import { mapsHost, Url } from '../../../utils/constants';
 import { formLabels } from '../../../utils/texts';
 import { FormProps } from '../types';
 import { ToggleBtn } from './ToggleButton';
+import { getMapQueryString } from './getMapQueryString';
 
 interface ObservationMapContainerProps {
   values: FormProps;
@@ -26,16 +27,10 @@ export const ObservationMapContainer = ({
   const closeSpeciesMapSrc = useMemo(() => {
     if (!speciesId) return '';
 
-    const query = mapQueryString.split('?')[1] || '';
-    const authToken = new URLSearchParams(query).get('auth');
-    if (!authToken) return '';
+    const query = getMapQueryString(speciesId);
 
-    const params = new URLSearchParams();
-    params.append('auth', authToken);
-    params.append('species', `${speciesId}`);
-
-    return `${Url.SPECIES}?${params.toString()}`;
-  }, [mapQueryString, speciesId]);
+    return `${Url.SPECIES}?${query}`;
+  }, [speciesId]);
 
   const handleMapChange = (geom: FormProps['geom']) => {
     handleChange('geom', geom);
