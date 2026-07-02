@@ -12,6 +12,7 @@ export interface MapProps {
   height?: string;
   error?: string;
   geom?: any;
+  src?: string;
   places?: (string | undefined)[];
   fullScreen?: boolean;
   showAmateur?: boolean;
@@ -22,6 +23,7 @@ const DisplayMap = ({
   height,
   error,
   geom,
+  src,
   places = [],
   fullScreen = false,
   showAmateur = true,
@@ -32,10 +34,12 @@ const DisplayMap = ({
   const iframeRef = useRef<any>(null);
   const [queryString, setQueryString] = useState('');
   const { mapToken, isFetching, invalidateMapToken } = useMapToken();
+  const hasControlledSrc = src !== undefined;
 
-  const fullUrl = `${Url.SPECIES}?${queryString}`;
+  const fullUrl = hasControlledSrc ? src : queryString ? `${Url.SPECIES}?${queryString}` : '';
 
   useEffect(() => {
+    if (hasControlledSrc) return;
     if (isFetching || !mapToken) return;
 
     const queryString = createSearchParams();
@@ -47,13 +51,13 @@ const DisplayMap = ({
       queryString.append('species', `${speciesId}`);
     }
     setQueryString(queryString.toString());
-  }, [mapToken, isFetching, showAmateur, speciesId]);
+  }, [mapToken, isFetching, showAmateur, speciesId, hasControlledSrc]);
 
   useEffect(() => {
-    if (!queryString) return;
+    if (!fullUrl) return;
 
     console.log('[DisplayMap] Opening iframe URL:', fullUrl);
-  }, [fullUrl, queryString]);
+  }, [fullUrl]);
 
   const handleLoadMap = () => {
     setLoading(false);
@@ -97,7 +101,7 @@ const DisplayMap = ({
     return () => window.removeEventListener('message', handleSaveGeom);
   }, [handleSaveGeom]);
 
-  if (isFetching) {
+  if ((isFetching && !hasControlledSrc) || !fullUrl) {
     return <LoaderComponent />;
   }
 
