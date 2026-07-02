@@ -11,12 +11,20 @@ import LoaderComponent from '../other/LoaderComponent';
 export interface MapProps {
   height?: string;
   error?: string;
+  geom?: any;
   places?: (string | undefined)[];
   fullScreen?: boolean;
   speciesId?: string | number;
 }
 
-const DisplayMap = ({ height, error, places = [], fullScreen = false, speciesId }: MapProps) => {
+const DisplayMap = ({
+  height,
+  error,
+  geom,
+  places = [],
+  fullScreen = false,
+  speciesId,
+}: MapProps) => {
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(true);
   const iframeRef = useRef<any>(null);
@@ -39,6 +47,9 @@ const DisplayMap = ({ height, error, places = [], fullScreen = false, speciesId 
 
   const handleLoadMap = () => {
     setLoading(false);
+    if (geom) {
+      iframeRef?.current?.contentWindow?.postMessage({ geom }, '*');
+    }
   };
 
   useEffect(() => {
