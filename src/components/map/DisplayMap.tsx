@@ -1,13 +1,10 @@
 import { Button } from '@aplinkosministerija/design-system';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { useQuery, useQueryClient } from 'react-query';
 import { createSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
-import Cookies from 'universal-cookie';
-import api from '../../api';
 import { ButtonVariants, device } from '../../styles';
 import { Url } from '../../utils/constants';
-import { handleErrorFromServerToast } from '../../utils/functions';
+import { useMapToken } from '../../utils/hooks';
 import Icon from '../other/Icons';
 import LoaderComponent from '../other/LoaderComponent';
 
@@ -16,33 +13,17 @@ export interface MapProps {
   error?: string;
   places?: (string | undefined)[];
   fullScreen?: boolean;
+  speciesId?: string | number;
 }
-const cookies = new Cookies();
 
-const DisplayMap = ({ height, error, places = [], fullScreen = false }: MapProps) => {
+const DisplayMap = ({ height, error, places = [], fullScreen = false, speciesId }: MapProps) => {
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(true);
   const iframeRef = useRef<any>(null);
-  const mapToken = cookies.get('mapToken');
   const [queryString, setQueryString] = useState('');
-  const queryClient = useQueryClient();
+  const { mapToken, isFetching, invalidateMapToken } = useMapToken();
 
   const fullUrl = `${Url.SPECIES}?${queryString}`;
-
-  const { isFetching } = useQuery(['mapToken'], () => api.getMapToken(), {
-    onError: () => {
-      handleErrorFromServerToast();
-    },
-    onSuccess: ({ token, expires }) => {
-      if (!token) return;
-
-      cookies.set('mapToken', `${token}`, {
-        path: '/',
-        expires: new Date(expires),
-      });
-    },
-    enabled: !mapToken,
-  });
 
   useEffect(() => {
     if (isFetching || !mapToken) return;
@@ -50,8 +31,11 @@ const DisplayMap = ({ height, error, places = [], fullScreen = false }: MapProps
     const queryString = createSearchParams();
     queryString.append('auth', mapToken);
     queryString.append('amateur', 'true');
+    if (speciesId) {
+      queryString.append('species', `${speciesId}`);
+    }
     setQueryString(queryString.toString());
-  }, [mapToken, isFetching]);
+  }, [mapToken, isFetching, speciesId]);
 
   const handleLoadMap = () => {
     setLoading(false);
@@ -81,10 +65,10 @@ const DisplayMap = ({ height, error, places = [], fullScreen = false }: MapProps
       const isValidToken = event?.data?.mapIframeMsg?.auth?.valid;
 
       if (!isValidToken) {
-        await queryClient.invalidateQueries(['mapToken']);
+        await invalidateMapToken();
       }
     },
-    [queryClient],
+    [invalidateMapToken],
   );
 
   useEffect(() => {

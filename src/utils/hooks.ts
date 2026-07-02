@@ -1,8 +1,8 @@
 import { Columns } from '@aplinkosministerija/design-system';
 import { useMediaQuery } from '@material-ui/core';
 import { isEmpty, isEqual } from 'lodash';
-import { useState } from 'react';
-import { useMutation, useQuery } from 'react-query';
+import { useCallback, useState } from 'react';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import Cookies from 'universal-cookie';
 import { default as api } from '../api';
 import { useAppDispatch, useAppSelector } from '../state/hooks';
@@ -35,6 +35,37 @@ export const useGetCurrentProfile = () => {
     (profile) => profile.id?.toString() === profileId?.toString(),
   );
   return currentProfile;
+};
+
+export const useMapToken = () => {
+  const queryClient = useQueryClient();
+  const cookieMapToken = cookies.get('mapToken');
+
+  const { data, isFetching } = useQuery(['mapToken'], () => api.getMapToken(), {
+    onError: () => {
+      handleErrorFromServerToast();
+    },
+    onSuccess: ({ token, expires }) => {
+      if (!token) return;
+
+      cookies.set('mapToken', `${token}`, {
+        path: '/',
+        expires: new Date(expires),
+      });
+    },
+    enabled: !cookieMapToken,
+  });
+
+  const invalidateMapToken = useCallback(async () => {
+    cookies.remove('mapToken', { path: '/' });
+    await queryClient.invalidateQueries(['mapToken']);
+  }, [queryClient]);
+
+  return {
+    mapToken: cookieMapToken || data?.token,
+    isFetching,
+    invalidateMapToken,
+  };
 };
 
 export const useIsTenantUser = () => {

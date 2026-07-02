@@ -33,7 +33,6 @@ const ObservationForm = () => {
     loading,
     handleSubmit,
     mapQueryString,
-    hasMapAccess,
   } = useData();
 
   const renderForm = (values: FormProps, errors: any, handleChange: any, setValues: any) => {
@@ -85,7 +84,6 @@ const ObservationForm = () => {
             disabled={disabled}
             mapQueryString={mapQueryString}
             handleChange={handleChange}
-            hasMapAccess={hasMapAccess}
           />
           <PhotoContainer
             photos={values.photos}

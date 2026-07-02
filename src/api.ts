@@ -40,38 +40,6 @@ export interface GetAllResponse<T> {
   error?: any;
 }
 
-export interface NearbySpecies {
-  id: number;
-  speciesId: number;
-  speciesName: string;
-  speciesNameLatin: string;
-  geom: any;
-  distance: number;
-}
-
-export interface NearbySpeciesParams {
-  species?: number;
-  speciesId?: number;
-  geom: any;
-  distance?: number;
-}
-
-export interface NearbyPlace {
-  id: number;
-  code?: string;
-  distance: number;
-  area?: number;
-}
-
-export interface NearbyPlacesParams {
-  species?: number;
-  speciesId?: number;
-  geom: any;
-  page?: number;
-  pageSize?: number;
-  sort?: string[];
-}
-
 interface TableList<T = any> {
   filter?: T;
   page?: string;
@@ -430,20 +398,6 @@ class Api {
   createObservationForm = async (params: FormServerProps): Promise<Form> => {
     return await this.post({
       resource: Resources.FORMS,
-      params,
-    });
-  };
-
-  getNearbySpecies = async (params: NearbySpeciesParams): Promise<{ rows: NearbySpecies[] }> => {
-    return await this.post({
-      resource: `${Resources.FORMS}/nearby-species`,
-      params,
-    });
-  };
-
-  getNearbyPlaces = async (params: NearbyPlacesParams): Promise<GetAllResponse<NearbyPlace>> => {
-    return await this.post({
-      resource: `${Resources.FORMS}/nearby-places`,
       params,
     });
   };

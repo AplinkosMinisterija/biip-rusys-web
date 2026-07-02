@@ -1,13 +1,10 @@
 import { MapField } from '@aplinkosministerija/design-system';
-import { useCallback, useMemo, useState } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
-import Api, { NearbySpecies } from '../../../api';
 import SimpleContainer from '../../../components/containers/SimpleContainer';
 import { mapsHost } from '../../../utils/constants';
 import { formLabels } from '../../../utils/texts';
-import { useNearbyPlaces } from '../hooks/useNearbyPlaces';
 import { FormProps } from '../types';
-import CloseSpeciesMap from './CloseSpeciesMap';
 
 interface ObservationMapContainerProps {
   values: FormProps;
@@ -15,8 +12,13 @@ interface ObservationMapContainerProps {
   disabled: boolean;
   mapQueryString: string;
   handleChange: (name: string, value: any) => void;
-  hasMapAccess: boolean;
 }
+
+const getMapPathWithSpecies = (mapPath: string, speciesId: number) => {
+  const separator = mapPath.includes('?') ? '&' : '?';
+
+  return `${mapPath}${separator}species=${speciesId}`;
+};
 
 export const ObservationMapContainer = ({
   values,
@@ -25,59 +27,42 @@ export const ObservationMapContainer = ({
   mapQueryString,
   handleChange,
 }: ObservationMapContainerProps) => {
-  const placesFilter = useNearbyPlaces({ values, disabled });
-  const [nearbySpeciesValues, setNearbySpeciesValues] = useState<NearbySpecies[]>([]);
   const [showClosePlaces, setShowClosePlaces] = useState(false);
+  const speciesId = values.species?.speciesId;
+  const activeMapPath =
+    showClosePlaces && speciesId ? getMapPathWithSpecies(mapQueryString, speciesId) : mapQueryString;
 
-  const filter = useMemo(
-    () => (disabled ? undefined : { ...placesFilter, values: nearbySpeciesValues }),
-    [disabled, nearbySpeciesValues, placesFilter],
-  );
-
-  const handleMapChange = useCallback(
-    async (geom: FormProps['geom']) => {
-      handleChange('geom', geom);
-      setNearbySpeciesValues([]);
-
-      try {
-        const species = await Api.getNearbySpecies({ geom });
-        setNearbySpeciesValues(species?.rows || []);
-      } catch {
-        setNearbySpeciesValues([]);
-      }
-    },
-    [handleChange],
-  );
+  const handleMapChange = (geom: FormProps['geom']) => {
+    handleChange('geom', geom);
+  };
 
   return (
     <SimpleContainer
       title={formLabels.map}
       additionalComponent={
-        values.species?.speciesId?<ToggleMapLink
+        speciesId ? (
+          <ToggleMapLink
             onClick={(e) => {
               e.preventDefault();
               setShowClosePlaces(!showClosePlaces);
             }}
-          >{showClosePlaces ? formLabels.showCurrentPlace : formLabels.showClosePlaces}
-          </ToggleMapLink>:false
+          >
+            {showClosePlaces ? formLabels.showCurrentPlace : formLabels.showClosePlaces}
+          </ToggleMapLink>
+        ) : undefined
       }
     >
-      {showClosePlaces ? (
-        <CloseSpeciesMap geom={values?.geom} speciesId={values.species?.speciesId} />
-      ) : (
-        <MapField
-          allow="geolocation *"
-          mapHost={mapsHost}
-          value={values?.geom}
-          mapPath={mapQueryString}
-          error={errors?.geom}
-          filter={filter}
-          onChange={handleMapChange}
-          height={'300px'}
-          accessibilityDescription="Interaktyvus žemėlapis objektų žymėjimui. Žemėlapis nėra visiškai prieinamas naudotojams su regėjimo negalia."
-          accessibilityContact="Dėl žemėlapio duomenų prieinamumo, kreipkitės: sris@vstt.lt"
-        />
-      )}
+      <MapField
+        allow="geolocation *"
+        mapHost={mapsHost}
+        value={values?.geom}
+        mapPath={activeMapPath}
+        error={errors?.geom}
+        onChange={handleMapChange}
+        height={'300px'}
+        accessibilityDescription="Interaktyvus žemėlapis objektų žymėjimui. Žemėlapis nėra visiškai prieinamas naudotojams su regėjimo negalia."
+        accessibilityContact="Dėl žemėlapio duomenų prieinamumo, kreipkitės: sris@vstt.lt"
+      />
     </SimpleContainer>
   );
 };
@@ -85,7 +70,7 @@ export const ObservationMapContainer = ({
 const ToggleMapLink = styled.button`
   cursor: pointer;
   font-size: 1.4rem;
-  border:1px solid lightgrey;
+  border: 1px solid lightgrey;
   border-radius: 2rem;
   padding: 0.5rem 1rem;
   color: rgb(35, 31, 32);
