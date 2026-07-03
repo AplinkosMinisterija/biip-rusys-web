@@ -1,12 +1,15 @@
-import { Button } from '@aplinkosministerija/design-system';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { createSearchParams } from 'react-router-dom';
-import styled from 'styled-components';
-import { ButtonVariants, device } from '../../styles';
-import { Url } from '../../utils/constants';
-import { useMapToken } from '../../utils/hooks';
-import Icon from '../other/Icons';
+import { ButtonVariants } from '../../styles';
 import LoaderComponent from '../other/LoaderComponent';
+import {
+  ErrorMessage,
+  InnerContainer,
+  StyledButton,
+  StyledIcon,
+  StyledIconContainer,
+  StyledIframe,
+  Container,
+} from './DisplayMap.styles';
 
 export interface MapProps {
   height?: string;
@@ -15,49 +18,29 @@ export interface MapProps {
   src?: string;
   places?: (string | undefined)[];
   fullScreen?: boolean;
-  showAmateur?: boolean;
-  speciesId?: string | number;
+  isFetching?: boolean;
+  onInvalidToken?: () => Promise<void> | void;
 }
 
 const DisplayMap = ({
   height,
   error,
   geom,
-  src,
+  src = '',
   places = [],
   fullScreen = false,
-  showAmateur = true,
-  speciesId,
+  isFetching = false,
+  onInvalidToken,
 }: MapProps) => {
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(true);
   const iframeRef = useRef<any>(null);
-  const [queryString, setQueryString] = useState('');
-  const { mapToken, isFetching, invalidateMapToken } = useMapToken();
-  const hasControlledSrc = src !== undefined;
-
-  const fullUrl = hasControlledSrc ? src : queryString ? `${Url.SPECIES}?${queryString}` : '';
 
   useEffect(() => {
-    if (hasControlledSrc) return;
-    if (isFetching || !mapToken) return;
-
-    const queryString = createSearchParams();
-    queryString.append('auth', mapToken);
-    if (showAmateur) {
-      queryString.append('amateur', 'true');
+    if (src) {
+      setLoading(true);
     }
-    if (speciesId) {
-      queryString.append('species', `${speciesId}`);
-    }
-    setQueryString(queryString.toString());
-  }, [mapToken, isFetching, showAmateur, speciesId, hasControlledSrc]);
-
-  useEffect(() => {
-    if (!fullUrl) return;
-
-    console.log('[DisplayMap] Opening iframe URL:', fullUrl);
-  }, [fullUrl]);
+  }, [src]);
 
   const handleLoadMap = () => {
     setLoading(false);
@@ -85,23 +68,23 @@ const DisplayMap = ({
     setShowModal(!showModal);
   };
 
-  const handleSaveGeom = useCallback(
+  const handleMapAuthMessage = useCallback(
     async (event) => {
       const isValidToken = event?.data?.mapIframeMsg?.auth?.valid;
 
-      if (!isValidToken) {
-        await invalidateMapToken();
+      if (isValidToken === false) {
+        await onInvalidToken?.();
       }
     },
-    [invalidateMapToken],
+    [onInvalidToken],
   );
 
   useEffect(() => {
-    window.addEventListener('message', handleSaveGeom);
-    return () => window.removeEventListener('message', handleSaveGeom);
-  }, [handleSaveGeom]);
+    window.addEventListener('message', handleMapAuthMessage);
+    return () => window.removeEventListener('message', handleMapAuthMessage);
+  }, [handleMapAuthMessage]);
 
-  if ((isFetching && !hasControlledSrc) || !fullUrl) {
+  if (isFetching || !src) {
     return <LoaderComponent />;
   }
 
@@ -126,12 +109,11 @@ const DisplayMap = ({
               <StyledIcon name={showFullScreen ? 'exitFullScreen' : 'fullscreen'} />
             </StyledIconContainer>
           </StyledButton>
-
           <StyledIframe
             allow="geolocation *"
             title="Radaviečių žemėlapis"
             ref={iframeRef}
-            src={fullUrl.toString()}
+            src={src}
             width="100%"
             height={showFullScreen ? '100%' : `${height || '230px'}`}
             style={{ border: 0 }}
@@ -150,106 +132,5 @@ const DisplayMap = ({
     </>
   );
 };
-
-const Container = styled.div<{
-  showModal: boolean;
-  error: boolean;
-}>`
-  width: 100%;
-  height: 100%;
-  ${({ showModal }) =>
-    showModal &&
-    `
-  display: flex;
-  position: fixed;
-  top: 0;
-  left: 0;
-  background-color: rgba(0, 0, 0, 0.4);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-  overflow-y: auto;
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background-color: #0b1b607a;
-  top: 0;
-  left: 0;
-  overflow-y: auto;
-  z-index: 1001;
-  
-  `}
-  ${({ theme, error }) => error && `border: 1px solid ${theme.colors.error};`}
-`;
-
-const InnerContainer = styled.div<{
-  showModal: boolean;
-}>`
-  position: relative;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  ${({ showModal }) =>
-    showModal &&
-    `
-    padding: 16px;
-  `}
-
-  @media ${device.mobileL} {
-    padding: 0;
-  }
-`;
-
-const StyledIframe = styled.iframe<{
-  height: string;
-  width: string;
-}>`
-  width: ${({ width }) => width};
-  height: ${({ height }) => height};
-`;
-
-const StyledButton = styled(Button)<{ popup: boolean }>`
-  position: absolute;
-  z-index: 10;
-  right: ${({ popup }) => (popup ? 28 : 11)}px;
-  top: ${({ popup }) => (popup ? 28 : 15)}px;
-  width: 28px;
-  padding: 0;
-  background-color: white;
-
-  height: 28px;
-  @media ${device.mobileL} {
-    top: 80px;
-    right: 10px;
-  }
-  button {
-    border-color: #e5e7eb;
-    background-color: white !important;
-    width: 30px;
-    height: 30px;
-    padding: 0;
-    box-shadow: 0 18px 41px #121a5529;
-  }
-`;
-
-const StyledIcon = styled(Icon)`
-  font-size: 3rem;
-  color: #6b7280;
-`;
-
-const StyledIconContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const ErrorMessage = styled.label`
-  position: relative;
-  color: ${({ theme }) => theme.colors.error};
-  font-size: 1.4rem;
-`;
 
 export default DisplayMap;

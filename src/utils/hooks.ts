@@ -31,38 +31,40 @@ export const useFilteredRoutes = () => {
 export const useGetCurrentProfile = () => {
   const profiles = useAppSelector((state) => state.user.userData.profiles);
   const profileId = cookies.get('profileId');
-  const currentProfile = profiles?.find(
-    (profile) => profile.id?.toString() === profileId?.toString(),
-  );
-  return currentProfile;
+
+  return profiles?.find((profile) => profile.id?.toString() === profileId?.toString());
 };
 
 export const useMapToken = () => {
   const queryClient = useQueryClient();
-  const cookieMapToken = cookies.get('mapToken');
+  const [mapToken, setMapToken] = useState(cookies.get('mapToken'));
 
   const { data, isFetching } = useQuery(['mapToken'], () => api.getMapToken(), {
     onError: () => {
       handleErrorFromServerToast();
     },
     onSuccess: ({ token, expires }) => {
+
       if (!token) return;
 
       cookies.set('mapToken', `${token}`, {
         path: '/',
         expires: new Date(expires),
       });
+      setMapToken(`${token}`);
     },
-    enabled: !cookieMapToken,
+    enabled: !mapToken,
   });
 
   const invalidateMapToken = useCallback(async () => {
     cookies.remove('mapToken', { path: '/' });
+    setMapToken(undefined);
+    queryClient.setQueryData(['mapToken'], undefined);
     await queryClient.invalidateQueries(['mapToken']);
   }, [queryClient]);
 
   return {
-    mapToken: cookieMapToken || data?.token,
+    mapToken: mapToken || data?.token,
     isFetching,
     invalidateMapToken,
   };
@@ -79,7 +81,7 @@ export const useIsTenantOwner = () => {
 export const useGetSortedColumns = (columns: Columns) => {
   const isMobile = useMediaQuery(device.mobileL);
 
-  const sortedColumns = Object.keys(columns)
+  return Object.keys(columns)
     .sort((key, key2) =>
       isMobile ? sortMobile(columns, key, key2) : sortDesktop(columns, key, key2),
     )
@@ -87,8 +89,6 @@ export const useGetSortedColumns = (columns: Columns) => {
       obj[key] = columns[key];
       return obj;
     }, {});
-
-  return sortedColumns;
 };
 
 export const useUsers = () => {

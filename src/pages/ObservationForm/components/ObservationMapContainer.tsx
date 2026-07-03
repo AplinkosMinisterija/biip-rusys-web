@@ -1,12 +1,12 @@
 import { MapField } from '@aplinkosministerija/design-system';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import SimpleContainer from '../../../components/containers/SimpleContainer';
 import DisplayMap from '../../../components/map/DisplayMap';
-import { mapsHost, Url } from '../../../utils/constants';
+import { mapsHost } from '../../../utils/constants';
 import { formLabels } from '../../../utils/texts';
 import { FormProps } from '../types';
 import { ToggleBtn } from './ToggleButton';
-import { getMapQueryString } from './getMapQueryString';
+import { useSpeciesMapUrl } from '../../../components/map/useSpeciesMapUrl';
 
 interface ObservationMapContainerProps {
   values: FormProps;
@@ -24,13 +24,10 @@ export const ObservationMapContainer = ({
 }: ObservationMapContainerProps) => {
   const [showClosePlaces, setShowClosePlaces] = useState(false);
   const speciesId = values.species?.speciesId;
-  const closeSpeciesMapSrc = useMemo(() => {
-    if (!speciesId) return '';
-
-    const query = getMapQueryString(speciesId);
-
-    return `${Url.SPECIES}?${query}`;
-  }, [speciesId]);
+  const { speciesMapUrl, isFetching, invalidateMapToken } = useSpeciesMapUrl({
+    speciesId,
+    showAmateur: false,
+  });
 
   const handleMapChange = (geom: FormProps['geom']) => {
     handleChange('geom', geom);
@@ -53,7 +50,13 @@ export const ObservationMapContainer = ({
       }
     >
       {showClosePlaces ? (
-        <DisplayMap height="300px" geom={values?.geom} src={closeSpeciesMapSrc} />
+        <DisplayMap
+          height="300px"
+          geom={values?.geom}
+          src={speciesMapUrl}
+          isFetching={isFetching}
+          onInvalidToken={invalidateMapToken}
+        />
       ) : (
         <MapField
           allow="geolocation *"

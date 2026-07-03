@@ -6,5 +6,5 @@ export const ToggleBtn = styled.button`
   border: 1px solid lightgrey;
   border-radius: 2rem;
   padding: 0.5rem 1rem;
-  color: rgb(35, 31, 32);
+  color: ${({ theme }) => theme.colors.darkPrimary};
 `;
