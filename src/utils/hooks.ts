@@ -1,7 +1,7 @@
 import { Columns } from '@aplinkosministerija/design-system';
 import { useMediaQuery } from '@material-ui/core';
 import { isEmpty, isEqual } from 'lodash';
-import { useCallback, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import Cookies from 'universal-cookie';
 import { default as api } from '../api';
@@ -23,6 +23,7 @@ import { clearCookies, emptyUser, handleSetProfile } from './loginFunctions';
 import { filteredRoutes } from './routes';
 
 const cookies = new Cookies();
+const MAP_TOKEN_INVALIDATION_COOLDOWN_MS = 30000;
 
 export const useFilteredRoutes = () => {
   return filteredRoutes(useGetCurrentProfile());
@@ -38,13 +39,14 @@ export const useGetCurrentProfile = () => {
 export const useMapToken = () => {
   const queryClient = useQueryClient();
   const [mapToken, setMapToken] = useState(cookies.get('mapToken'));
+  const invalidationInProgress = useRef(false);
+  const lastInvalidationAt = useRef(0);
 
   const { data, isFetching } = useQuery(['mapToken'], () => api.getMapToken(), {
     onError: () => {
       handleErrorFromServerToast();
     },
     onSuccess: ({ token, expires }) => {
-
       if (!token) return;
 
       cookies.set('mapToken', `${token}`, {
@@ -54,13 +56,30 @@ export const useMapToken = () => {
       setMapToken(`${token}`);
     },
     enabled: !mapToken,
+    retry: false,
   });
 
   const invalidateMapToken = useCallback(async () => {
-    cookies.remove('mapToken', { path: '/' });
-    setMapToken(undefined);
-    queryClient.setQueryData(['mapToken'], undefined);
-    await queryClient.invalidateQueries(['mapToken']);
+    const now = Date.now();
+
+    if (
+      invalidationInProgress.current ||
+      now - lastInvalidationAt.current < MAP_TOKEN_INVALIDATION_COOLDOWN_MS
+    ) {
+      return;
+    }
+
+    invalidationInProgress.current = true;
+    lastInvalidationAt.current = now;
+
+    try {
+      cookies.remove('mapToken', { path: '/' });
+      setMapToken(undefined);
+      queryClient.setQueryData(['mapToken'], undefined);
+      await queryClient.invalidateQueries(['mapToken']);
+    } finally {
+      invalidationInProgress.current = false;
+    }
   }, [queryClient]);
 
   return {
