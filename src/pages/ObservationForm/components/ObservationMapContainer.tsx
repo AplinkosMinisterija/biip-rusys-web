@@ -4,15 +4,15 @@ import SimpleContainer from '../../../components/containers/SimpleContainer';
 import DisplayMap from '../../../components/map/DisplayMap';
 import { mapsHost } from '../../../utils/constants';
 import { formLabels } from '../../../utils/texts';
-import { FormProps } from '../types';
+import { FormProps, ObservationFormErrors } from '../types';
 import { ToggleBtn } from './ToggleButton';
 
 interface ObservationMapContainerProps {
   values: FormProps;
-  errors: { [key: string]: any };
+  errors: ObservationFormErrors;
   disabled: boolean;
   mapQueryString: string;
-  handleChange: (name: string, value: any) => void;
+  handleChange: (name: 'geom', value: FormProps['geom']) => void;
 }
 
 export const ObservationMapContainer = ({
@@ -23,6 +23,7 @@ export const ObservationMapContainer = ({
 }: ObservationMapContainerProps) => {
   const [showClosePlaces, setShowClosePlaces] = useState(false);
   const speciesId = values.species?.speciesId;
+  const geom = values.geom || undefined;
 
   const handleMapChange = (geom: FormProps['geom']) => {
     handleChange('geom', geom);
@@ -45,17 +46,12 @@ export const ObservationMapContainer = ({
       }
     >
       {showClosePlaces ? (
-        <DisplayMap
-          height="300px"
-          geom={values?.geom}
-          speciesId={speciesId}
-          showAmateur={false}
-        />
+        <DisplayMap height="300px" geom={values?.geom} speciesId={speciesId} showAmateur={false} />
       ) : (
         <MapField
           allow="geolocation *"
           mapHost={mapsHost}
-          value={values?.geom}
+          value={geom}
           mapPath={mapQueryString}
           error={errors?.geom}
           onChange={handleMapChange}

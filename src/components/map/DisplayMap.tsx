@@ -1,22 +1,31 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { type MouseEvent, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import type { FeatureCollection } from '@aplinkosministerija/design-system';
 import { ButtonVariants } from '../../styles';
 import { Url } from '../../utils/constants';
 import { useMapToken } from '../../utils/hooks';
 import LoaderComponent from '../other/LoaderComponent';
 import {
+  Container,
   ErrorMessage,
   InnerContainer,
   StyledButton,
   StyledIcon,
   StyledIconContainer,
   StyledIframe,
-  Container,
 } from './DisplayMap.styles';
+
+interface MapAuthMessageData {
+  mapIframeMsg?: {
+    auth?: {
+      valid?: boolean;
+    };
+  };
+}
 
 export interface MapProps {
   height?: string;
   error?: string;
-  geom?: any;
+  geom?: FeatureCollection | '';
   src?: string;
   speciesId?: string | number;
   showAmateur?: boolean;
@@ -37,7 +46,7 @@ const DisplayMap = ({
   const { mapToken, isFetching, invalidateMapToken } = useMapToken();
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(true);
-  const iframeRef = useRef<any>(null);
+  const iframeRef = useRef<HTMLIFrameElement | null>(null);
   const mapSrc = useMemo(() => {
     if (src) {
       return src;
@@ -78,7 +87,7 @@ const DisplayMap = ({
   useEffect(() => {
     if (!iframeRef.current) return;
 
-    iframeRef?.current?.contentWindow.postMessage(
+    iframeRef?.current?.contentWindow?.postMessage(
       JSON.stringify({
         eventName: 'filterFeatures',
         places,
@@ -89,13 +98,13 @@ const DisplayMap = ({
 
   const showFullScreen = fullScreen || showModal;
 
-  const handleToggle = (e) => {
+  const handleToggle = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setShowModal(!showModal);
   };
 
   const handleMapAuthMessage = useCallback(
-    async (event) => {
+    async (event: MessageEvent<MapAuthMessageData>) => {
       const isValidToken = event?.data?.mapIframeMsg?.auth?.valid;
 
       if (isValidToken === false) {

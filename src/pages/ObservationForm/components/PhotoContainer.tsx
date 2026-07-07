@@ -1,10 +1,10 @@
 import { isEmpty } from 'lodash';
 import { Resources } from '../../../utils/constants';
-import { PhotoContainerProps } from '../types';
+import { ObservationPhoto, PhotoContainerProps } from '../types';
 import Api from './../../../api';
 import SimpleContainer from './../../../components/containers/SimpleContainer';
 import PhotoUploadField from './../../../components/fields/PhotoUploadField';
-import { formLabels } from './../../../utils/texts';
+import { formLabels } from '../../../utils/texts';
 
 export const PhotoContainer = ({
   photos,
@@ -12,7 +12,7 @@ export const PhotoContainer = ({
   handleChange,
   disabled,
 }: PhotoContainerProps) => {
-  const handleUpload = async (newPhotos) => {
+  const handleUpload = async (newPhotos: File[]) => {
     const uploadedPhotos = await Api.uploadFiles(Resources.FORMS, newPhotos);
 
     handleChange('photos', [...photos, ...uploadedPhotos]);
@@ -28,7 +28,7 @@ export const PhotoContainer = ({
         canOpenPhoto={disabled}
         disabled={disabled}
         onUpload={async (photos: File[]) => handleUpload(photos)}
-        onChange={async (photos: any) => handleChange('photos', photos)}
+        onChange={async (photos: ObservationPhoto[]) => handleChange('photos', photos)}
         name={'photos'}
         photos={photos}
         error={photoError}

@@ -106,7 +106,7 @@ export const useData = () => {
       ...(!!methodValue && { methodValue }),
       method,
       observedAt,
-      geom,
+      ...(geom && { geom }),
       comment,
       photos,
       evolution,

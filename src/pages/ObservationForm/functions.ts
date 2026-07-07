@@ -33,7 +33,7 @@ export const getAnimalPlantOptions = (formType: FormTypes) => {
 export const getAnimalActivityOptions = () => Object.keys(AnimalActivity);
 
 export const getAnimalEvolutionOptions = (activity?: AnimalActivity) =>
-  Object.keys(AnimalEvolutionState).filter((evolution: any) => {
+  Object.keys(AnimalEvolutionState).filter((evolution) => {
     if (isEqual(activity, AnimalActivity.HABITATION)) {
       return true;
     }
@@ -42,9 +42,9 @@ export const getAnimalEvolutionOptions = (activity?: AnimalActivity) =>
       activity && [AnimalActivity.OBSERVED_ALIVE, AnimalActivity.OTHER].includes(activity);
 
     if (showAgeOptions) {
-
-
-      return [AnimalEvolutionState.IMMATURE, AnimalEvolutionState.MATURE].includes(evolution);
+      return [AnimalEvolutionState.IMMATURE, AnimalEvolutionState.MATURE].includes(
+        evolution as AnimalEvolutionState,
+      );
     }
 
     return false;

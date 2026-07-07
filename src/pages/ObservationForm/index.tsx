@@ -6,7 +6,7 @@ import SimpleContainer from './../../components/containers/SimpleContainer';
 import LoaderComponent from './../../components/other/LoaderComponent';
 import FormPageWrapper from './../../components/wrappers/FormikFormPageWrapper';
 import { ColumnOne, ColumnTwo, InnerContainer } from '../../styles/GenericStyledComponents';
-import { Species } from '../../types';
+import { HandleChangeType, SpeciesSearchProp } from '../../types';
 import { getSpeciesList, isNew, speciesOptionLabel } from '../../utils/functions';
 import {
   buttonsTitles,
@@ -22,7 +22,7 @@ import { ObservationMapContainer } from './components/ObservationMapContainer';
 import { PhotoContainer } from './components/PhotoContainer';
 import { title } from './functions';
 import { useData } from './hooks/useData';
-import { FormProps } from './types';
+import { FormProps, ObservationFormErrors, SetObservationFormValues } from './types';
 
 const ObservationForm = () => {
   const {
@@ -35,16 +35,22 @@ const ObservationForm = () => {
     mapQueryString,
   } = useData();
 
-  const renderForm = (values: FormProps, errors: any, handleChange: any, setValues: any) => {
+  const renderForm = (
+    values: FormProps,
+    errors: ObservationFormErrors,
+    handleChange: HandleChangeType,
+    setValues?: SetObservationFormValues,
+  ) => {
+    const setObservationValues = setValues ?? (() => undefined);
 
-    const handleUpdateSpecie = (species: Species) => {
-      setValues({
+    const handleUpdateSpecie = (species: SpeciesSearchProp) => {
+      setObservationValues({
         ...values,
         species,
-        evolution: '',
+        evolution: undefined,
         method: '',
         methodValue: '',
-        activity: '',
+        activity: undefined,
       });
     };
 
@@ -56,9 +62,9 @@ const ObservationForm = () => {
               label={inputLabels.specie}
               disabled={!isNew(id)}
               value={values.species}
-              error={errors.species as any}
+              error={errors.species}
               name="species"
-              onChange={(species: Species) => {
+              onChange={(species: SpeciesSearchProp) => {
                 handleUpdateSpecie(species);
               }}
               getOptionLabel={(option) => speciesOptionLabel(option)}
@@ -76,7 +82,7 @@ const ObservationForm = () => {
             errors={errors}
             handleChange={handleChange}
             disabled={disabled}
-            setValues={setValues}
+            setValues={setObservationValues}
           />
           <ObservationMapContainer
             values={values}
