@@ -21,11 +21,12 @@ import { noQuantityOptions } from '../options';
 import { StyledRadioOptions } from '../styles';
 import { SpecieActivityProps } from '../types';
 import {
+  AnimalActivity,
   FormTypes,
   MammalMethodType,
   MushroomEvolutionState,
   PlantEvolutionState,
-} from './../../../utils/constants';
+} from '../../../utils/constants';
 import {
   animalActivityLabels,
   animalEvolutionStateLabels,
@@ -38,7 +39,7 @@ import {
   plantAbundanceTypeLabels,
   plantEvolutionStateLabels,
   shortMeasurementUnitsLabels,
-} from './../../../utils/texts';
+} from '../../../utils/texts';
 
 export const SpecieActivity = ({
   values,
@@ -144,10 +145,10 @@ export const SpecieActivity = ({
     (methodValue?.label && isEqual(FormTypes.INVASIVE_MAMMAL, values?.species?.formType)) ||
     isOtherMethod;
 
-  const handleSetActivity = (e) => {
+  const handleSetActivity = (e: AnimalActivity) => {
     setValues({
       ...values,
-      evolution: '',
+      evolution: undefined,
       activity: e,
     });
   };

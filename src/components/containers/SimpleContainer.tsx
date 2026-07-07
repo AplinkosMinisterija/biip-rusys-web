@@ -6,12 +6,16 @@ export interface LoginLayoutProps {
   title?: string;
   className?: string;
   margin?: string;
+  additionalComponent?: ChildrenType;
 }
 
-const SimpleContainer = ({ margin, title, children, className }: LoginLayoutProps) => {
+const SimpleContainer = ({ margin, title, children, className, additionalComponent }: LoginLayoutProps) => {
   return (
     <Container margin={margin || '0'} className={className}>
-      <Title>{title}</Title>
+      <Header>
+        <Title>{title}</Title>
+        {additionalComponent}
+      </Header>
       <div>{children}</div>
     </Container>
   );
@@ -25,9 +29,15 @@ const Container = styled.div<{ margin: string }>`
   margin: ${({ margin }) => margin};
 `;
 
+const Header = styled.div`
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+`;
+
 const Title = styled.div`
   font-size: 1.4rem;
-  margin-bottom: 16px;
   font-weight: bold;
   color: #231f20;
 `;

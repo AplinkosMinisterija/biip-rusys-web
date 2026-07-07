@@ -1,28 +1,28 @@
-import { AsyncSelectField, MapField } from '@aplinkosministerija/design-system';
+import { AsyncSelectField } from '@aplinkosministerija/design-system';
 import { StatusModal } from '../../components/other/StatusModal';
-import { mapsHost } from '../../utils/constants';
 import Api from './../../api';
 import FormHistoryContainer from './../../components/containers/FormHistoryContainer';
 import SimpleContainer from './../../components/containers/SimpleContainer';
 import LoaderComponent from './../../components/other/LoaderComponent';
 import FormPageWrapper from './../../components/wrappers/FormikFormPageWrapper';
-import { ColumnOne, ColumnTwo, InnerContainer } from './../../styles/GenericStyledComponents';
-import { Species } from './../../types';
-import { getSpeciesList, isNew, speciesOptionLabel } from './../../utils/functions';
+import { ColumnOne, ColumnTwo, InnerContainer } from '../../styles/GenericStyledComponents';
+import { HandleChangeType, SpeciesSearchProp } from '../../types';
+import { getSpeciesList, isNew, speciesOptionLabel } from '../../utils/functions';
 import {
   buttonsTitles,
   formLabels,
   inputLabels,
   observationFormActionLabels,
   observationFormHistoryLabels,
-} from './../../utils/texts';
-import { validateForm } from './../../utils/validation';
+} from '../../utils/texts';
+import { validateForm } from '../../utils/validation';
 import { ObservedSpecieDataContainer } from './components/ObservedSpecieDataContainer';
 import { ObserverDataContainer } from './components/ObserverDataContainer';
+import { ObservationMapContainer } from './components/ObservationMapContainer';
 import { PhotoContainer } from './components/PhotoContainer';
 import { title } from './functions';
 import { useData } from './hooks/useData';
-import { FormProps } from './types';
+import { FormProps, ObservationFormErrors, SetObservationFormValues } from './types';
 
 const ObservationForm = () => {
   const {
@@ -35,15 +35,22 @@ const ObservationForm = () => {
     mapQueryString,
   } = useData();
 
-  const renderForm = (values: FormProps, errors: any, handleChange: any, setValues: any) => {
-    const handleUpdateSpecie = (species: Species) => {
-      setValues({
+  const renderForm = (
+    values: FormProps,
+    errors: ObservationFormErrors,
+    handleChange: HandleChangeType,
+    setValues?: SetObservationFormValues,
+  ) => {
+    const setObservationValues = setValues ?? (() => undefined);
+
+    const handleUpdateSpecie = (species: SpeciesSearchProp) => {
+      setObservationValues({
         ...values,
         species,
-        evolution: '',
+        evolution: undefined,
         method: '',
         methodValue: '',
-        activity: '',
+        activity: undefined,
       });
     };
 
@@ -55,9 +62,9 @@ const ObservationForm = () => {
               label={inputLabels.specie}
               disabled={!isNew(id)}
               value={values.species}
-              error={errors.species as any}
+              error={errors.species}
               name="species"
-              onChange={(species: Species) => {
+              onChange={(species: SpeciesSearchProp) => {
                 handleUpdateSpecie(species);
               }}
               getOptionLabel={(option) => speciesOptionLabel(option)}
@@ -75,21 +82,15 @@ const ObservationForm = () => {
             errors={errors}
             handleChange={handleChange}
             disabled={disabled}
-            setValues={setValues}
+            setValues={setObservationValues}
           />
-          <SimpleContainer title={formLabels.map}>
-            <MapField
-              allow="geolocation *"
-              mapHost={mapsHost}
-              value={values?.geom}
-              mapPath={mapQueryString}
-              error={errors?.geom}
-              onChange={(data) => handleChange('geom', data)}
-              height={'300px'}
-              accessibilityDescription="Interaktyvus žemėlapis objektų žymėjimui. Žemėlapis nėra visiškai prieinamas naudotojams su regėjimo negalia."
-              accessibilityContact="Dėl žemėlapio duomenų prieinamumo, kreipkitės: sris@vstt.lt"
-            />
-          </SimpleContainer>
+          <ObservationMapContainer
+            values={values}
+            errors={errors}
+            disabled={disabled}
+            mapQueryString={mapQueryString}
+            handleChange={handleChange}
+          />
           <PhotoContainer
             photos={values.photos}
             photoError={errors.photos}

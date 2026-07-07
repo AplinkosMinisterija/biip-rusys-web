@@ -33,6 +33,7 @@ interface GetAll {
 
 export interface GetAllResponse<T> {
   rows: T[];
+  total?: number;
   totalPages: number;
   page: number;
   pageSize: number;
@@ -400,6 +401,7 @@ class Api {
       params,
     });
   };
+
   uploadFiles = async (resource: Resources, files: File[] = []): Promise<any> => {
     if (isEmpty(files)) return [];
 

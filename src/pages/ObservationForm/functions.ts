@@ -5,9 +5,9 @@ import {
   FormTypes,
   PlantAbundanceType,
   PlantEvolutionState,
-} from './../../utils/constants';
-import { isNew } from './../../utils/functions';
-import { inputLabels, pageTitles } from './../../utils/texts';
+} from '../../utils/constants';
+import { isNew } from '../../utils/functions';
+import { inputLabels, pageTitles } from '../../utils/texts';
 
 export const setPlaceholder = (value, id) =>
   !value && !isNew(id) ? inputLabels.noData : inputLabels.chooseOption;
@@ -22,20 +22,18 @@ export const title = (disabled: boolean, id: string) => {
 export const getAnimalPlantOptions = (formType: FormTypes) => {
   const isMushroomKingdom = isEqual(formType, FormTypes.ENDANGERED_MUSHROOM);
 
-  const plantEvolutionOptions = Object.keys(PlantEvolutionState).filter((evolution) => {
+  return Object.keys(PlantEvolutionState).filter((evolution) => {
     if (isEqual(evolution, PlantEvolutionState.GROWING)) {
       return isMushroomKingdom;
     }
     return true;
   });
-
-  return plantEvolutionOptions;
 };
 
 export const getAnimalActivityOptions = () => Object.keys(AnimalActivity);
 
 export const getAnimalEvolutionOptions = (activity?: AnimalActivity) =>
-  Object.keys(AnimalEvolutionState).filter((evolution: any) => {
+  Object.keys(AnimalEvolutionState).filter((evolution) => {
     if (isEqual(activity, AnimalActivity.HABITATION)) {
       return true;
     }
@@ -44,19 +42,21 @@ export const getAnimalEvolutionOptions = (activity?: AnimalActivity) =>
       activity && [AnimalActivity.OBSERVED_ALIVE, AnimalActivity.OTHER].includes(activity);
 
     if (showAgeOptions) {
-      const AgeOptions = [AnimalEvolutionState.IMMATURE, AnimalEvolutionState.MATURE].includes(
-        evolution,
+      return [AnimalEvolutionState.IMMATURE, AnimalEvolutionState.MATURE].includes(
+        evolution as AnimalEvolutionState,
       );
-
-      return AgeOptions;
     }
 
     return false;
   });
 
-export const getMapPath = (disabled = false) => {
+export const getMapPath = (disabled = false, authToken?: string) => {
   const param = new URLSearchParams();
   const path = '/edit';
+
+  if (authToken) {
+    param.append('auth', authToken);
+  }
 
   if (disabled) {
     param.append('preview', 'true');

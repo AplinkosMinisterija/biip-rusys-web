@@ -188,7 +188,7 @@ const Row = styled.div<{ titleRowWidth?: number }>`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin: 22px 0px;
+  margin: 22px 0;
   flex-wrap: wrap;
   gap: 16px;
   width: '100%';
