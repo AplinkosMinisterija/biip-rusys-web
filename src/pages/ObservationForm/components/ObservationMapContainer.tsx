@@ -6,7 +6,6 @@ import { mapsHost } from '../../../utils/constants';
 import { formLabels } from '../../../utils/texts';
 import { FormProps } from '../types';
 import { ToggleBtn } from './ToggleButton';
-import { useSpeciesMapUrl } from '../../../components/map/useSpeciesMapUrl';
 
 interface ObservationMapContainerProps {
   values: FormProps;
@@ -24,10 +23,6 @@ export const ObservationMapContainer = ({
 }: ObservationMapContainerProps) => {
   const [showClosePlaces, setShowClosePlaces] = useState(false);
   const speciesId = values.species?.speciesId;
-  const { speciesMapUrl, isFetching, invalidateMapToken } = useSpeciesMapUrl({
-    speciesId,
-    showAmateur: false,
-  });
 
   const handleMapChange = (geom: FormProps['geom']) => {
     handleChange('geom', geom);
@@ -53,9 +48,8 @@ export const ObservationMapContainer = ({
         <DisplayMap
           height="300px"
           geom={values?.geom}
-          src={speciesMapUrl}
-          isFetching={isFetching}
-          onInvalidToken={invalidateMapToken}
+          speciesId={speciesId}
+          showAmateur={false}
         />
       ) : (
         <MapField

@@ -1,5 +1,7 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ButtonVariants } from '../../styles';
+import { Url } from '../../utils/constants';
+import { useMapToken } from '../../utils/hooks';
 import LoaderComponent from '../other/LoaderComponent';
 import {
   ErrorMessage,
@@ -16,10 +18,10 @@ export interface MapProps {
   error?: string;
   geom?: any;
   src?: string;
+  speciesId?: string | number;
+  showAmateur?: boolean;
   places?: (string | undefined)[];
   fullScreen?: boolean;
-  isFetching?: boolean;
-  onInvalidToken?: () => Promise<void> | void;
 }
 
 const DisplayMap = ({
@@ -27,20 +29,44 @@ const DisplayMap = ({
   error,
   geom,
   src = '',
+  speciesId,
+  showAmateur = true,
   places = [],
   fullScreen = false,
-  isFetching = false,
-  onInvalidToken,
 }: MapProps) => {
+  const { mapToken, isFetching, invalidateMapToken } = useMapToken();
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(true);
   const iframeRef = useRef<any>(null);
+  const mapSrc = useMemo(() => {
+    if (src) {
+      return src;
+    }
+
+    const params = new URLSearchParams();
+
+    if (mapToken) {
+      params.append('auth', mapToken);
+    }
+
+    if (showAmateur) {
+      params.append('amateur', 'true');
+    }
+
+    if (speciesId !== undefined && speciesId !== null) {
+      params.append('species', `${speciesId}`);
+    }
+
+    const queryString = params.toString();
+
+    return queryString ? `${Url.SPECIES}?${queryString}` : Url.SPECIES;
+  }, [mapToken, showAmateur, speciesId, src]);
 
   useEffect(() => {
-    if (src) {
+    if (mapSrc) {
       setLoading(true);
     }
-  }, [src]);
+  }, [mapSrc]);
 
   const handleLoadMap = () => {
     setLoading(false);
@@ -73,10 +99,10 @@ const DisplayMap = ({
       const isValidToken = event?.data?.mapIframeMsg?.auth?.valid;
 
       if (isValidToken === false) {
-        await onInvalidToken?.();
+        await invalidateMapToken();
       }
     },
-    [onInvalidToken],
+    [invalidateMapToken],
   );
 
   useEffect(() => {
@@ -84,7 +110,7 @@ const DisplayMap = ({
     return () => window.removeEventListener('message', handleMapAuthMessage);
   }, [handleMapAuthMessage]);
 
-  if (isFetching || !src) {
+  if (isFetching || !mapSrc) {
     return <LoaderComponent />;
   }
 
@@ -113,7 +139,7 @@ const DisplayMap = ({
             allow="geolocation *"
             title="Radaviečių žemėlapis"
             ref={iframeRef}
-            src={src}
+            src={mapSrc}
             width="100%"
             height={showFullScreen ? '100%' : `${height || '230px'}`}
             style={{ border: 0 }}
