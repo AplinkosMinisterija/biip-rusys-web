@@ -1,4 +1,4 @@
-import { NumericTextField, SelectField, TextField } from '@aplinkosministerija/design-system';
+import { NumericField, SelectField, TextField } from '@aplinkosministerija/design-system';
 import { isEmpty, isEqual } from 'lodash';
 import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
@@ -20,13 +20,7 @@ import {
 import { noQuantityOptions } from '../options';
 import { StyledRadioOptions } from '../styles';
 import { SpecieActivityProps } from '../types';
-import {
-  AnimalActivity,
-  FormTypes,
-  MammalMethodType,
-  MushroomEvolutionState,
-  PlantEvolutionState,
-} from '../../../utils/constants';
+import { AnimalActivity, FormTypes, MammalMethodType } from '../../../utils/constants';
 import {
   animalActivityLabels,
   animalEvolutionStateLabels,
@@ -40,6 +34,7 @@ import {
   plantEvolutionStateLabels,
   shortMeasurementUnitsLabels,
 } from '../../../utils/texts';
+import { useEvolutionStates } from '../hooks/useEvolutionStates';
 
 export const SpecieActivity = ({
   values,
@@ -52,10 +47,9 @@ export const SpecieActivity = ({
   const formType = values?.species?.formType ? values?.species?.formType : '';
   const isAnimalKingdom = isEqual(formType, FormTypes.ENDANGERED_ANIMAL);
 
-  const plantEvolutionOptions = useMemo(() => Object.keys(PlantEvolutionState), []);
-
-  const mushroomEvolutionOptions = useMemo(() => Object.keys(MushroomEvolutionState), []);
   const animalActivitiesOptions = useMemo(() => getAnimalActivityOptions(), []);
+  const { evolutionOptions: apiEvolutionOptions, loading: loadingEvolutionStates } =
+    useEvolutionStates(formType, values.species?.speciesId);
 
   const animalEvolutionOptions = useMemo(
     () => getAnimalEvolutionOptions(values.activity),
@@ -77,9 +71,10 @@ export const SpecieActivity = ({
     (formType && [FormTypes.ENDANGERED_MUSHROOM, FormTypes.ENDANGERED_PLANT].includes(formType));
 
   const evolution = {
-    [FormTypes.ENDANGERED_ANIMAL]: animalEvolutionOptions,
-    [FormTypes.ENDANGERED_MUSHROOM]: mushroomEvolutionOptions,
-    [FormTypes.ENDANGERED_PLANT]: plantEvolutionOptions,
+    [FormTypes.ENDANGERED_ANIMAL]:
+      apiEvolutionOptions.length > 0 ? apiEvolutionOptions : animalEvolutionOptions,
+    [FormTypes.ENDANGERED_MUSHROOM]: apiEvolutionOptions,
+    [FormTypes.ENDANGERED_PLANT]: apiEvolutionOptions,
   };
   const evolutionLabels = {
     [FormTypes.ENDANGERED_ANIMAL]: animalEvolutionStateLabels,
@@ -194,6 +189,7 @@ export const SpecieActivity = ({
             onChange={(option) => handleChange('noQuantityReason', option)}
           />
         )}
+        {formType}---
         {showMethodValue && (
           <>
             {isOtherMethod ? (
@@ -209,7 +205,7 @@ export const SpecieActivity = ({
                 }}
               />
             ) : (
-              <NumericTextField
+              <NumericField
                 disabled={disabled}
                 height={40}
                 name={'methodValue'}
@@ -222,7 +218,7 @@ export const SpecieActivity = ({
                   )
                 }
                 error={errors?.methodValue}
-                onChange={(methodValue: number) => {
+                onChange={(methodValue: number | undefined) => {
                   handleChange('methodValue', methodValue?.toString());
                 }}
               />
@@ -232,6 +228,7 @@ export const SpecieActivity = ({
       </Row>
     );
 
+  console.log(evolution, formType);
   return (
     <>
       {isAnimalKingdom && (
@@ -249,17 +246,20 @@ export const SpecieActivity = ({
       )}
       {showEvolutionField && (
         <SelectField
-          disabled={disabled}
+          disabled={disabled || loadingEvolutionStates}
           label={inputLabels.evolution}
           value={values.evolution}
-          error={errors.evolution}
+          error={errors.evolutionStateId}
           name="evolution"
-          onChange={(e) => {
-            handleChange('evolution', e);
+          onChange={(code) => {
+            // handleChange('evolutionStateId', e?.id);
+            handleChange('evolution', code);
           }}
           options={evolution[formType]}
-          getOptionLabel={(e: string) => evolutionLabels[formType][e]}
-          placeholder={setPlaceholder(values.evolution, id)}
+          getOptionLabel={(e: any) =>
+            typeof e === 'object' ? e?.label : evolutionLabels[formType]?.[e] || e
+          }
+          placeholder={setPlaceholder(values.evolutionStateId, id)}
         />
       )}
     </>

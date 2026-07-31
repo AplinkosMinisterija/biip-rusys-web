@@ -116,6 +116,7 @@ export interface Species {
 }
 
 export interface SpeciesSearchProp {
+  id: number;
   classId: number;
   className: string;
   classNameLatin: string;
