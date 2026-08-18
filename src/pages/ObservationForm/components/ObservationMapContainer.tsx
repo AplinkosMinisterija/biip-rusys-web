@@ -2,7 +2,7 @@ import { MapField } from '@aplinkosministerija/design-system';
 import { useState } from 'react';
 import SimpleContainer from '../../../components/containers/SimpleContainer';
 import DisplayMap from '../../../components/map/DisplayMap';
-import { mapsHost } from '../../../utils/constants';
+import { mapsHost, mapsOrigin } from '../../../utils/constants';
 import { formLabels } from '../../../utils/texts';
 import { FormProps, ObservationFormErrors } from '../types';
 import { ToggleBtn } from './ToggleButton';
@@ -49,7 +49,7 @@ export const ObservationMapContainer = ({
         <DisplayMap height="300px" geom={values?.geom} speciesId={speciesId} showAmateur={false} />
       ) : (
         <MapField
-          allow="geolocation *"
+          allow={`geolocation ${mapsOrigin}`}
           mapHost={mapsHost}
           value={geom}
           mapPath={mapQueryString}

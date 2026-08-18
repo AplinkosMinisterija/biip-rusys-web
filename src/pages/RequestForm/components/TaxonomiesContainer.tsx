@@ -2,7 +2,7 @@ import { MapField } from '@aplinkosministerija/design-system';
 import { isEmpty, isEqual } from 'lodash';
 import SimpleContainer from '../../../components/containers/SimpleContainer';
 import Tree from '../../../components/fields/TreeSelect';
-import { mapsHost, RequestTypes } from '../../../utils/constants';
+import { mapsHost, mapsOrigin, RequestTypes } from '../../../utils/constants';
 import { inputLabels } from '../../../utils/texts';
 import { getMapPath } from '../function';
 import { useSpeciesTree } from '../hooks/useSpeciesTree';
@@ -43,7 +43,7 @@ const SpeciesTaxonomiesContainer = ({
           )}
           {!isEqual(values.type, RequestTypes.CHECK) && (
             <MapField
-              allow="geolocation *"
+              allow={`geolocation ${mapsOrigin}`}
               mapHost={mapsHost}
               value={values?.geom}
               mapPath={mapPath}

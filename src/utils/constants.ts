@@ -235,6 +235,20 @@ export const Url = {
   SPECIES: `${mapsHost}/rusys`,
 };
 
+// Single source of truth for the map iframe's origin. Use it to validate
+// inbound `message` events and as the targetOrigin of every outbound
+// postMessage — never '*', because the payloads carry protected-species
+// geometry and the inbound ones can invalidate the map token.
+// Empty string when VITE_MAPS_HOST is unset or malformed, which makes the
+// comparison fail closed rather than accepting any origin.
+export const mapsOrigin = (() => {
+  try {
+    return new URL(mapsHost).origin;
+  } catch {
+    return '';
+  }
+})();
+
 export enum FormTypes {
   ENDANGERED_ANIMAL = 'ENDANGERED_ANIMAL',
   ENDANGERED_PLANT = 'ENDANGERED_PLANT',

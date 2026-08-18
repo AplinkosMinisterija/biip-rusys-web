@@ -50,13 +50,15 @@ export const getAnimalEvolutionOptions = (activity?: AnimalActivity) =>
     return false;
   });
 
-export const getMapPath = (disabled = false, authToken?: string) => {
+// No `auth` param: the /edit route does not read one (it whitelists multi,
+// buffer, preview, hideToolbar, types, autoZoom, bufferMin, bufferMax,
+// closeOnSearch and showArea), so appending the 24h map JWT only put a bearer
+// credential for protected-species coordinates into the map host's access
+// logs, any URL-recording intermediary, and iframe.src in the DOM — where any
+// script on the page can read it.
+export const getMapPath = (disabled = false) => {
   const param = new URLSearchParams();
   const path = '/edit';
-
-  if (authToken) {
-    param.append('auth', authToken);
-  }
 
   if (disabled) {
     param.append('preview', 'true');
