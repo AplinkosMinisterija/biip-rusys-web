@@ -2,6 +2,19 @@
 	root * /srv
 	encode gzip
 
+	header {
+		# This app is never embedded — it embeds the map, not the other way
+		# round (no window.parent / window.top usage anywhere in src/).
+		# Without a framing policy an attacker page could frame us and
+		# postMessage into the map-token handler in DisplayMap.tsx.
+		# frame-ancestors covers modern browsers, X-Frame-Options the rest.
+		Content-Security-Policy "frame-ancestors 'none'"
+		X-Frame-Options "DENY"
+
+		X-Content-Type-Options "nosniff"
+		Referrer-Policy "strict-origin-when-cross-origin"
+	}
+
 	try_files {path} {file} /index.html
 	file_server
 }

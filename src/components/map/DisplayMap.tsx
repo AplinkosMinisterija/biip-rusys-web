@@ -1,7 +1,7 @@
 import { type MouseEvent, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { FeatureCollection } from '@aplinkosministerija/design-system';
 import { ButtonVariants } from '../../styles';
-import { Url } from '../../utils/constants';
+import { mapsOrigin, Url } from '../../utils/constants';
 import { useMapToken } from '../../utils/hooks';
 import LoaderComponent from '../other/LoaderComponent';
 import {
@@ -80,7 +80,9 @@ const DisplayMap = ({
   const handleLoadMap = () => {
     setLoading(false);
     if (geom) {
-      iframeRef?.current?.contentWindow?.postMessage({ geom }, '*');
+      // geom is a protected-species location — address the frame explicitly
+      // so it is not delivered to whatever origin the frame may hold later.
+      iframeRef?.current?.contentWindow?.postMessage({ geom }, mapsOrigin);
     }
   };
 
@@ -92,7 +94,7 @@ const DisplayMap = ({
         eventName: 'filterFeatures',
         places,
       }),
-      '*',
+      mapsOrigin,
     );
   }, [iframeRef, places]);
 
@@ -105,6 +107,12 @@ const DisplayMap = ({
 
   const handleMapAuthMessage = useCallback(
     async (event: MessageEvent<MapAuthMessageData>) => {
+      // Only the map iframe may tell us the token is dead. Without this any
+      // page that frames us (there is no frame-ancestors policy) could
+      // postMessage `{ auth: { valid: false } }` in a loop and keep deleting
+      // the map token, silently degrading the map to the public view.
+      if (!mapsOrigin || event.origin !== mapsOrigin) return;
+
       const isValidToken = event?.data?.mapIframeMsg?.auth?.valid;
 
       if (isValidToken === false) {
@@ -145,7 +153,8 @@ const DisplayMap = ({
             </StyledIconContainer>
           </StyledButton>
           <StyledIframe
-            allow="geolocation *"
+            allow={`geolocation ${mapsOrigin}`}
+            referrerPolicy="no-referrer"
             title="Radaviečių žemėlapis"
             ref={iframeRef}
             src={mapSrc}

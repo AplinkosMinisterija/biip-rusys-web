@@ -2,7 +2,6 @@ import { isEmpty } from 'lodash';
 import { useMutation, useQuery } from 'react-query';
 import { useNavigate, useParams } from 'react-router-dom';
 import { DeleteInfoProps } from '../../../types';
-import { useMapToken } from '../../../utils/hooks';
 import {
   buttonsTitles,
   deleteDescriptionFirstPart,
@@ -21,7 +20,6 @@ export const useData = () => {
   const navigate = useNavigate();
   const { id = '' } = useParams();
   const { specie, specieLoading } = useGetSpecie(id);
-  const { mapToken } = useMapToken();
 
   const { data: observationForm, isFetching } = useQuery(
     ['form', id],
@@ -57,7 +55,7 @@ export const useData = () => {
 
   const disabled = !!observationForm && !observationForm?.canEdit;
 
-  const mapQueryString = getMapPath(disabled, mapToken);
+  const mapQueryString = getMapPath(disabled);
 
   const formMutation = useMutation(
     (values: FormServerProps) =>
