@@ -35,12 +35,12 @@ export const validateForm = Yup.object().shape(
         },
         then: Yup.object()
           .shape({
-            height: Yup.string()
+            height: Yup.number()
               .required(validationTexts.requireText)
-              .matches(/^(?=.*[1-9])\d*(?:\.\d+)?$/, 'Turi būti teigiama reikšmė'),
-            width: Yup.string()
+              .positive('Turi būti teigiama reikšmė'),
+            width: Yup.number()
               .required(validationTexts.requireText)
-              .matches(/^(?=.*[1-9])\d*(?:\.\d+)?$/, 'Turi būti teigiama reikšmė'),
+              .positive('Turi būti teigiama reikšmė'),
           })
           .nullable(),
       })
@@ -59,11 +59,9 @@ export const validateForm = Yup.object().shape(
             FormTypes.INVASIVE_PLANT,
           ].includes(species?.formType);
 
-          const validateNoQuantityReasonField = getIsInvasivePlant(species)
+          return getIsInvasivePlant(species)
             ? method === PlantAbundanceType.VALUE_0
             : isInvasiveFormType && parseInt(quantity) === 0;
-
-          return validateNoQuantityReasonField;
         },
         then: Yup.string().required(validationTexts.requireSelect).nullable(),
       })
@@ -112,15 +110,13 @@ export const validateForm = Yup.object().shape(
         is: (species: Species) => {
           const formType = species?.formType;
 
-          const hasMethod = [
+          return [
             FormTypes.INVASIVE_CRUSTACEAN,
             FormTypes.INVASIVE_FISH,
             FormTypes.INVASIVE_MOLLUSK,
             FormTypes.INVASIVE_MAMMAL,
             FormTypes.INVASIVE_PLANT,
           ].includes(formType);
-
-          return hasMethod;
         },
         then: Yup.string().required(validationTexts.requireSelect).nullable(),
       })
@@ -226,16 +222,12 @@ export const validateProfileForm = Yup.object().shape({
   firstName: Yup.string()
     .required(validationTexts.requireText)
     .test('validFirstName', validationTexts.validFirstName, (values) => {
-      if (/\d/.test(values || '')) return false;
-
-      return true;
+      return !/\d/.test(values || '');
     }),
   lastName: Yup.string()
     .required(validationTexts.requireText)
     .test('validLastName', validationTexts.validLastName, (values) => {
-      if (/\d/.test(values || '')) return false;
-
-      return true;
+      return !/\d/.test(values || '');
     }),
   phone: Yup.string()
     .required(validationTexts.requireText)
