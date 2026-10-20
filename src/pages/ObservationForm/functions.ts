@@ -6,8 +6,53 @@ import {
   PlantAbundanceType,
   PlantEvolutionState,
 } from '../../utils/constants';
+import { CriteriaOption, CriteriaSign } from '../../types';
 import { isNew } from '../../utils/functions';
 import { inputLabels, pageTitles } from '../../utils/texts';
+
+export type StoredClassifier = { id?: number | null; name?: string };
+
+const resolveStoredOption = (
+  stored: StoredClassifier,
+  vocabulary: CriteriaOption[],
+): CriteriaOption | undefined => {
+  if (!stored.id) return undefined;
+
+  const storedId = stored.id;
+
+  return (
+    vocabulary.find((option) => option.id === storedId) || {
+      id: storedId,
+      name: stored.name || '',
+      value: stored.name || '',
+    }
+  );
+};
+
+export const getSignOptions = (
+  signs: CriteriaSign[],
+  stored: StoredClassifier,
+  vocabulary: CriteriaOption[],
+): CriteriaSign[] => {
+  const option = resolveStoredOption(stored, vocabulary);
+
+  if (!option || signs.some((sign) => sign.id === option.id)) return signs;
+
+  return [{ ...option, stages: [] }, ...signs];
+};
+
+export const getStageOptions = (
+  sign: CriteriaSign | undefined,
+  stored: StoredClassifier,
+  vocabulary: CriteriaOption[],
+): CriteriaOption[] => {
+  const stages = sign?.stages || [];
+  const option = resolveStoredOption(stored, vocabulary);
+
+  if (!option || stages.some((stage) => stage.id === option.id)) return stages;
+
+  return [option, ...stages];
+};
 
 export const setPlaceholder = (value, id) =>
   !value && !isNew(id) ? inputLabels.noData : inputLabels.chooseOption;
