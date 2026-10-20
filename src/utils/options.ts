@@ -1,25 +1,19 @@
-import { map } from 'lodash';
+import { map, uniqBy } from 'lodash';
+import { ClassifierOption } from '../types';
 import {
-  AnimalActivity,
-  AnimalEvolutionState,
+  ClassifierGroups,
   CrustaceanMethodType,
   FishMethodType,
   MammalMethodType,
   MolluskMethodType,
-  MushroomEvolutionState,
   PlantAbundanceType,
-  PlantEvolutionState,
 } from './constants';
 import {
-  animalActivityLabels,
-  animalEvolutionStateLabels,
   crustaceanMethodTypeLabels,
   fishMethodTypeLabels,
   mammalMethodTypeLabels,
   molluskMethodTypeLabels,
-  mushroomEvolutionStateLabels,
   plantAbundanceTypeLabels,
-  plantEvolutionStateLabels,
 } from './texts';
 
 const methodLabels = {
@@ -28,12 +22,6 @@ const methodLabels = {
   ...crustaceanMethodTypeLabels,
   ...mammalMethodTypeLabels,
   ...plantAbundanceTypeLabels,
-};
-
-const evolutionLabels = {
-  ...animalEvolutionStateLabels,
-  ...mushroomEvolutionStateLabels,
-  ...plantEvolutionStateLabels,
 };
 
 export const getMethodOptions = () =>
@@ -53,23 +41,10 @@ export const getMethodOptions = () =>
     }),
   );
 
-export const getEvolutionOptions = () =>
-  map(
-    [
-      ...new Set([
-        ...Object.keys(AnimalEvolutionState),
-        ...Object.keys(MushroomEvolutionState),
-        ...Object.keys(PlantEvolutionState),
-      ]),
-    ],
-    (Status) => ({
-      id: Status,
-      label: evolutionLabels[Status],
-    }),
-  );
-
-export const getActivities = () =>
-  map(AnimalActivity, (Status) => ({
-    id: Status,
-    label: animalActivityLabels[Status],
-  }));
+export const getClassifierFilterOptions = (options: ClassifierOption[], group: ClassifierGroups) =>
+  // A filter sends the code, and the legacy vocabulary seeded GROWING once per form type; keeping
+  // the older row of a repeated code preserves the label these lists showed before.
+  uniqBy(
+    options.filter((option) => option.group === group),
+    'name',
+  ).map((option) => ({ id: option.name, label: option.value }));

@@ -8,7 +8,7 @@ import {
 import Api from '../../../api';
 import { ButtonInfo } from '../../../components/wrappers/PageWrapper';
 import { useGenericTablePageHooks, useTableData } from '../../../state/hooks';
-import { myObservationFilterConfig, observationRowConfig } from '../../../utils/filterConfigs';
+import { observationRowConfig, useMyObservationFilterConfig } from '../../../utils/filterConfigs';
 import { mapMyObservationFilters } from '../../../utils/filters';
 import { useIsTenantUser } from '../../../utils/hooks';
 import { mapObservationList } from '../../../utils/mapFunctions';
@@ -24,13 +24,14 @@ import {
 
 export const useData = () => {
   const { location, navigate, page } = useGenericTablePageHooks();
-  const { value: filters, setValue: setFilters } = useStorage('myFormFilters', {}, true);
+  const { value: filters, setValue: setFilters } = useStorage('myFormFilters.v2', {}, true);
   const { value: columns, setValue: setColumns } = useStorage<Columns>(
     'myFormColumns',
     myObservationFormLabels,
     true,
   );
 
+  const filterConfig = useMyObservationFilterConfig();
   const isTenantUser = useIsTenantUser();
   const tabs = getObservationTabs(isTenantUser);
   const activeTabValue = getActiveTab(tabs, location);
@@ -54,7 +55,7 @@ export const useData = () => {
 
   const filterInfo: DynamicFilterProps = {
     loading,
-    filterConfig: myObservationFilterConfig,
+    filterConfig,
     rowConfig: observationRowConfig,
     onSetFilters: setFilters,
     filters: filters,
