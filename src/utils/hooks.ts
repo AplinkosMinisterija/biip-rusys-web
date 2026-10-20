@@ -29,8 +29,10 @@ export const useFilteredRoutes = () => {
   return filteredRoutes(useGetCurrentProfile());
 };
 
-export const useSpeciesCriteria = (speciesId?: number): SpeciesCriteria => {
-  const { data } = useQuery(
+export const useSpeciesCriteria = (
+  speciesId?: number,
+): { criteria: SpeciesCriteria; isResolved: boolean } => {
+  const { data, isError } = useQuery(
     ['speciesCriteria', speciesId],
     () => api.getSpeciesCriteria(Number(speciesId)),
     {
@@ -43,7 +45,12 @@ export const useSpeciesCriteria = (speciesId?: number): SpeciesCriteria => {
     },
   );
 
-  return data ?? EMPTY_SPECIES_CRITERIA;
+  return {
+    criteria: data ?? EMPTY_SPECIES_CRITERIA,
+    // In flight and failed both look like "this species has no criterion", which would let a
+    // protected species be submitted with no sign at all.
+    isResolved: !speciesId || (!!data && !isError),
+  };
 };
 
 export const useClassifierOptions = (): ClassifierOption[] => {

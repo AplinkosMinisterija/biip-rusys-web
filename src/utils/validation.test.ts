@@ -33,9 +33,10 @@ const errorFor = async (
   resolved: SpeciesCriteria,
   field: string,
   values: Record<string, unknown>,
+  predatesSigns = false,
 ): Promise<string | undefined> => {
   try {
-    await getObservationFormValidationSchema(resolved).validateAt(field, values);
+    await getObservationFormValidationSchema(resolved, predatesSigns).validateAt(field, values);
     return undefined;
   } catch (error) {
     return (error as Yup.ValidationError).message;
@@ -69,6 +70,10 @@ describe('getObservationFormValidationSchema', () => {
 
   it('accepts a stored sign the criterion no longer offers', async () => {
     expect(await errorFor(criteria, 'activityId', { activityId: 41 })).toBe(undefined);
+  });
+
+  it('does not force a sign onto a form stored before the criterion had any', async () => {
+    expect(await errorFor(criteria, 'activityId', { activityId: null }, true)).toBe(undefined);
   });
 
   it('requires neither field while the criterion is still loading', async () => {

@@ -11,10 +11,17 @@ import {
 import {
   crustaceanMethodTypeLabels,
   fishMethodTypeLabels,
+  inputLabels,
   mammalMethodTypeLabels,
   molluskMethodTypeLabels,
   plantAbundanceTypeLabels,
 } from './texts';
+
+// Two vocabulary generations share labels (Kiaušinis, Lėliukė, Suaugęs individas, Jaunas…), and
+// the design-system SelectField drops onChange when the clicked option's label equals the current
+// one — so an unmarked pair makes the live option unselectable and the filter chips ambiguous.
+export const deactivatedOptionLabel = (value: string) =>
+  `${value} (${inputLabels.deactivatedOption})`;
 
 const methodLabels = {
   ...fishMethodTypeLabels,
@@ -47,4 +54,7 @@ export const getClassifierFilterOptions = (options: ClassifierOption[], group: C
   uniqBy(
     options.filter((option) => option.group === group),
     'name',
-  ).map((option) => ({ id: option.name, label: option.value }));
+  ).map((option) => ({
+    id: option.name,
+    label: option.active ? option.value : deactivatedOptionLabel(option.value),
+  }));

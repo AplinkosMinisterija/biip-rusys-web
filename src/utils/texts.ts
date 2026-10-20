@@ -294,6 +294,7 @@ export const formLabels = {
 };
 
 export const inputLabels = {
+  deactivatedOption: 'nebenaudojama',
   area: 'Plotas',
   generating: 'Išrašas kuriamas',
   pdfGenerating: 'PDF išrašas kuriamas',

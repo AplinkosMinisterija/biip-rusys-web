@@ -239,6 +239,7 @@ export interface SpeciesCriteria {
 }
 
 export interface ClassifierOption extends CriteriaOption {
+  active: boolean;
   group: ClassifierGroups;
 }
 

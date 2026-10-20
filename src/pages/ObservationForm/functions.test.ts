@@ -35,7 +35,7 @@ describe('getSignOptions', () => {
     expect(options[0]).toEqual({
       id: 41,
       name: 'HABITATION',
-      value: 'Lizdas, ola ir pan',
+      value: 'Lizdas, ola ir pan (nebenaudojama)',
       stages: [],
     });
   });
@@ -43,11 +43,26 @@ describe('getSignOptions', () => {
   it('falls back to the stored code when the vocabulary has no row', () => {
     const options = getSignOptions(signs, { id: 999, name: 'GONE' }, vocabulary);
 
-    expect(options[0].value).toBe('GONE');
+    expect(options[0].value).toBe('GONE (nebenaudojama)');
   });
 
   it('offers no signs for a species with no criterion', () => {
     expect(getSignOptions([], {}, vocabulary)).toEqual([]);
+  });
+
+  it('keeps the injected option distinct from an offered one carrying the same label', () => {
+    const legacy: CriteriaOption = { id: 10, name: 'MATURE', value: 'Suaugęs individas' };
+    const offered: CriteriaSign = {
+      id: 90,
+      name: 'SUAUGES_INDIVIDAS',
+      value: 'Suaugęs individas',
+      stages: [],
+    };
+
+    const options = getSignOptions([offered], { id: 10, name: 'MATURE' }, [legacy]);
+
+    expect(options).toHaveLength(2);
+    expect(options[0].value).not.toBe(options[1].value);
   });
 });
 
@@ -60,7 +75,7 @@ describe('getStageOptions', () => {
     const options = getStageOptions(sign, { id: 41, name: 'HABITATION' }, vocabulary);
 
     expect(options).toHaveLength(2);
-    expect(options[0].value).toBe('Lizdas, ola ir pan');
+    expect(options[0].value).toBe('Lizdas, ola ir pan (nebenaudojama)');
   });
 
   it('offers nothing when no sign is chosen and nothing is stored', () => {

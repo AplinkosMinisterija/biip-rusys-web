@@ -414,7 +414,7 @@ class Api {
       resource: Resources.FORM_SETTINGS_OPTIONS,
       pageSize: CLASSIFIER_OPTIONS_PAGE_SIZE,
       sort: [SortFields.ID],
-      fields: ['id', 'name', 'value', 'group'],
+      fields: ['id', 'name', 'value', 'group', 'active'],
       query: JSON.stringify({
         group: { $in: [ClassifierGroups.ACTIVITY, ClassifierGroups.EVOLUTION] },
       }),

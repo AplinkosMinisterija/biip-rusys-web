@@ -17,7 +17,12 @@ import { Species, SpeciesCriteria } from '../types';
 
 export const availableMimeTypes = ['image/png', 'image/jpg', 'image/jpeg', 'application/pdf'];
 
-export const getObservationFormValidationSchema = (criteria: SpeciesCriteria) =>
+// `predatesSigns`: a record stored before its criterion offered any sign has no sign to show, and
+// demanding one would make the officer invent a value and lose the stage the old sign never had.
+export const getObservationFormValidationSchema = (
+  criteria: SpeciesCriteria,
+  predatesSigns: boolean,
+) =>
   Yup.object().shape(
     {
       species: Yup.object().required(validationTexts.requireSelect).nullable(),
@@ -69,9 +74,10 @@ export const getObservationFormValidationSchema = (criteria: SpeciesCriteria) =>
       geom: Yup.object().required(validationTexts.requireMap).nullable(),
       observedBy: Yup.string().required(validationTexts.requireText).nullable(),
       observedAt: Yup.date().required(validationTexts.requireSelect).nullable(),
-      activityId: isEmpty(criteria.signs)
-        ? Yup.number().nullable()
-        : Yup.number().required(validationTexts.requireSelect).nullable(),
+      activityId:
+        isEmpty(criteria.signs) || predatesSigns
+          ? Yup.number().nullable()
+          : Yup.number().required(validationTexts.requireSelect).nullable(),
 
       evolutionId: Yup.number()
         .when('activityId', {

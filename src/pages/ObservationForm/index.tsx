@@ -49,8 +49,12 @@ const ObservationFormContent = ({
   mapQueryString,
 }: ObservationFormContentProps) => {
   const [speciesId, setSpeciesId] = useState(initialValues.species?.speciesId);
-  const criteria = useSpeciesCriteria(speciesId);
-  const validationSchema = useMemo(() => getObservationFormValidationSchema(criteria), [criteria]);
+  const { criteria, isResolved } = useSpeciesCriteria(speciesId);
+  const predatesSigns = !isNew(id) && initialValues.activityId == null;
+  const validationSchema = useMemo(
+    () => getObservationFormValidationSchema(criteria, predatesSigns),
+    [criteria, predatesSigns],
+  );
 
   const renderForm = (
     values: FormProps,
@@ -155,6 +159,7 @@ const ObservationFormContent = ({
       onSubmit={handleSubmit}
       renderForm={renderForm}
       validationSchema={validationSchema}
+      canSubmit={isResolved}
       disabled={disabled}
       submitButtonText={buttonsTitles.submit}
       deleteInfo={deleteInfo}

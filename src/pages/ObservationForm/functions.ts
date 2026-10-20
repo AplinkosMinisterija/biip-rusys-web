@@ -2,25 +2,23 @@ import { isEqual } from 'lodash';
 import { FormTypes, PlantAbundanceType } from '../../utils/constants';
 import { CriteriaOption, CriteriaSign } from '../../types';
 import { isNew } from '../../utils/functions';
+import { deactivatedOptionLabel } from '../../utils/options';
 import { inputLabels, pageTitles } from '../../utils/texts';
 
 export type StoredClassifier = { id?: number | null; name?: string };
 
-const resolveStoredOption = (
-  stored: StoredClassifier,
+const resolveDeactivatedOption = (
+  storedId: number,
+  storedName: string | undefined,
   vocabulary: CriteriaOption[],
-): CriteriaOption | undefined => {
-  if (!stored.id) return undefined;
+): CriteriaOption => {
+  const known = vocabulary.find((option) => option.id === storedId);
 
-  const storedId = stored.id;
-
-  return (
-    vocabulary.find((option) => option.id === storedId) || {
-      id: storedId,
-      name: stored.name || '',
-      value: stored.name || '',
-    }
-  );
+  return {
+    id: storedId,
+    name: known?.name || storedName || '',
+    value: deactivatedOptionLabel(known?.value || storedName || ''),
+  };
 };
 
 export const getSignOptions = (
@@ -28,11 +26,12 @@ export const getSignOptions = (
   stored: StoredClassifier,
   vocabulary: CriteriaOption[],
 ): CriteriaSign[] => {
-  const option = resolveStoredOption(stored, vocabulary);
+  if (!stored.id || signs.some((sign) => sign.id === stored.id)) return signs;
 
-  if (!option || signs.some((sign) => sign.id === option.id)) return signs;
-
-  return [{ ...option, stages: [] }, ...signs];
+  return [
+    { ...resolveDeactivatedOption(stored.id, stored.name, vocabulary), stages: [] },
+    ...signs,
+  ];
 };
 
 export const getStageOptions = (
@@ -41,11 +40,10 @@ export const getStageOptions = (
   vocabulary: CriteriaOption[],
 ): CriteriaOption[] => {
   const stages = sign?.stages || [];
-  const option = resolveStoredOption(stored, vocabulary);
 
-  if (!option || stages.some((stage) => stage.id === option.id)) return stages;
+  if (!stored.id || stages.some((stage) => stage.id === stored.id)) return stages;
 
-  return [option, ...stages];
+  return [resolveDeactivatedOption(stored.id, stored.name, vocabulary), ...stages];
 };
 
 export const setPlaceholder = (value, id) =>
