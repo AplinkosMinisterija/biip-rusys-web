@@ -70,4 +70,11 @@ describe('getObservationFormValidationSchema', () => {
   it('accepts a stored sign the criterion no longer offers', async () => {
     expect(await errorFor(criteria, 'activityId', { activityId: 41 })).toBe(undefined);
   });
+
+  it('requires neither field while the criterion is still loading', async () => {
+    const values = { activityId: null, evolutionId: null };
+
+    expect(await errorFor(EMPTY_SPECIES_CRITERIA, 'activityId', values)).toBe(undefined);
+    expect(await errorFor(EMPTY_SPECIES_CRITERIA, 'evolutionId', values)).toBe(undefined);
+  });
 });

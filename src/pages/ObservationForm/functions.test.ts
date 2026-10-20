@@ -45,6 +45,10 @@ describe('getSignOptions', () => {
 
     expect(options[0].value).toBe('GONE');
   });
+
+  it('offers no signs for a species with no criterion', () => {
+    expect(getSignOptions([], {}, vocabulary)).toEqual([]);
+  });
 });
 
 describe('getStageOptions', () => {

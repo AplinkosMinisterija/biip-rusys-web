@@ -1,4 +1,5 @@
 import { AsyncSelectField } from '@aplinkosministerija/design-system';
+import { useMemo, useState } from 'react';
 import { StatusModal } from '../../components/other/StatusModal';
 import Api from './../../api';
 import FormHistoryContainer from './../../components/containers/FormHistoryContainer';
@@ -7,8 +8,8 @@ import LoaderComponent from './../../components/other/LoaderComponent';
 import FormPageWrapper from './../../components/wrappers/FormikFormPageWrapper';
 import { ColumnOne, ColumnTwo, InnerContainer } from '../../styles/GenericStyledComponents';
 import { HandleChangeType, SpeciesSearchProp } from '../../types';
-import { EMPTY_SPECIES_CRITERIA } from '../../utils/constants';
 import { getSpeciesList, isNew, speciesOptionLabel } from '../../utils/functions';
+import { useSpeciesCriteria } from '../../utils/hooks';
 import {
   buttonsTitles,
   formLabels,
@@ -16,7 +17,7 @@ import {
   observationFormActionLabels,
   observationFormHistoryLabels,
 } from '../../utils/texts';
-import { validateForm } from '../../utils/validation';
+import { getObservationFormValidationSchema } from '../../utils/validation';
 import { ObservedSpecieDataContainer } from './components/ObservedSpecieDataContainer';
 import { ObserverDataContainer } from './components/ObserverDataContainer';
 import { ObservationMapContainer } from './components/ObservationMapContainer';
@@ -25,16 +26,31 @@ import { title } from './functions';
 import { useData } from './hooks/useData';
 import { FormProps, ObservationFormErrors, SetObservationFormValues } from './types';
 
+type ObservationFormContentProps = Omit<ReturnType<typeof useData>, 'loading'> & { id: string };
+
 const ObservationForm = () => {
-  const {
-    initialValues,
-    id = '',
-    deleteInfo,
-    disabled,
-    loading,
-    handleSubmit,
-    mapQueryString,
-  } = useData();
+  const { loading, ...data } = useData();
+
+  if (loading) {
+    return <LoaderComponent />;
+  }
+
+  return <ObservationFormContent {...data} id={data.id || ''} />;
+};
+
+// Split so the species reaches the criteria query: useState reads its initial value on mount,
+// and on a single component that mount happens while useData is still loading.
+const ObservationFormContent = ({
+  initialValues,
+  id,
+  deleteInfo,
+  disabled,
+  handleSubmit,
+  mapQueryString,
+}: ObservationFormContentProps) => {
+  const [speciesId, setSpeciesId] = useState(initialValues.species?.speciesId);
+  const criteria = useSpeciesCriteria(speciesId);
+  const validationSchema = useMemo(() => getObservationFormValidationSchema(criteria), [criteria]);
 
   const renderForm = (
     values: FormProps,
@@ -45,13 +61,16 @@ const ObservationForm = () => {
     const setObservationValues = setValues ?? (() => undefined);
 
     const handleUpdateSpecie = (species: SpeciesSearchProp) => {
+      setSpeciesId(species?.speciesId);
       setObservationValues({
         ...values,
         species,
         evolution: undefined,
+        evolutionId: null,
         method: '',
         methodValue: '',
         activity: undefined,
+        activityId: null,
       });
     };
 
@@ -84,7 +103,7 @@ const ObservationForm = () => {
             handleChange={handleChange}
             disabled={disabled}
             setValues={setObservationValues}
-            criteria={EMPTY_SPECIES_CRITERIA}
+            criteria={criteria}
           />
           <ObservationMapContainer
             values={values}
@@ -128,9 +147,6 @@ const ObservationForm = () => {
     );
   };
 
-  if (loading) {
-    return <LoaderComponent />;
-  }
   return (
     <FormPageWrapper
       twoColumn={!isNew(id)}
@@ -138,7 +154,7 @@ const ObservationForm = () => {
       initialValues={initialValues}
       onSubmit={handleSubmit}
       renderForm={renderForm}
-      validationSchema={validateForm}
+      validationSchema={validationSchema}
       disabled={disabled}
       submitButtonText={buttonsTitles.submit}
       deleteInfo={deleteInfo}
