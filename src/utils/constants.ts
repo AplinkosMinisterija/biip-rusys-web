@@ -1,3 +1,5 @@
+import type { SpeciesCriteria } from '../types';
+
 export enum AnimalActivity {
   FAECES = 'FAECES',
   CUD = 'CUD',
@@ -112,6 +114,8 @@ export enum Resources {
   TAXONOMY = 'taxonomy',
   UPLOAD = 'upload',
   CAN_EDIT = 'canEdit',
+  FORM_CRITERIA = 'forms/criteria',
+  FORM_SETTINGS_OPTIONS = 'forms/settings/options',
 }
 
 export enum PlantAbundanceType {
@@ -138,6 +142,7 @@ export enum SortFields {
   CREATED_AT = '-createdAt',
   LAST_NAME = 'lastName',
   NAME = 'name',
+  ID = 'id',
 }
 
 export enum LoadingTypes {
@@ -302,3 +307,14 @@ export enum ButtonColors {
   DANGER_OUTLINE = 'dangerOutline',
   TEXT_ONLY = 'textOnly',
 }
+
+export enum ClassifierGroups {
+  ACTIVITY = 'ACTIVITY',
+  EVOLUTION = 'EVOLUTION',
+}
+
+export const CLASSIFIER_STALE_TIME = 60 * 60 * 1000;
+
+export const CLASSIFIER_OPTIONS_PAGE_SIZE = '500';
+
+export const EMPTY_SPECIES_CRITERIA: SpeciesCriteria = { criteria: null, signs: [] };

@@ -1,13 +1,11 @@
 import { FeatureCollection } from '@aplinkosministerija/design-system';
 import {
-  AnimalActivity,
-  AnimalEvolutionState,
+  ClassifierGroups,
   FormStatusTypes,
   FormTypes,
   HistoryTypes,
   KingdomTypes,
   MeasurementUnits,
-  PlantEvolutionState,
   RequestDocumentType,
   RequestTypes,
   RolesTypes,
@@ -218,9 +216,30 @@ export interface Form {
   observedBy?: string;
   photos: FileProps[] | File[] | any[];
   observedAt: Date;
-  evolution?: AnimalEvolutionState | PlantEvolutionState;
-  activity?: AnimalActivity;
+  evolution?: string;
+  evolutionId?: number | null;
+  activity?: string;
+  activityId?: number | null;
   noQuantityReason?: FormNoQuantityReason;
+}
+
+export interface CriteriaOption {
+  id: number;
+  name: string;
+  value: string;
+}
+
+export interface CriteriaSign extends CriteriaOption {
+  stages: CriteriaOption[];
+}
+
+export interface SpeciesCriteria {
+  criteria: { id: number; name: string } | null;
+  signs: CriteriaSign[];
+}
+
+export interface ClassifierOption extends CriteriaOption {
+  group: ClassifierGroups;
 }
 
 export interface Request {

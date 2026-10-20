@@ -32,14 +32,15 @@ export const getAnimalPlantOptions = (formType: FormTypes) => {
 
 export const getAnimalActivityOptions = () => Object.keys(AnimalActivity);
 
-export const getAnimalEvolutionOptions = (activity?: AnimalActivity) =>
+export const getAnimalEvolutionOptions = (activity?: string) =>
   Object.keys(AnimalEvolutionState).filter((evolution) => {
     if (isEqual(activity, AnimalActivity.HABITATION)) {
       return true;
     }
 
     const showAgeOptions =
-      activity && [AnimalActivity.OBSERVED_ALIVE, AnimalActivity.OTHER].includes(activity);
+      activity &&
+      [AnimalActivity.OBSERVED_ALIVE, AnimalActivity.OTHER].some((option) => option === activity);
 
     if (showAgeOptions) {
       return [AnimalEvolutionState.IMMATURE, AnimalEvolutionState.MATURE].includes(

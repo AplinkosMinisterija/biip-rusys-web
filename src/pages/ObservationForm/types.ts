@@ -7,12 +7,7 @@ import {
   SpeciesSearchProp,
   Transect,
 } from '../../types';
-import {
-  AnimalActivity,
-  AnimalEvolutionState,
-  PlantEvolutionState,
-  StatusTypes,
-} from '../../utils/constants';
+import { StatusTypes } from '../../utils/constants';
 
 export type ObservationPhoto = FileProps | File;
 export type ObservationGeom = FeatureCollection | '';
@@ -37,8 +32,8 @@ export interface FormProps {
   isCorrectFormInformation: boolean;
   status?: StatusTypes;
   comment?: string;
-  evolution?: AnimalEvolutionState | PlantEvolutionState;
-  activity?: AnimalActivity;
+  evolution?: string;
+  activity?: string;
   noQuantityReason?: FormNoQuantityReason;
 }
 
@@ -55,8 +50,8 @@ export interface FormServerProps {
   observedAt: Date | undefined;
   status?: StatusTypes;
   comment?: string;
-  evolution?: AnimalEvolutionState | PlantEvolutionState;
-  activity: AnimalActivity | undefined;
+  evolution?: string;
+  activity?: string;
   noQuantityReason?: FormNoQuantityReason;
 }
 

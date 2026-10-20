@@ -4,17 +4,25 @@ import Cookies from 'universal-cookie';
 import { FormServerProps } from './pages/ObservationForm/types';
 import { RequestFormServerProps } from './pages/RequestForm/types';
 import {
+  ClassifierOption,
   Form,
   FormFiltersProps,
   Request,
   RequestFilterProps,
   Species,
+  SpeciesCriteria,
   SpeciesSearchProp,
   Tenant,
   User,
   UserFilters,
 } from './types';
-import { Populations, Resources, SortFields } from './utils/constants';
+import {
+  CLASSIFIER_OPTIONS_PAGE_SIZE,
+  ClassifierGroups,
+  Populations,
+  Resources,
+  SortFields,
+} from './utils/constants';
 const cookies = new Cookies();
 
 interface GetAll {
@@ -394,6 +402,26 @@ class Api {
       fields,
       page,
     });
+
+  getSpeciesCriteria = async (speciesId: number): Promise<SpeciesCriteria> =>
+    await this.getOne({
+      resource: `${Resources.FORM_CRITERIA}/species/${speciesId}`,
+    });
+
+  getClassifierOptions = async (): Promise<ClassifierOption[]> => {
+    // Oldest id first: the filter dropdowns keep the first row of a repeated code.
+    const { rows } = await this.get({
+      resource: Resources.FORM_SETTINGS_OPTIONS,
+      pageSize: CLASSIFIER_OPTIONS_PAGE_SIZE,
+      sort: [SortFields.ID],
+      fields: ['id', 'name', 'value', 'group'],
+      query: JSON.stringify({
+        group: { $in: [ClassifierGroups.ACTIVITY, ClassifierGroups.EVOLUTION] },
+      }),
+    });
+
+    return rows;
+  };
 
   createObservationForm = async (params: FormServerProps): Promise<Form> => {
     return await this.post({

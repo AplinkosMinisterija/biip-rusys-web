@@ -10,8 +10,8 @@ import { actions as tenantAction } from '../state/tenant/reducer';
 import { actions as userAction } from '../state/user/reducer';
 import { actions } from '../state/users/reducer';
 import { device } from '../styles';
-import { Tenant, User } from '../types';
-import { ServerErrorCodes } from './constants';
+import { ClassifierOption, SpeciesCriteria, Tenant, User } from '../types';
+import { CLASSIFIER_STALE_TIME, EMPTY_SPECIES_CRITERIA, ServerErrorCodes } from './constants';
 import {
   handleErrorFromServerToast,
   handleIsTenantOwner,
@@ -27,6 +27,35 @@ const MAP_TOKEN_INVALIDATION_COOLDOWN_MS = 30000;
 
 export const useFilteredRoutes = () => {
   return filteredRoutes(useGetCurrentProfile());
+};
+
+export const useSpeciesCriteria = (speciesId?: number): SpeciesCriteria => {
+  const { data } = useQuery(
+    ['speciesCriteria', speciesId],
+    () => api.getSpeciesCriteria(Number(speciesId)),
+    {
+      onError: () => {
+        handleErrorFromServerToast();
+      },
+      enabled: !!speciesId,
+      staleTime: CLASSIFIER_STALE_TIME,
+      retry: false,
+    },
+  );
+
+  return data ?? EMPTY_SPECIES_CRITERIA;
+};
+
+export const useClassifierOptions = (): ClassifierOption[] => {
+  const { data } = useQuery(['classifierOptions'], () => api.getClassifierOptions(), {
+    onError: () => {
+      handleErrorFromServerToast();
+    },
+    staleTime: CLASSIFIER_STALE_TIME,
+    retry: false,
+  });
+
+  return data ?? [];
 };
 
 export const useGetCurrentProfile = () => {
