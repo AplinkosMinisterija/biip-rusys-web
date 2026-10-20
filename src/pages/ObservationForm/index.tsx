@@ -7,6 +7,7 @@ import LoaderComponent from './../../components/other/LoaderComponent';
 import FormPageWrapper from './../../components/wrappers/FormikFormPageWrapper';
 import { ColumnOne, ColumnTwo, InnerContainer } from '../../styles/GenericStyledComponents';
 import { HandleChangeType, SpeciesSearchProp } from '../../types';
+import { EMPTY_SPECIES_CRITERIA } from '../../utils/constants';
 import { getSpeciesList, isNew, speciesOptionLabel } from '../../utils/functions';
 import {
   buttonsTitles,
@@ -83,6 +84,7 @@ const ObservationForm = () => {
             handleChange={handleChange}
             disabled={disabled}
             setValues={setObservationValues}
+            criteria={EMPTY_SPECIES_CRITERIA}
           />
           <ObservationMapContainer
             values={values}
