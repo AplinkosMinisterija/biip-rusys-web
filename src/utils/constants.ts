@@ -1,36 +1,5 @@
 import type { SpeciesCriteria } from '../types';
 
-export enum AnimalActivity {
-  FAECES = 'FAECES',
-  CUD = 'CUD',
-  HABITATION = 'HABITATION',
-  OBSERVED_FOOTPRINT = 'OBSERVED_FOOTPRINT',
-  OBSERVED_ALIVE = 'OBSERVED_ALIVE',
-  OTHER = 'OTHER',
-}
-
-export enum AnimalEvolutionState {
-  EGG = 'EGG',
-  LARVA = 'LARVA',
-  IMMATURE = 'IMMATURE',
-  PUPA = 'PUPA',
-  DEAD = 'DEAD',
-  MATURE = 'MATURE',
-}
-
-export enum PlantEvolutionState {
-  GROWING = 'GROWING',
-  VEGETATING = 'VEGETATING',
-  BLOOMING = 'BLOOMING',
-  FRUIT_BEARING = 'FRUIT_BEARING',
-  DRY = 'DRY',
-}
-
-export enum MushroomEvolutionState {
-  GROWING = 'GROWING',
-  DRIED_UP = 'DRIED_UP',
-}
-
 export enum HistoryTypes {
   CREATED = 'CREATED',
   UPDATED = 'UPDATED',

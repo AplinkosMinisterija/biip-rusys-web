@@ -1,11 +1,5 @@
 import { isEqual } from 'lodash';
-import {
-  AnimalActivity,
-  AnimalEvolutionState,
-  FormTypes,
-  PlantAbundanceType,
-  PlantEvolutionState,
-} from '../../utils/constants';
+import { FormTypes, PlantAbundanceType } from '../../utils/constants';
 import { CriteriaOption, CriteriaSign } from '../../types';
 import { isNew } from '../../utils/functions';
 import { inputLabels, pageTitles } from '../../utils/texts';
@@ -63,38 +57,6 @@ export const title = (disabled: boolean, id: string) => {
 
   return pageTitles.updateForm;
 };
-
-export const getAnimalPlantOptions = (formType: FormTypes) => {
-  const isMushroomKingdom = isEqual(formType, FormTypes.ENDANGERED_MUSHROOM);
-
-  return Object.keys(PlantEvolutionState).filter((evolution) => {
-    if (isEqual(evolution, PlantEvolutionState.GROWING)) {
-      return isMushroomKingdom;
-    }
-    return true;
-  });
-};
-
-export const getAnimalActivityOptions = () => Object.keys(AnimalActivity);
-
-export const getAnimalEvolutionOptions = (activity?: string) =>
-  Object.keys(AnimalEvolutionState).filter((evolution) => {
-    if (isEqual(activity, AnimalActivity.HABITATION)) {
-      return true;
-    }
-
-    const showAgeOptions =
-      activity &&
-      [AnimalActivity.OBSERVED_ALIVE, AnimalActivity.OTHER].some((option) => option === activity);
-
-    if (showAgeOptions) {
-      return [AnimalEvolutionState.IMMATURE, AnimalEvolutionState.MATURE].includes(
-        evolution as AnimalEvolutionState,
-      );
-    }
-
-    return false;
-  });
 
 export const getMapPath = (disabled = false, authToken?: string) => {
   const param = new URLSearchParams();
