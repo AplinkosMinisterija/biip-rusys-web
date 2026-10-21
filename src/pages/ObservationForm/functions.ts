@@ -1,40 +1,13 @@
 import { isEqual } from 'lodash';
-import { FormTypes, PlantAbundanceType } from '../../utils/constants';
-import { CriteriaOption, CriteriaSign } from '../../types';
+import {
+  AnimalActivity,
+  AnimalEvolutionState,
+  FormTypes,
+  PlantAbundanceType,
+  PlantEvolutionState,
+} from '../../utils/constants';
 import { isNew } from '../../utils/functions';
-import { deactivatedOptionLabel } from '../../utils/options';
 import { inputLabels, pageTitles } from '../../utils/texts';
-
-const asOffered = (option: CriteriaOption): CriteriaOption => ({
-  ...option,
-  value: deactivatedOptionLabel(option.value),
-});
-
-export const getSignOptions = (
-  signs: CriteriaSign[],
-  storedId: number | null | undefined,
-  stored?: CriteriaOption,
-): CriteriaSign[] => {
-  if (!storedId || stored?.id !== storedId || signs.some((sign) => sign.id === storedId)) {
-    return signs;
-  }
-
-  return [{ ...asOffered(stored), stages: [] }, ...signs];
-};
-
-export const getStageOptions = (
-  sign: CriteriaSign | undefined,
-  storedId: number | null | undefined,
-  stored?: CriteriaOption,
-): CriteriaOption[] => {
-  const stages = sign?.stages || [];
-
-  if (!storedId || stored?.id !== storedId || stages.some((stage) => stage.id === storedId)) {
-    return stages;
-  }
-
-  return [asOffered(stored), ...stages];
-};
 
 export const setPlaceholder = (value, id) =>
   !value && !isNew(id) ? inputLabels.noData : inputLabels.chooseOption;
@@ -45,6 +18,37 @@ export const title = (disabled: boolean, id: string) => {
 
   return pageTitles.updateForm;
 };
+
+export const getAnimalPlantOptions = (formType: FormTypes) => {
+  const isMushroomKingdom = isEqual(formType, FormTypes.ENDANGERED_MUSHROOM);
+
+  return Object.keys(PlantEvolutionState).filter((evolution) => {
+    if (isEqual(evolution, PlantEvolutionState.GROWING)) {
+      return isMushroomKingdom;
+    }
+    return true;
+  });
+};
+
+export const getAnimalActivityOptions = () => Object.keys(AnimalActivity);
+
+export const getAnimalEvolutionOptions = (activity?: AnimalActivity) =>
+  Object.keys(AnimalEvolutionState).filter((evolution) => {
+    if (isEqual(activity, AnimalActivity.HABITATION)) {
+      return true;
+    }
+
+    const showAgeOptions =
+      activity && [AnimalActivity.OBSERVED_ALIVE, AnimalActivity.OTHER].includes(activity);
+
+    if (showAgeOptions) {
+      return [AnimalEvolutionState.IMMATURE, AnimalEvolutionState.MATURE].includes(
+        evolution as AnimalEvolutionState,
+      );
+    }
+
+    return false;
+  });
 
 export const getMapPath = (disabled = false, authToken?: string) => {
   const param = new URLSearchParams();
