@@ -294,6 +294,7 @@ export const formLabels = {
 };
 
 export const inputLabels = {
+  deactivatedOption: 'istorinė reikšmė',
   area: 'Plotas',
   generating: 'Išrašas kuriamas',
   pdfGenerating: 'PDF išrašas kuriamas',

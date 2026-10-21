@@ -224,6 +224,8 @@ export interface CriteriaOption {
   id: number;
   name: string;
   value: string;
+  // Only a populated form classifier carries this; a criterion's own options never do.
+  active?: boolean;
 }
 
 export interface CriteriaSign extends CriteriaOption {
