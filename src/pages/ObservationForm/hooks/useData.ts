@@ -91,8 +91,8 @@ export const useData = () => {
       observedAt,
       photos,
       comment,
-      evolutionId,
-      activityId,
+      evolution,
+      activity,
       transect,
       noQuantityReason,
     } = values;
@@ -109,8 +109,8 @@ export const useData = () => {
       ...(geom && { geom }),
       comment,
       photos,
-      evolutionId,
-      activityId,
+      evolution,
+      activity,
       transect,
       noQuantityReason,
     };
@@ -133,14 +133,16 @@ export const useData = () => {
     geom: observationForm?.geom || '',
     observedBy: observationForm?.observedBy || '',
     isCorrectFormInformation: disabled,
-    evolutionId: observationForm?.evolutionId ?? null,
-    activityId: observationForm?.activityId ?? null,
+    evolution: observationForm?.evolution?.id ?? null,
+    activity: observationForm?.activity?.id ?? null,
     noQuantityReason: observationForm?.noQuantityReason,
   };
 
   return {
     handleSubmit,
     deleteInfo,
+    storedSign: observationForm?.activity,
+    storedStage: observationForm?.evolution,
     loading: isFetching || specieLoading,
     mapQueryString,
     initialValues,

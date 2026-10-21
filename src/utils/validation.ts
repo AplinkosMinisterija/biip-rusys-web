@@ -84,15 +84,15 @@ export const getObservationFormValidationSchema = ({
       geom: Yup.object().required(validationTexts.requireMap).nullable(),
       observedBy: Yup.string().required(validationTexts.requireText).nullable(),
       observedAt: Yup.date().required(validationTexts.requireSelect).nullable(),
-      activityId:
+      activity:
         isEmpty(criteria.signs) || predatesSigns
           ? Yup.number().nullable()
           : Yup.number().required(validationTexts.requireSelect).nullable(),
 
-      evolutionId: Yup.number()
-        .when('activityId', {
-          is: (activityId: number) =>
-            !isEmpty(criteria.signs.find((sign) => sign.id === activityId)?.stages),
+      evolution: Yup.number()
+        .when('activity', {
+          is: (activity: number) =>
+            !isEmpty(criteria.signs.find((sign) => sign.id === activity)?.stages),
           then: Yup.number().required(validationTexts.requireSelect).nullable(),
         })
         .nullable(),

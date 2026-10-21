@@ -10,7 +10,7 @@ import { actions as tenantAction } from '../state/tenant/reducer';
 import { actions as userAction } from '../state/user/reducer';
 import { actions } from '../state/users/reducer';
 import { device } from '../styles';
-import { ClassifierOption, SpeciesCriteria, Tenant, User } from '../types';
+import { SpeciesCriteria, Tenant, User } from '../types';
 import { CLASSIFIER_STALE_TIME, EMPTY_SPECIES_CRITERIA, ServerErrorCodes } from './constants';
 import {
   handleErrorFromServerToast,
@@ -50,18 +50,6 @@ export const useSpeciesCriteria = (
     // A failed lookup looks exactly like "no criterion", which would save a protected species unsigned.
     failed: !!speciesId && isError,
   };
-};
-
-export const useClassifierOptions = (): ClassifierOption[] => {
-  const { data } = useQuery(['classifierOptions'], () => api.getClassifierOptions(), {
-    onError: () => {
-      handleErrorFromServerToast();
-    },
-    staleTime: CLASSIFIER_STALE_TIME,
-    retry: false,
-  });
-
-  return data ?? [];
 };
 
 export const useGetCurrentProfile = () => {

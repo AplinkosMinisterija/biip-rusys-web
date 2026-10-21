@@ -11,7 +11,6 @@ import {
   molluskMethodTypeOptions,
   plantAbundanceTypeOptions,
 } from '../../../utils/functions';
-import { useClassifierOptions } from '../../../utils/hooks';
 import {
   getShowNoQuantityReasonField,
   getSignOptions,
@@ -39,9 +38,10 @@ export const SpecieActivity = ({
   setValues,
   handleChange,
   criteria,
+  storedSign,
+  storedStage,
 }: SpecieActivityProps) => {
   const { id } = useParams();
-  const classifierOptions = useClassifierOptions();
   const formType = values?.species?.formType ? values?.species?.formType : '';
 
   const hasMethod =
@@ -192,18 +192,18 @@ export const SpecieActivity = ({
       </Row>
     );
 
-  const signOptions = getSignOptions(criteria.signs, values.activityId, classifierOptions);
-  const selectedSign = signOptions.find((sign) => sign.id === values.activityId);
+  const signOptions = getSignOptions(criteria.signs, values.activity, storedSign);
+  const selectedSign = signOptions.find((sign) => sign.id === values.activity);
 
-  const stageOptions = getStageOptions(selectedSign, values.evolutionId, classifierOptions);
-  const selectedStage = stageOptions.find((stage) => stage.id === values.evolutionId);
+  const stageOptions = getStageOptions(selectedSign, values.evolution, storedStage);
+  const selectedStage = stageOptions.find((stage) => stage.id === values.evolution);
 
   // A stage is only ever offered through a sign, so a new sign invalidates the stored one.
   const handleSetSign = (sign?: CriteriaSign) =>
-    setValues({ ...values, activityId: sign?.id ?? null, evolutionId: null });
+    setValues({ ...values, activity: sign?.id ?? null, evolution: null });
 
   const handleSetStage = (stage?: CriteriaOption) =>
-    setValues({ ...values, evolutionId: stage?.id ?? null });
+    setValues({ ...values, evolution: stage?.id ?? null });
 
   return (
     <>
@@ -212,12 +212,12 @@ export const SpecieActivity = ({
           disabled={disabled}
           label={inputLabels.activity}
           value={selectedSign}
-          error={errors.activityId}
-          name="activityId"
+          error={errors.activity}
+          name="activity"
           onChange={handleSetSign}
           options={signOptions}
           getOptionLabel={(option: CriteriaOption) => option.value}
-          placeholder={setPlaceholder(values.activityId, id)}
+          placeholder={setPlaceholder(values.activity, id)}
         />
       )}
       {!isEmpty(stageOptions) && (
@@ -225,12 +225,12 @@ export const SpecieActivity = ({
           disabled={disabled}
           label={inputLabels.evolution}
           value={selectedStage}
-          error={errors.evolutionId}
-          name="evolutionId"
+          error={errors.evolution}
+          name="evolution"
           onChange={handleSetStage}
           options={stageOptions}
           getOptionLabel={(option: CriteriaOption) => option.value}
-          placeholder={setPlaceholder(values.evolutionId, id)}
+          placeholder={setPlaceholder(values.evolution, id)}
         />
       )}
     </>

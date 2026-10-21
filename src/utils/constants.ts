@@ -104,6 +104,8 @@ export enum PlantAbundanceType {
 export enum Populations {
   SOURCE = 'source',
   ROLE = 'role',
+  ACTIVITY = 'activity',
+  EVOLUTION = 'evolution',
 }
 
 export enum SortFields {

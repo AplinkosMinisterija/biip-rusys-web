@@ -216,10 +216,8 @@ export interface Form {
   observedBy?: string;
   photos: FileProps[] | File[] | any[];
   observedAt: Date;
-  evolution?: string;
-  evolutionId?: number | null;
-  activity?: string;
-  activityId?: number | null;
+  evolution?: CriteriaOption;
+  activity?: CriteriaOption;
   noQuantityReason?: FormNoQuantityReason;
 }
 
@@ -351,9 +349,9 @@ export interface FormFiltersProps {
   state?: { $in: StatusTypes[] };
   status?: { $in: FormStatusTypes[] };
   method?: string;
-  evolution?: string;
+  evolution?: number;
   source?: string;
   eunis?: string;
-  activity?: string;
+  activity?: number;
   noQuantityReason?: FormNoQuantityReason;
 }

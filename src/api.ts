@@ -340,6 +340,8 @@ class Api {
         Resources.CAN_EDIT,
         Resources.GEOM,
         Populations.SOURCE,
+        Populations.ACTIVITY,
+        Populations.EVOLUTION,
       ],
       id,
     });
@@ -400,15 +402,6 @@ class Api {
   getSpeciesCriteria = async (speciesId: number): Promise<SpeciesCriteria> =>
     await this.getOne({
       resource: `${Resources.FORM_CRITERIA}/species/${speciesId}`,
-    });
-
-  getClassifierOptions = async (): Promise<ClassifierOption[]> =>
-    await this.getAll({
-      resource: Resources.FORM_SETTINGS_OPTIONS,
-      fields: ['id', 'name', 'value', 'group', 'active'],
-      query: JSON.stringify({
-        group: { $in: [ClassifierGroups.ACTIVITY, ClassifierGroups.EVOLUTION] },
-      }),
     });
 
   getClassifierOptionsPage = async (

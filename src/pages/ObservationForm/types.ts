@@ -4,6 +4,7 @@ import {
   FormNoQuantityReason,
   HandleChangeType,
   Sources,
+  CriteriaOption,
   SpeciesCriteria,
   SpeciesSearchProp,
   Transect,
@@ -33,8 +34,8 @@ export interface FormProps {
   isCorrectFormInformation: boolean;
   status?: StatusTypes;
   comment?: string;
-  evolutionId?: number | null;
-  activityId?: number | null;
+  evolution?: number | null;
+  activity?: number | null;
   noQuantityReason?: FormNoQuantityReason;
 }
 
@@ -51,8 +52,8 @@ export interface FormServerProps {
   observedAt: Date | undefined;
   status?: StatusTypes;
   comment?: string;
-  evolutionId?: number | null;
-  activityId?: number | null;
+  evolution?: number | null;
+  activity?: number | null;
   noQuantityReason?: FormNoQuantityReason;
 }
 
@@ -63,6 +64,8 @@ export interface SpecieActivityProps {
   handleChange: HandleChangeType;
   disabled: boolean;
   criteria: SpeciesCriteria;
+  storedSign?: CriteriaOption;
+  storedStage?: CriteriaOption;
 }
 
 export interface ObservedSpecieDataContainerProps {
@@ -72,6 +75,8 @@ export interface ObservedSpecieDataContainerProps {
   handleChange: HandleChangeType;
   disabled: boolean;
   criteria: SpeciesCriteria;
+  storedSign?: CriteriaOption;
+  storedStage?: CriteriaOption;
 }
 
 export interface ObserverDataContainerProps {

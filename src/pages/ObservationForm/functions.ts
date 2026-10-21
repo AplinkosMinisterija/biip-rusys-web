@@ -5,39 +5,35 @@ import { isNew } from '../../utils/functions';
 import { deactivatedOptionLabel } from '../../utils/options';
 import { inputLabels, pageTitles } from '../../utils/texts';
 
-const deactivatedOption = (
-  storedId: number,
-  vocabulary: CriteriaOption[],
-): CriteriaOption | undefined => {
-  const option = vocabulary.find((row) => row.id === storedId);
-
-  return option && { ...option, value: deactivatedOptionLabel(option.value) };
-};
+const asOffered = (option: CriteriaOption): CriteriaOption => ({
+  ...option,
+  value: deactivatedOptionLabel(option.value),
+});
 
 export const getSignOptions = (
   signs: CriteriaSign[],
   storedId: number | null | undefined,
-  vocabulary: CriteriaOption[],
+  stored?: CriteriaOption,
 ): CriteriaSign[] => {
-  if (!storedId || signs.some((sign) => sign.id === storedId)) return signs;
+  if (!storedId || stored?.id !== storedId || signs.some((sign) => sign.id === storedId)) {
+    return signs;
+  }
 
-  const option = deactivatedOption(storedId, vocabulary);
-
-  return option ? [{ ...option, stages: [] }, ...signs] : signs;
+  return [{ ...asOffered(stored), stages: [] }, ...signs];
 };
 
 export const getStageOptions = (
   sign: CriteriaSign | undefined,
   storedId: number | null | undefined,
-  vocabulary: CriteriaOption[],
+  stored?: CriteriaOption,
 ): CriteriaOption[] => {
   const stages = sign?.stages || [];
 
-  if (!storedId || stages.some((stage) => stage.id === storedId)) return stages;
+  if (!storedId || stored?.id !== storedId || stages.some((stage) => stage.id === storedId)) {
+    return stages;
+  }
 
-  const option = deactivatedOption(storedId, vocabulary);
-
-  return option ? [option, ...stages] : stages;
+  return [asOffered(stored), ...stages];
 };
 
 export const setPlaceholder = (value, id) =>

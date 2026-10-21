@@ -46,10 +46,12 @@ const ObservationFormContent = ({
   disabled,
   handleSubmit,
   mapQueryString,
+  storedSign,
+  storedStage,
 }: ObservationFormContentProps) => {
   const [speciesId, setSpeciesId] = useState(initialValues.species?.speciesId);
   const { criteria, failed: criteriaFailed } = useSpeciesCriteria(speciesId);
-  const predatesSigns = !isNew(id) && initialValues.activityId == null;
+  const predatesSigns = !isNew(id) && initialValues.activity == null;
   const validationSchema = useMemo(
     () => getObservationFormValidationSchema({ criteria, predatesSigns, criteriaFailed }),
     [criteria, predatesSigns, criteriaFailed],
@@ -68,10 +70,10 @@ const ObservationFormContent = ({
       setObservationValues({
         ...values,
         species,
-        evolutionId: null,
+        evolution: null,
         method: '',
         methodValue: '',
-        activityId: null,
+        activity: null,
       });
     };
 
@@ -105,6 +107,8 @@ const ObservationFormContent = ({
             disabled={disabled}
             setValues={setObservationValues}
             criteria={criteria}
+            storedSign={storedSign}
+            storedStage={storedStage}
           />
           <ObservationMapContainer
             values={values}

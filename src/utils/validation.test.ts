@@ -46,37 +46,35 @@ const errorFor = async (
 
 describe('getObservationFormValidationSchema', () => {
   it('does not require a sign for a species with no criterion', async () => {
-    expect(await errorFor(EMPTY_SPECIES_CRITERIA, 'activityId', { activityId: null })).toBe(
-      undefined,
-    );
+    expect(await errorFor(EMPTY_SPECIES_CRITERIA, 'activity', { activity: null })).toBe(undefined);
   });
 
   it('requires a sign when the criterion offers signs', async () => {
-    expect(await errorFor(criteria, 'activityId', { activityId: null })).toBe(
+    expect(await errorFor(criteria, 'activity', { activity: null })).toBe(
       validationTexts.requireSelect,
     );
   });
 
   it('requires a stage when the chosen sign offers stages', async () => {
-    expect(await errorFor(criteria, 'evolutionId', { activityId: 77, evolutionId: null })).toBe(
+    expect(await errorFor(criteria, 'evolution', { activity: 77, evolution: null })).toBe(
       validationTexts.requireSelect,
     );
   });
 
   it('does not require a stage when the chosen sign offers none', async () => {
-    expect(await errorFor(criteria, 'evolutionId', { activityId: 78, evolutionId: null })).toBe(
+    expect(await errorFor(criteria, 'evolution', { activity: 78, evolution: null })).toBe(
       undefined,
     );
   });
 
   it('accepts a stored sign the criterion no longer offers', async () => {
-    expect(await errorFor(criteria, 'activityId', { activityId: 41 })).toBe(undefined);
+    expect(await errorFor(criteria, 'activity', { activity: 41 })).toBe(undefined);
   });
 
   it('does not force a sign onto a form stored before the criterion had any', async () => {
-    expect(
-      await errorFor(criteria, 'activityId', { activityId: null }, { predatesSigns: true }),
-    ).toBe(undefined);
+    expect(await errorFor(criteria, 'activity', { activity: null }, { predatesSigns: true })).toBe(
+      undefined,
+    );
   });
 
   it('blocks the form when the criterion could not be loaded', async () => {
@@ -90,9 +88,9 @@ describe('getObservationFormValidationSchema', () => {
   });
 
   it('requires neither field while the criterion is still loading', async () => {
-    const values = { activityId: null, evolutionId: null };
+    const values = { activity: null, evolution: null };
 
-    expect(await errorFor(EMPTY_SPECIES_CRITERIA, 'activityId', values)).toBe(undefined);
-    expect(await errorFor(EMPTY_SPECIES_CRITERIA, 'evolutionId', values)).toBe(undefined);
+    expect(await errorFor(EMPTY_SPECIES_CRITERIA, 'activity', values)).toBe(undefined);
+    expect(await errorFor(EMPTY_SPECIES_CRITERIA, 'evolution', values)).toBe(undefined);
   });
 });
