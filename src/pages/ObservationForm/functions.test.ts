@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { CriteriaOption, CriteriaSign } from '../../types';
-import { getStageOptions, storedClassifier } from './functions';
+import { classifierLabel, getStageOptions } from './functions';
 
 const stage: CriteriaOption = { id: 90, name: 'SUAUGES_INDIVIDAS', value: 'Suaugęs individas' };
 
@@ -15,17 +15,23 @@ const withoutStages: CriteriaSign = { id: 65, name: 'NERASTA', value: 'Nerasta',
 
 const signs: CriteriaSign[] = [withStages, withoutStages];
 
-describe('storedClassifier', () => {
-  it('marks a stored value as retired so it reads apart from the offered ones', () => {
-    expect(storedClassifier({ id: 41, name: 'HABITATION', value: 'Lizdas, ola ir pan' })).toEqual({
-      id: 41,
-      name: 'HABITATION',
-      value: 'Lizdas, ola ir pan (nebenaudojama)',
-    });
+describe('classifierLabel', () => {
+  const retired: CriteriaOption = { id: 16, name: 'HABITATION', value: 'Lizdas, ola ir pan' };
+
+  it('leaves an offered option as the criterion words it', () => {
+    expect(classifierLabel(signs)(withStages)).toBe('Stebėtas gyvas');
   });
 
-  it('is null when the form holds no classifier', () => {
-    expect(storedClassifier(undefined)).toBeNull();
+  it('marks only a value the criterion no longer offers', () => {
+    expect(classifierLabel(signs)(retired)).toBe('Lizdas, ola ir pan (istorinė reikšmė)');
+  });
+
+  it('matches an offered option by id, not by the object it came in', () => {
+    expect(classifierLabel(signs)({ ...withStages })).toBe('Stebėtas gyvas');
+  });
+
+  it('is blank when there is no option', () => {
+    expect(classifierLabel(signs)(undefined)).toBe('');
   });
 });
 

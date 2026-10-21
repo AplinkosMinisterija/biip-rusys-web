@@ -9,7 +9,7 @@ import {
   deleteDescriptionSecondPart,
   deleteTitles,
 } from '../../../utils/texts';
-import { getMapPath, storedClassifier } from '../functions';
+import { getMapPath } from '../functions';
 import { FormProps, FormServerProps } from '../types';
 import { default as api, default as Api } from './../../../api';
 import { StatusTypes } from '../../../utils/constants';
@@ -133,8 +133,8 @@ export const useData = () => {
     geom: observationForm?.geom || '',
     observedBy: observationForm?.observedBy || '',
     isCorrectFormInformation: disabled,
-    evolution: storedClassifier(observationForm?.evolution),
-    activity: storedClassifier(observationForm?.activity),
+    evolution: observationForm?.evolution ?? null,
+    activity: observationForm?.activity ?? null,
     noQuantityReason: observationForm?.noQuantityReason,
   };
 
