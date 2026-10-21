@@ -18,7 +18,7 @@ describe('classifierOptionLabel', () => {
 
   it('marks a deactivated option so two generations stay distinct', () => {
     expect(classifierOptionLabel(option('Suaugęs individas', false))).toBe(
-      'Suaugęs individas (nebenaudojama)',
+      'Suaugęs individas (istorinė reikšmė)',
     );
   });
 

@@ -5,10 +5,17 @@ import { isNew } from '../../utils/functions';
 import { deactivatedOptionLabel } from '../../utils/options';
 import { inputLabels, pageTitles } from '../../utils/texts';
 
-// A retired value is the select's value but never one of its options, and design-system 1.4.7
-// suppresses onChange when the clicked option's label equals the current one.
-export const storedClassifier = (stored?: CriteriaOption): CriteriaOption | null =>
-  stored ? { ...stored, value: deactivatedOptionLabel(stored.value) } : null;
+// Only a value the criterion no longer offers is retired; design-system 1.4.7 also suppresses
+// onChange when the clicked option's label equals the current one, which the suffix breaks up.
+export const classifierLabel =
+  (offered: CriteriaOption[]) =>
+  (option?: CriteriaOption): string => {
+    if (!option) return '';
+
+    return offered.some(({ id }) => id === option.id)
+      ? option.value
+      : deactivatedOptionLabel(option.value);
+  };
 
 export const getStageOptions = (
   signs: CriteriaSign[],

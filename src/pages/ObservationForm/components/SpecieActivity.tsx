@@ -11,7 +11,12 @@ import {
   molluskMethodTypeOptions,
   plantAbundanceTypeOptions,
 } from '../../../utils/functions';
-import { getShowNoQuantityReasonField, getStageOptions, setPlaceholder } from '../functions';
+import {
+  classifierLabel,
+  getShowNoQuantityReasonField,
+  getStageOptions,
+  setPlaceholder,
+} from '../functions';
 import { noQuantityOptions } from '../options';
 import { StyledRadioOptions } from '../styles';
 import { SpecieActivityProps } from '../types';
@@ -206,7 +211,7 @@ export const SpecieActivity = ({
           name="activity"
           onChange={handleSetSign}
           options={criteria.signs}
-          getOptionLabel={(option: CriteriaOption) => option?.value || ''}
+          getOptionLabel={classifierLabel(criteria.signs)}
           placeholder={setPlaceholder(values.activity?.value, id)}
         />
       )}
@@ -219,7 +224,7 @@ export const SpecieActivity = ({
           name="evolution"
           onChange={(stage?: CriteriaOption) => handleChange('evolution', stage ?? null)}
           options={stageOptions}
-          getOptionLabel={(option: CriteriaOption) => option?.value || ''}
+          getOptionLabel={classifierLabel(stageOptions)}
           placeholder={setPlaceholder(values.evolution?.value, id)}
         />
       )}
