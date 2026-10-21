@@ -235,6 +235,7 @@ export interface CriteriaSign extends CriteriaOption {
 export interface SpeciesCriteria {
   criteria: { id: number; name: string } | null;
   signs: CriteriaSign[];
+  stages: CriteriaOption[];
 }
 
 export interface Request {

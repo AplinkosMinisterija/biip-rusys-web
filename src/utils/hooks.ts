@@ -46,7 +46,8 @@ export const useSpeciesCriteria = (
   );
 
   return {
-    criteria: data ?? EMPTY_SPECIES_CRITERIA,
+    // A rolling deploy still serves responses without `stages`, and every reader spreads it.
+    criteria: data ? { ...data, stages: data.stages ?? [] } : EMPTY_SPECIES_CRITERIA,
     // A failed lookup looks exactly like "no criterion", which would save a protected species unsigned.
     failed: !!speciesId && isError,
   };

@@ -1,13 +1,17 @@
-import { isEqual } from 'lodash';
+import { isEmpty, isEqual } from 'lodash';
 import { FormTypes, PlantAbundanceType } from '../../utils/constants';
 import { CriteriaOption, CriteriaSign } from '../../types';
 import { isNew } from '../../utils/functions';
 import { inputLabels, pageTitles } from '../../utils/texts';
 
+// A criteria that offers no sign carries its stages itself; every other one hangs them off
+// the chosen sign.
 export const getStageOptions = (
   signs: CriteriaSign[],
+  stages: CriteriaOption[] = [],
   activity?: CriteriaOption | null,
-): CriteriaOption[] => signs.find((sign) => sign.id === activity?.id)?.stages || [];
+): CriteriaOption[] =>
+  isEmpty(signs) ? stages : signs.find((sign) => sign.id === activity?.id)?.stages || [];
 
 export const setPlaceholder = (value, id) =>
   !value && !isNew(id) ? inputLabels.noData : inputLabels.chooseOption;

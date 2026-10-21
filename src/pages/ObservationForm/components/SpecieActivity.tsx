@@ -186,7 +186,7 @@ export const SpecieActivity = ({
       </Row>
     );
 
-  const stageOptions = getStageOptions(criteria.signs, values.activity);
+  const stageOptions = getStageOptions(criteria.signs, criteria.stages, values.activity);
 
   // A retired value is offered by no criterion, so a stored one is what keeps its field on screen.
   const showSignField = !isEmpty(criteria.signs) || !!values.activity;
