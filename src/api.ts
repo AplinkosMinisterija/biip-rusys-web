@@ -405,12 +405,22 @@ class Api {
   getClassifierOptions = async (): Promise<ClassifierOption[]> =>
     await this.getAll({
       resource: Resources.FORM_SETTINGS_OPTIONS,
-      // Oldest id first: the filter dropdowns keep the first row of a repeated code.
-      sort: [SortFields.ID],
       fields: ['id', 'name', 'value', 'group', 'active'],
       query: JSON.stringify({
         group: { $in: [ClassifierGroups.ACTIVITY, ClassifierGroups.EVOLUTION] },
       }),
+    });
+
+  getClassifierOptionsPage = async (
+    group: ClassifierGroups,
+    input: string,
+    page: number | string,
+  ): Promise<GetAllResponse<ClassifierOption>> =>
+    await this.get({
+      resource: Resources.FORM_SETTINGS_OPTIONS,
+      query: JSON.stringify({ group }),
+      filter: { value: input },
+      page: page?.toString(),
     });
 
   createObservationForm = async (params: FormServerProps): Promise<Form> => {

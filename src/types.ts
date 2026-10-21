@@ -340,8 +340,8 @@ export interface FormFilters {
   source?: Sources;
   tenant?: Tenant;
   method?: { id: string; label: string };
-  evolution?: { id: string; label: string };
-  activity?: { id: string; label: string };
+  evolution?: ClassifierOption;
+  activity?: ClassifierOption;
 }
 
 export interface FormFiltersProps {

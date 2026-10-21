@@ -1,57 +1,29 @@
 import { describe, expect, it } from 'vitest';
 import { ClassifierOption } from '../types';
 import { ClassifierGroups } from './constants';
-import { getClassifierFilterOptions } from './options';
+import { classifierOptionLabel } from './options';
 
-const option = (
-  id: number,
-  name: string,
-  value: string,
-  active: boolean,
-  group = ClassifierGroups.EVOLUTION,
-): ClassifierOption => ({ id, name, value, group, active });
+const option = (value: string, active: boolean): ClassifierOption => ({
+  id: 1,
+  name: 'MATURE',
+  value,
+  group: ClassifierGroups.EVOLUTION,
+  active,
+});
 
-describe('getClassifierFilterOptions', () => {
-  it('sends the code as the filter value', () => {
-    const options = getClassifierFilterOptions(
-      [option(90, 'SUAUGES_INDIVIDAS', 'Suaugęs individas', true)],
-      ClassifierGroups.EVOLUTION,
-    );
-
-    expect(options).toEqual([{ id: 'SUAUGES_INDIVIDAS', label: 'Suaugęs individas' }]);
+describe('classifierOptionLabel', () => {
+  it('shows an offered option as it comes', () => {
+    expect(classifierOptionLabel(option('Suaugęs individas', true))).toBe('Suaugęs individas');
   });
 
-  it('keeps only the older row of a code the legacy vocabulary seeded twice', () => {
-    const options = getClassifierFilterOptions(
-      [
-        option(20, 'GROWING', 'Augantis augalas', false),
-        option(25, 'GROWING', 'Augantis grybas arba kerpė', false),
-      ],
-      ClassifierGroups.EVOLUTION,
+  it('marks a deactivated option so two generations stay distinct', () => {
+    expect(classifierOptionLabel(option('Suaugęs individas', false))).toBe(
+      'Suaugęs individas (nebenaudojama)',
     );
-
-    expect(options).toEqual([{ id: 'GROWING', label: 'Augantis augalas (nebenaudojama)' }]);
   });
 
-  it('keeps two generations of the same label distinct', () => {
-    const options = getClassifierFilterOptions(
-      [
-        option(10, 'MATURE', 'Suaugęs individas', false),
-        option(90, 'SUAUGES_INDIVIDAS', 'Suaugęs individas', true),
-      ],
-      ClassifierGroups.EVOLUTION,
-    );
-
-    expect(options).toHaveLength(2);
-    expect(options[0].label).not.toBe(options[1].label);
-  });
-
-  it('ignores options from another group', () => {
-    const options = getClassifierFilterOptions(
-      [option(41, 'HABITATION', 'Lizdas, ola ir pan', false, ClassifierGroups.ACTIVITY)],
-      ClassifierGroups.EVOLUTION,
-    );
-
-    expect(options).toEqual([]);
+  it('stays blank for a chip left over from the old filter shape', () => {
+    expect(classifierOptionLabel(undefined)).toBe('');
+    expect(classifierOptionLabel({ id: 1, label: 'Suaugęs individas' } as never)).toBe('');
   });
 });

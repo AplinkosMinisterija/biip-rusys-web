@@ -1,4 +1,5 @@
-import { map, uniqBy } from 'lodash';
+import { map } from 'lodash';
+import api from '../api';
 import { ClassifierOption } from '../types';
 import {
   ClassifierGroups,
@@ -46,12 +47,13 @@ export const getMethodOptions = () =>
     }),
   );
 
-export const getClassifierFilterOptions = (options: ClassifierOption[], group: ClassifierGroups) =>
-  // Legacy seeded GROWING once per form type; the older row preserves the label these lists showed.
-  uniqBy(
-    options.filter((option) => option.group === group),
-    'name',
-  ).map((option) => ({
-    id: option.name,
-    label: option.active ? option.value : deactivatedOptionLabel(option.value),
-  }));
+export const getClassifierOptionsList =
+  (group: ClassifierGroups) => async (input: string, page: number | string) =>
+    await api.getClassifierOptionsPage(group, input, page);
+
+export const getActivityOptionsList = getClassifierOptionsList(ClassifierGroups.ACTIVITY);
+
+export const getEvolutionOptionsList = getClassifierOptionsList(ClassifierGroups.EVOLUTION);
+
+export const classifierOptionLabel = (option?: ClassifierOption) =>
+  option?.active === false ? deactivatedOptionLabel(option.value) : option?.value || '';
