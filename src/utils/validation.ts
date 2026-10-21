@@ -2,7 +2,6 @@ import * as Yup from 'yup';
 import { validationTexts } from './texts';
 
 import {
-  AnimalActivity,
   FormTypes,
   MammalMethodType,
   PlantAbundanceType,
@@ -11,143 +10,145 @@ import {
 } from './constants';
 
 import { phoneNumberRegexPattern } from '@aplinkosministerija/design-system';
-import { isEqual } from 'lodash';
+import { isEmpty, isEqual } from 'lodash';
 import { availablePhotoMimeTypes } from '../components/fields/PhotoUploadField';
 import { getIsInvasivePlant } from '../pages/ObservationForm/functions';
-import { Species } from '../types';
+import { Species, SpeciesCriteria } from '../types';
 
 export const availableMimeTypes = ['image/png', 'image/jpg', 'image/jpeg', 'application/pdf'];
 
-export const validateForm = Yup.object().shape(
-  {
-    species: Yup.object().required(validationTexts.requireSelect).nullable(),
-    source: Yup.object().required(validationTexts.requireSelect).nullable(),
-    transect: Yup.object()
-      .when(['species', 'transect'], {
-        is: (species: Species, transect) => {
-          const hasTransect = [
-            FormTypes.ENDANGERED_ANIMAL,
-            FormTypes.ENDANGERED_MUSHROOM,
-            FormTypes.ENDANGERED_PLANT,
-          ].includes(species?.formType);
+export type ObservationFormRules = {
+  criteria: SpeciesCriteria;
+  // Demanding a sign from a record stored before its criterion had any would wipe the stage it has.
+  predatesSigns: boolean;
+  criteriaFailed: boolean;
+};
 
-          return hasTransect && transect;
-        },
-        then: Yup.object()
-          .shape({
-            height: Yup.number()
-              .required(validationTexts.requireText)
-              .positive('Turi būti teigiama reikšmė'),
-            width: Yup.number()
-              .required(validationTexts.requireText)
-              .positive('Turi būti teigiama reikšmė'),
-          })
-          .nullable(),
-      })
-      .nullable(),
+export const getObservationFormValidationSchema = ({
+  criteria,
+  predatesSigns,
+  criteriaFailed,
+}: ObservationFormRules) =>
+  Yup.object().shape(
+    {
+      species: Yup.object()
+        .required(validationTexts.requireSelect)
+        // See useSpeciesCriteria: a failed lookup is indistinguishable from "no criterion".
+        .test('criteriaResolved', validationTexts.criteriaUnavailable, () => !criteriaFailed)
+        .nullable(),
+      source: Yup.object().required(validationTexts.requireSelect).nullable(),
+      transect: Yup.object()
+        .when(['species', 'transect'], {
+          is: (species: Species, transect) => {
+            const hasTransect = [
+              FormTypes.ENDANGERED_ANIMAL,
+              FormTypes.ENDANGERED_MUSHROOM,
+              FormTypes.ENDANGERED_PLANT,
+            ].includes(species?.formType);
 
-    description: Yup.string().required(validationTexts.requireText).nullable(),
-    noQuantityReason: Yup.string()
-      .when(['species', 'quantity', 'method'], {
-        is: (species: Species, quantity: string, method: string) => {
-          const isInvasiveFormType = [
-            FormTypes.INVASIVE_CRUSTACEAN,
-            FormTypes.INVASIVE_FISH,
-            FormTypes.INVASIVE,
-            FormTypes.INVASIVE_MOLLUSK,
-            FormTypes.INVASIVE_MAMMAL,
-            FormTypes.INVASIVE_PLANT,
-          ].includes(species?.formType);
+            return hasTransect && transect;
+          },
+          then: Yup.object()
+            .shape({
+              height: Yup.number()
+                .required(validationTexts.requireText)
+                .positive('Turi būti teigiama reikšmė'),
+              width: Yup.number()
+                .required(validationTexts.requireText)
+                .positive('Turi būti teigiama reikšmė'),
+            })
+            .nullable(),
+        })
+        .nullable(),
 
-          return getIsInvasivePlant(species)
-            ? method === PlantAbundanceType.VALUE_0
-            : isInvasiveFormType && parseInt(quantity) === 0;
-        },
-        then: Yup.string().required(validationTexts.requireSelect).nullable(),
-      })
-      .nullable(),
-    geom: Yup.object().required(validationTexts.requireMap).nullable(),
-    observedBy: Yup.string().required(validationTexts.requireText).nullable(),
-    observedAt: Yup.date().required(validationTexts.requireSelect).nullable(),
-    activity: Yup.string()
-      .when(['species'], {
+      description: Yup.string().required(validationTexts.requireText).nullable(),
+      noQuantityReason: Yup.string()
+        .when(['species', 'quantity', 'method'], {
+          is: (species: Species, quantity: string, method: string) => {
+            const isInvasiveFormType = [
+              FormTypes.INVASIVE_CRUSTACEAN,
+              FormTypes.INVASIVE_FISH,
+              FormTypes.INVASIVE,
+              FormTypes.INVASIVE_MOLLUSK,
+              FormTypes.INVASIVE_MAMMAL,
+              FormTypes.INVASIVE_PLANT,
+            ].includes(species?.formType);
+
+            return getIsInvasivePlant(species)
+              ? method === PlantAbundanceType.VALUE_0
+              : isInvasiveFormType && parseInt(quantity) === 0;
+          },
+          then: Yup.string().required(validationTexts.requireSelect).nullable(),
+        })
+        .nullable(),
+      geom: Yup.object().required(validationTexts.requireMap).nullable(),
+      observedBy: Yup.string().required(validationTexts.requireText).nullable(),
+      observedAt: Yup.date().required(validationTexts.requireSelect).nullable(),
+      activity:
+        isEmpty(criteria.signs) || predatesSigns
+          ? Yup.number().nullable()
+          : Yup.number().required(validationTexts.requireSelect).nullable(),
+
+      evolution: Yup.number()
+        .when('activity', {
+          is: (activity: number) =>
+            !isEmpty(criteria.signs.find((sign) => sign.id === activity)?.stages),
+          then: Yup.number().required(validationTexts.requireSelect).nullable(),
+        })
+        .nullable(),
+      quantity: Yup.string().when(['species'], {
         is: (species: Species) => {
-          return isEqual(species?.formType, FormTypes.ENDANGERED_ANIMAL);
+          const isInvasivePlant = isEqual(FormTypes.INVASIVE_PLANT, species?.formType);
+
+          return !isInvasivePlant;
         },
-        then: Yup.string().required(validationTexts.requireSelect).nullable(),
-      })
-      .nullable(),
+        then: Yup.string()
+          .required(validationTexts.requireText)
+          .matches(/^[0-9][0-9]*$/, 'Turi būti teigiama reikšmė'),
+      }),
+      method: Yup.string()
+        .when(['species'], {
+          is: (species: Species) => {
+            const formType = species?.formType;
 
-    evolution: Yup.string()
-      .when(['species', 'activity'], {
-        is: (species: Species, activity: AnimalActivity) => {
-          return (
-            [FormTypes.ENDANGERED_MUSHROOM, FormTypes.ENDANGERED_PLANT].includes(
-              species?.formType,
-            ) ||
-            [
-              AnimalActivity.HABITATION,
-              AnimalActivity.OBSERVED_ALIVE,
-              AnimalActivity.OTHER,
-            ].includes(activity)
-          );
-        },
-        then: Yup.string().required(validationTexts.requireSelect).nullable(),
-      })
-      .nullable(),
-    quantity: Yup.string().when(['species'], {
-      is: (species: Species) => {
-        const isInvasivePlant = isEqual(FormTypes.INVASIVE_PLANT, species?.formType);
+            return [
+              FormTypes.INVASIVE_CRUSTACEAN,
+              FormTypes.INVASIVE_FISH,
+              FormTypes.INVASIVE_MOLLUSK,
+              FormTypes.INVASIVE_MAMMAL,
+              FormTypes.INVASIVE_PLANT,
+            ].includes(formType);
+          },
+          then: Yup.string().required(validationTexts.requireSelect).nullable(),
+        })
+        .nullable(),
+      methodValue: Yup.string()
+        .when(['species', 'method'], {
+          is: (species: Species, method: string) => {
+            const isInvasiveMammal = isEqual(FormTypes.INVASIVE_MAMMAL, species?.formType);
 
-        return !isInvasivePlant;
-      },
-      then: Yup.string()
-        .required(validationTexts.requireText)
-        .matches(/^[0-9][0-9]*$/, 'Turi būti teigiama reikšmė'),
-    }),
-    method: Yup.string()
-      .when(['species'], {
-        is: (species: Species) => {
-          const formType = species?.formType;
+            const isObservationValue = isEqual(MammalMethodType.OBSERVATION, method);
 
-          return [
-            FormTypes.INVASIVE_CRUSTACEAN,
-            FormTypes.INVASIVE_FISH,
-            FormTypes.INVASIVE_MOLLUSK,
-            FormTypes.INVASIVE_MAMMAL,
-            FormTypes.INVASIVE_PLANT,
-          ].includes(formType);
-        },
-        then: Yup.string().required(validationTexts.requireSelect).nullable(),
-      })
-      .nullable(),
-    methodValue: Yup.string()
-      .when(['species', 'method'], {
-        is: (species: Species, method: string) => {
-          const isInvasiveMammal = isEqual(FormTypes.INVASIVE_MAMMAL, species?.formType);
-
-          const isObservationValue = isEqual(MammalMethodType.OBSERVATION, method);
-
-          return isInvasiveMammal && !isObservationValue;
-        },
-        then: Yup.string().required(validationTexts.requireText).nullable(),
-      })
-      .nullable(),
-    photos: Yup.array().when('species', {
-      is: (species) => species?.speciesType.includes(SpeciesTypes.INVASIVE),
-      then: Yup.array()
-        .required(validationTexts.requirePhotos)
-        .min(1, validationTexts.requirePhotos),
-    }),
-    isCorrectFormInformation: Yup.boolean()
-      .required(validationTexts.requireSelect)
-      .oneOf([true], validationTexts.requireSelect),
-  },
-  [
-    ['quantity', 'method'],
-    ['transect', 'transect'],
-  ],
-);
+            return isInvasiveMammal && !isObservationValue;
+          },
+          then: Yup.string().required(validationTexts.requireText).nullable(),
+        })
+        .nullable(),
+      photos: Yup.array().when('species', {
+        is: (species) => species?.speciesType.includes(SpeciesTypes.INVASIVE),
+        then: Yup.array()
+          .required(validationTexts.requirePhotos)
+          .min(1, validationTexts.requirePhotos),
+      }),
+      isCorrectFormInformation: Yup.boolean()
+        .required(validationTexts.requireSelect)
+        .oneOf([true], validationTexts.requireSelect),
+    },
+    [
+      ['quantity', 'method'],
+      ['transect', 'transect'],
+    ],
+  );
 
 export const validateCreateTenantUser = Yup.object().shape({
   firstName: Yup.string().required(validationTexts.requireText).nullable(),

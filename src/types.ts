@@ -1,13 +1,11 @@
 import { FeatureCollection } from '@aplinkosministerija/design-system';
 import {
-  AnimalActivity,
-  AnimalEvolutionState,
+  ClassifierGroups,
   FormStatusTypes,
   FormTypes,
   HistoryTypes,
   KingdomTypes,
   MeasurementUnits,
-  PlantEvolutionState,
   RequestDocumentType,
   RequestTypes,
   RolesTypes,
@@ -218,9 +216,29 @@ export interface Form {
   observedBy?: string;
   photos: FileProps[] | File[] | any[];
   observedAt: Date;
-  evolution?: AnimalEvolutionState | PlantEvolutionState;
-  activity?: AnimalActivity;
+  evolution?: CriteriaOption;
+  activity?: CriteriaOption;
   noQuantityReason?: FormNoQuantityReason;
+}
+
+export interface CriteriaOption {
+  id: number;
+  name: string;
+  value: string;
+}
+
+export interface CriteriaSign extends CriteriaOption {
+  stages: CriteriaOption[];
+}
+
+export interface SpeciesCriteria {
+  criteria: { id: number; name: string } | null;
+  signs: CriteriaSign[];
+}
+
+export interface ClassifierOption extends CriteriaOption {
+  active: boolean;
+  group: ClassifierGroups;
 }
 
 export interface Request {
@@ -320,8 +338,8 @@ export interface FormFilters {
   source?: Sources;
   tenant?: Tenant;
   method?: { id: string; label: string };
-  evolution?: { id: string; label: string };
-  activity?: { id: string; label: string };
+  evolution?: ClassifierOption;
+  activity?: ClassifierOption;
 }
 
 export interface FormFiltersProps {
@@ -331,9 +349,9 @@ export interface FormFiltersProps {
   state?: { $in: StatusTypes[] };
   status?: { $in: FormStatusTypes[] };
   method?: string;
-  evolution?: string;
+  evolution?: number;
   source?: string;
   eunis?: string;
-  activity?: string;
+  activity?: number;
   noQuantityReason?: FormNoQuantityReason;
 }
