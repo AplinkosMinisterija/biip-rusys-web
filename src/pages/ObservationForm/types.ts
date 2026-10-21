@@ -34,8 +34,8 @@ export interface FormProps {
   isCorrectFormInformation: boolean;
   status?: StatusTypes;
   comment?: string;
-  evolution?: number | null;
-  activity?: number | null;
+  evolution?: CriteriaOption | null;
+  activity?: CriteriaOption | null;
   noQuantityReason?: FormNoQuantityReason;
 }
 
@@ -64,8 +64,6 @@ export interface SpecieActivityProps {
   handleChange: HandleChangeType;
   disabled: boolean;
   criteria: SpeciesCriteria;
-  storedSign?: CriteriaOption;
-  storedStage?: CriteriaOption;
 }
 
 export interface ObservedSpecieDataContainerProps {

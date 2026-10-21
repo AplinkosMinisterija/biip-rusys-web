@@ -5,36 +5,15 @@ import { isNew } from '../../utils/functions';
 import { deactivatedOptionLabel } from '../../utils/options';
 import { inputLabels, pageTitles } from '../../utils/texts';
 
-const asOffered = (option: CriteriaOption): CriteriaOption => ({
-  ...option,
-  value: deactivatedOptionLabel(option.value),
-});
-
-export const getSignOptions = (
-  signs: CriteriaSign[],
-  storedId: number | null | undefined,
-  stored?: CriteriaOption,
-): CriteriaSign[] => {
-  if (!storedId || stored?.id !== storedId || signs.some((sign) => sign.id === storedId)) {
-    return signs;
-  }
-
-  return [{ ...asOffered(stored), stages: [] }, ...signs];
-};
+// A retired value is the select's value but never one of its options, and design-system 1.4.7
+// suppresses onChange when the clicked option's label equals the current one.
+export const storedClassifier = (stored?: CriteriaOption): CriteriaOption | null =>
+  stored ? { ...stored, value: deactivatedOptionLabel(stored.value) } : null;
 
 export const getStageOptions = (
-  sign: CriteriaSign | undefined,
-  storedId: number | null | undefined,
-  stored?: CriteriaOption,
-): CriteriaOption[] => {
-  const stages = sign?.stages || [];
-
-  if (!storedId || stored?.id !== storedId || stages.some((stage) => stage.id === storedId)) {
-    return stages;
-  }
-
-  return [asOffered(stored), ...stages];
-};
+  signs: CriteriaSign[],
+  activity?: CriteriaOption | null,
+): CriteriaOption[] => signs.find((sign) => sign.id === activity?.id)?.stages || [];
 
 export const setPlaceholder = (value, id) =>
   !value && !isNew(id) ? inputLabels.noData : inputLabels.chooseOption;

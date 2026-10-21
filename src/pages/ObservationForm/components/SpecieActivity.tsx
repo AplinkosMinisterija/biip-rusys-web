@@ -11,12 +11,7 @@ import {
   molluskMethodTypeOptions,
   plantAbundanceTypeOptions,
 } from '../../../utils/functions';
-import {
-  getShowNoQuantityReasonField,
-  getSignOptions,
-  getStageOptions,
-  setPlaceholder,
-} from '../functions';
+import { getShowNoQuantityReasonField, getStageOptions, setPlaceholder } from '../functions';
 import { noQuantityOptions } from '../options';
 import { StyledRadioOptions } from '../styles';
 import { SpecieActivityProps } from '../types';
@@ -38,8 +33,6 @@ export const SpecieActivity = ({
   setValues,
   handleChange,
   criteria,
-  storedSign,
-  storedStage,
 }: SpecieActivityProps) => {
   const { id } = useParams();
   const formType = values?.species?.formType ? values?.species?.formType : '';
@@ -192,45 +185,42 @@ export const SpecieActivity = ({
       </Row>
     );
 
-  const signOptions = getSignOptions(criteria.signs, values.activity, storedSign);
-  const selectedSign = signOptions.find((sign) => sign.id === values.activity);
+  const stageOptions = getStageOptions(criteria.signs, values.activity);
 
-  const stageOptions = getStageOptions(selectedSign, values.evolution, storedStage);
-  const selectedStage = stageOptions.find((stage) => stage.id === values.evolution);
+  // A retired value is offered by no criterion, so a stored one is what keeps its field on screen.
+  const showSignField = !isEmpty(criteria.signs) || !!values.activity;
+  const showStageField = !isEmpty(stageOptions) || !!values.evolution;
 
   // A stage is only ever offered through a sign, so a new sign invalidates the stored one.
   const handleSetSign = (sign?: CriteriaSign) =>
-    setValues({ ...values, activity: sign?.id ?? null, evolution: null });
-
-  const handleSetStage = (stage?: CriteriaOption) =>
-    setValues({ ...values, evolution: stage?.id ?? null });
+    setValues({ ...values, activity: sign ?? null, evolution: null });
 
   return (
     <>
-      {!isEmpty(signOptions) && (
+      {showSignField && (
         <SelectField
           disabled={disabled}
           label={inputLabels.activity}
-          value={selectedSign}
+          value={values.activity}
           error={errors.activity}
           name="activity"
           onChange={handleSetSign}
-          options={signOptions}
-          getOptionLabel={(option: CriteriaOption) => option.value}
-          placeholder={setPlaceholder(values.activity, id)}
+          options={criteria.signs}
+          getOptionLabel={(option: CriteriaOption) => option?.value || ''}
+          placeholder={setPlaceholder(values.activity?.value, id)}
         />
       )}
-      {!isEmpty(stageOptions) && (
+      {showStageField && (
         <SelectField
           disabled={disabled}
           label={inputLabels.evolution}
-          value={selectedStage}
+          value={values.evolution}
           error={errors.evolution}
           name="evolution"
-          onChange={handleSetStage}
+          onChange={(stage?: CriteriaOption) => handleChange('evolution', stage ?? null)}
           options={stageOptions}
-          getOptionLabel={(option: CriteriaOption) => option.value}
-          placeholder={setPlaceholder(values.evolution, id)}
+          getOptionLabel={(option: CriteriaOption) => option?.value || ''}
+          placeholder={setPlaceholder(values.evolution?.value, id)}
         />
       )}
     </>

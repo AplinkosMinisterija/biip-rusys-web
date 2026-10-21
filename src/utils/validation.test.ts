@@ -56,19 +56,23 @@ describe('getObservationFormValidationSchema', () => {
   });
 
   it('requires a stage when the chosen sign offers stages', async () => {
-    expect(await errorFor(criteria, 'evolution', { activity: 77, evolution: null })).toBe(
-      validationTexts.requireSelect,
-    );
+    expect(
+      await errorFor(criteria, 'evolution', { activity: signWithStages, evolution: null }),
+    ).toBe(validationTexts.requireSelect);
   });
 
   it('does not require a stage when the chosen sign offers none', async () => {
-    expect(await errorFor(criteria, 'evolution', { activity: 78, evolution: null })).toBe(
-      undefined,
-    );
+    expect(
+      await errorFor(criteria, 'evolution', { activity: signWithoutStages, evolution: null }),
+    ).toBe(undefined);
   });
 
   it('accepts a stored sign the criterion no longer offers', async () => {
-    expect(await errorFor(criteria, 'activity', { activity: 41 })).toBe(undefined);
+    expect(
+      await errorFor(criteria, 'activity', {
+        activity: { id: 41, name: 'HABITATION', value: 'Lizdas, ola ir pan' },
+      }),
+    ).toBe(undefined);
   });
 
   it('does not force a sign onto a form stored before the criterion had any', async () => {

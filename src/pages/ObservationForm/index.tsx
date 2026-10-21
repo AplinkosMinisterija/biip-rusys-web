@@ -46,8 +46,6 @@ const ObservationFormContent = ({
   disabled,
   handleSubmit,
   mapQueryString,
-  storedSign,
-  storedStage,
 }: ObservationFormContentProps) => {
   const [speciesId, setSpeciesId] = useState(initialValues.species?.speciesId);
   const { criteria, failed: criteriaFailed } = useSpeciesCriteria(speciesId);
@@ -107,8 +105,6 @@ const ObservationFormContent = ({
             disabled={disabled}
             setValues={setObservationValues}
             criteria={criteria}
-            storedSign={storedSign}
-            storedStage={storedStage}
           />
           <ObservationMapContainer
             values={values}

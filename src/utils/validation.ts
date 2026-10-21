@@ -13,7 +13,7 @@ import { phoneNumberRegexPattern } from '@aplinkosministerija/design-system';
 import { isEmpty, isEqual } from 'lodash';
 import { availablePhotoMimeTypes } from '../components/fields/PhotoUploadField';
 import { getIsInvasivePlant } from '../pages/ObservationForm/functions';
-import { Species, SpeciesCriteria } from '../types';
+import { CriteriaOption, Species, SpeciesCriteria } from '../types';
 
 export const availableMimeTypes = ['image/png', 'image/jpg', 'image/jpeg', 'application/pdf'];
 
@@ -86,14 +86,14 @@ export const getObservationFormValidationSchema = ({
       observedAt: Yup.date().required(validationTexts.requireSelect).nullable(),
       activity:
         isEmpty(criteria.signs) || predatesSigns
-          ? Yup.number().nullable()
-          : Yup.number().required(validationTexts.requireSelect).nullable(),
+          ? Yup.object().nullable()
+          : Yup.object().required(validationTexts.requireSelect).nullable(),
 
-      evolution: Yup.number()
+      evolution: Yup.object()
         .when('activity', {
-          is: (activity: number) =>
-            !isEmpty(criteria.signs.find((sign) => sign.id === activity)?.stages),
-          then: Yup.number().required(validationTexts.requireSelect).nullable(),
+          is: (activity?: CriteriaOption) =>
+            !isEmpty(criteria.signs.find((sign) => sign.id === activity?.id)?.stages),
+          then: Yup.object().required(validationTexts.requireSelect).nullable(),
         })
         .nullable(),
       quantity: Yup.string().when(['species'], {
