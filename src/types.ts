@@ -1,6 +1,5 @@
 import { FeatureCollection } from '@aplinkosministerija/design-system';
 import {
-  ClassifierGroups,
   FormStatusTypes,
   FormTypes,
   HistoryTypes,
@@ -236,11 +235,6 @@ export interface SpeciesCriteria {
   signs: CriteriaSign[];
 }
 
-export interface ClassifierOption extends CriteriaOption {
-  active: boolean;
-  group: ClassifierGroups;
-}
-
 export interface Request {
   notifyEmail: string;
   generatedFileGeojson: string;
@@ -338,8 +332,8 @@ export interface FormFilters {
   source?: Sources;
   tenant?: Tenant;
   method?: { id: string; label: string };
-  evolution?: ClassifierOption;
-  activity?: ClassifierOption;
+  evolution?: CriteriaOption;
+  activity?: CriteriaOption;
 }
 
 export interface FormFiltersProps {
