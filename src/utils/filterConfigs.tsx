@@ -1,5 +1,5 @@
 import { FilterInputTypes } from '@aplinkosministerija/design-system';
-import { User } from '../types';
+import { CriteriaOption, User } from '../types';
 import {
   getNoQuantityOptions,
   getObservationFormStatusTypes,
@@ -9,12 +9,7 @@ import {
   getSpeciesList,
   speciesOptionLabel,
 } from './functions';
-import {
-  classifierOptionLabel,
-  getActivityOptionsList,
-  getEvolutionOptionsList,
-  getMethodOptions,
-} from './options';
+import { getActivityOptionsList, getEvolutionOptionsList, getMethodOptions } from './options';
 import { formFiltersLabels } from './texts';
 
 export const myObservationFilterConfig = {
@@ -30,14 +25,14 @@ export const myObservationFilterConfig = {
     key: 'evolution',
     inputType: FilterInputTypes.asyncSingleSelect,
     optionsApi: getEvolutionOptionsList,
-    optionLabel: classifierOptionLabel,
+    optionLabel: (option: CriteriaOption) => option?.value || '',
   },
   activity: {
     label: formFiltersLabels.activity,
     key: 'activity',
     inputType: FilterInputTypes.asyncSingleSelect,
     optionsApi: getActivityOptionsList,
-    optionLabel: classifierOptionLabel,
+    optionLabel: (option: CriteriaOption) => option?.value || '',
   },
   source: {
     label: formFiltersLabels.source,

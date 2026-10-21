@@ -2,20 +2,7 @@ import { isEqual } from 'lodash';
 import { FormTypes, PlantAbundanceType } from '../../utils/constants';
 import { CriteriaOption, CriteriaSign } from '../../types';
 import { isNew } from '../../utils/functions';
-import { deactivatedOptionLabel } from '../../utils/options';
 import { inputLabels, pageTitles } from '../../utils/texts';
-
-// Only a value the criterion no longer offers is retired; design-system 1.4.7 also suppresses
-// onChange when the clicked option's label equals the current one, which the suffix breaks up.
-export const classifierLabel =
-  (offered: CriteriaOption[]) =>
-  (option?: CriteriaOption): string => {
-    if (!option) return '';
-
-    return offered.some(({ id }) => id === option.id)
-      ? option.value
-      : deactivatedOptionLabel(option.value);
-  };
 
 export const getStageOptions = (
   signs: CriteriaSign[],

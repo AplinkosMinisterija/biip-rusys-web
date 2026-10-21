@@ -4,7 +4,7 @@ import Cookies from 'universal-cookie';
 import { FormServerProps } from './pages/ObservationForm/types';
 import { RequestFormServerProps } from './pages/RequestForm/types';
 import {
-  ClassifierOption,
+  CriteriaOption,
   Form,
   FormFiltersProps,
   Request,
@@ -404,11 +404,11 @@ class Api {
       resource: `${Resources.FORM_CRITERIA}/species/${speciesId}`,
     });
 
-  getClassifierOptionsPage = async (
+  getCriteriaOptionsPage = async (
     group: ClassifierGroups,
     input: string,
     page: number | string,
-  ): Promise<GetAllResponse<ClassifierOption>> =>
+  ): Promise<GetAllResponse<CriteriaOption>> =>
     await this.get({
       resource: Resources.FORM_SETTINGS_OPTIONS,
       query: JSON.stringify({ group }),
