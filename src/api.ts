@@ -16,13 +16,7 @@ import {
   User,
   UserFilters,
 } from './types';
-import {
-  CLASSIFIER_OPTIONS_PAGE_SIZE,
-  ClassifierGroups,
-  Populations,
-  Resources,
-  SortFields,
-} from './utils/constants';
+import { ClassifierGroups, Populations, Resources, SortFields } from './utils/constants';
 const cookies = new Cookies();
 
 interface GetAll {
@@ -408,31 +402,16 @@ class Api {
       resource: `${Resources.FORM_CRITERIA}/species/${speciesId}`,
     });
 
-  getClassifierOptions = async (): Promise<ClassifierOption[]> => {
-    const options: ClassifierOption[] = [];
-    let page = 1;
-    let totalPages = 1;
-
-    // Admin-managed vocabulary: a truncated page would silently drop filter values. Oldest id first.
-    while (page <= totalPages) {
-      const response: GetAllResponse<ClassifierOption> = await this.get({
-        resource: Resources.FORM_SETTINGS_OPTIONS,
-        page: `${page}`,
-        pageSize: CLASSIFIER_OPTIONS_PAGE_SIZE,
-        sort: [SortFields.ID],
-        fields: ['id', 'name', 'value', 'group', 'active'],
-        query: JSON.stringify({
-          group: { $in: [ClassifierGroups.ACTIVITY, ClassifierGroups.EVOLUTION] },
-        }),
-      });
-
-      options.push(...response.rows);
-      totalPages = response.totalPages;
-      page += 1;
-    }
-
-    return options;
-  };
+  getClassifierOptions = async (): Promise<ClassifierOption[]> =>
+    await this.getAll({
+      resource: Resources.FORM_SETTINGS_OPTIONS,
+      // Oldest id first: the filter dropdowns keep the first row of a repeated code.
+      sort: [SortFields.ID],
+      fields: ['id', 'name', 'value', 'group', 'active'],
+      query: JSON.stringify({
+        group: { $in: [ClassifierGroups.ACTIVITY, ClassifierGroups.EVOLUTION] },
+      }),
+    });
 
   createObservationForm = async (params: FormServerProps): Promise<Form> => {
     return await this.post({

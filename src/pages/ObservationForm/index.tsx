@@ -68,11 +68,9 @@ const ObservationFormContent = ({
       setObservationValues({
         ...values,
         species,
-        evolution: undefined,
         evolutionId: null,
         method: '',
         methodValue: '',
-        activity: undefined,
         activityId: null,
       });
     };

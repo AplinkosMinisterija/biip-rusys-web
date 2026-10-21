@@ -192,32 +192,18 @@ export const SpecieActivity = ({
       </Row>
     );
 
-  const signOptions = getSignOptions(
-    criteria.signs,
-    { id: values.activityId, name: values.activity },
-    classifierOptions,
-  );
+  const signOptions = getSignOptions(criteria.signs, values.activityId, classifierOptions);
   const selectedSign = signOptions.find((sign) => sign.id === values.activityId);
 
-  const stageOptions = getStageOptions(
-    selectedSign,
-    { id: values.evolutionId, name: values.evolution },
-    classifierOptions,
-  );
+  const stageOptions = getStageOptions(selectedSign, values.evolutionId, classifierOptions);
   const selectedStage = stageOptions.find((stage) => stage.id === values.evolutionId);
 
   // A stage is only ever offered through a sign, so a new sign invalidates the stored one.
   const handleSetSign = (sign?: CriteriaSign) =>
-    setValues({
-      ...values,
-      activityId: sign?.id ?? null,
-      activity: sign?.name,
-      evolutionId: null,
-      evolution: undefined,
-    });
+    setValues({ ...values, activityId: sign?.id ?? null, evolutionId: null });
 
   const handleSetStage = (stage?: CriteriaOption) =>
-    setValues({ ...values, evolutionId: stage?.id ?? null, evolution: stage?.name });
+    setValues({ ...values, evolutionId: stage?.id ?? null });
 
   return (
     <>

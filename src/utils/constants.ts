@@ -284,6 +284,4 @@ export enum ClassifierGroups {
 
 export const CLASSIFIER_STALE_TIME = 60 * 60 * 1000;
 
-export const CLASSIFIER_OPTIONS_PAGE_SIZE = '500';
-
 export const EMPTY_SPECIES_CRITERIA: SpeciesCriteria = { criteria: null, signs: [] };

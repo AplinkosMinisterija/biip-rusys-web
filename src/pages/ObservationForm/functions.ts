@@ -5,45 +5,39 @@ import { isNew } from '../../utils/functions';
 import { deactivatedOptionLabel } from '../../utils/options';
 import { inputLabels, pageTitles } from '../../utils/texts';
 
-export type StoredClassifier = { id?: number | null; name?: string };
-
-const resolveDeactivatedOption = (
+const deactivatedOption = (
   storedId: number,
-  storedName: string | undefined,
   vocabulary: CriteriaOption[],
-): CriteriaOption => {
-  const known = vocabulary.find((option) => option.id === storedId);
+): CriteriaOption | undefined => {
+  const option = vocabulary.find((row) => row.id === storedId);
 
-  return {
-    id: storedId,
-    name: known?.name || storedName || '',
-    value: deactivatedOptionLabel(known?.value || storedName || ''),
-  };
+  return option && { ...option, value: deactivatedOptionLabel(option.value) };
 };
 
 export const getSignOptions = (
   signs: CriteriaSign[],
-  stored: StoredClassifier,
+  storedId: number | null | undefined,
   vocabulary: CriteriaOption[],
 ): CriteriaSign[] => {
-  if (!stored.id || signs.some((sign) => sign.id === stored.id)) return signs;
+  if (!storedId || signs.some((sign) => sign.id === storedId)) return signs;
 
-  return [
-    { ...resolveDeactivatedOption(stored.id, stored.name, vocabulary), stages: [] },
-    ...signs,
-  ];
+  const option = deactivatedOption(storedId, vocabulary);
+
+  return option ? [{ ...option, stages: [] }, ...signs] : signs;
 };
 
 export const getStageOptions = (
   sign: CriteriaSign | undefined,
-  stored: StoredClassifier,
+  storedId: number | null | undefined,
   vocabulary: CriteriaOption[],
 ): CriteriaOption[] => {
   const stages = sign?.stages || [];
 
-  if (!stored.id || stages.some((stage) => stage.id === stored.id)) return stages;
+  if (!storedId || stages.some((stage) => stage.id === storedId)) return stages;
 
-  return [resolveDeactivatedOption(stored.id, stored.name, vocabulary), ...stages];
+  const option = deactivatedOption(storedId, vocabulary);
+
+  return option ? [option, ...stages] : stages;
 };
 
 export const setPlaceholder = (value, id) =>

@@ -33,9 +33,7 @@ export interface FormProps {
   isCorrectFormInformation: boolean;
   status?: StatusTypes;
   comment?: string;
-  evolution?: string;
   evolutionId?: number | null;
-  activity?: string;
   activityId?: number | null;
   noQuantityReason?: FormNoQuantityReason;
 }

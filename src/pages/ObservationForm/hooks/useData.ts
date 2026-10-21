@@ -133,9 +133,7 @@ export const useData = () => {
     geom: observationForm?.geom || '',
     observedBy: observationForm?.observedBy || '',
     isCorrectFormInformation: disabled,
-    evolution: observationForm?.evolution,
     evolutionId: observationForm?.evolutionId ?? null,
-    activity: observationForm?.activity,
     activityId: observationForm?.activityId ?? null,
     noQuantityReason: observationForm?.noQuantityReason,
   };
