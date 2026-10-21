@@ -1,6 +1,5 @@
 import { FeatureCollection } from '@aplinkosministerija/design-system';
 import {
-  ClassifierGroups,
   FormStatusTypes,
   FormTypes,
   HistoryTypes,
@@ -225,6 +224,8 @@ export interface CriteriaOption {
   id: number;
   name: string;
   value: string;
+  // Only a populated form classifier carries this; a criterion's own options never do.
+  active?: boolean;
 }
 
 export interface CriteriaSign extends CriteriaOption {
@@ -234,11 +235,6 @@ export interface CriteriaSign extends CriteriaOption {
 export interface SpeciesCriteria {
   criteria: { id: number; name: string } | null;
   signs: CriteriaSign[];
-}
-
-export interface ClassifierOption extends CriteriaOption {
-  active: boolean;
-  group: ClassifierGroups;
 }
 
 export interface Request {
@@ -338,8 +334,8 @@ export interface FormFilters {
   source?: Sources;
   tenant?: Tenant;
   method?: { id: string; label: string };
-  evolution?: ClassifierOption;
-  activity?: ClassifierOption;
+  evolution?: CriteriaOption;
+  activity?: CriteriaOption;
 }
 
 export interface FormFiltersProps {

@@ -3,6 +3,7 @@ import { isEmpty, isEqual } from 'lodash';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { device } from '../../../styles';
+import { classifierLabel } from '../../../utils/options';
 import { CriteriaOption, CriteriaSign } from '../../../types';
 import {
   crustaceanMethodTypeOptions,
@@ -206,7 +207,7 @@ export const SpecieActivity = ({
           name="activity"
           onChange={handleSetSign}
           options={criteria.signs}
-          getOptionLabel={(option: CriteriaOption) => option?.value || ''}
+          getOptionLabel={classifierLabel}
           placeholder={setPlaceholder(values.activity?.value, id)}
         />
       )}
@@ -219,7 +220,7 @@ export const SpecieActivity = ({
           name="evolution"
           onChange={(stage?: CriteriaOption) => handleChange('evolution', stage ?? null)}
           options={stageOptions}
-          getOptionLabel={(option: CriteriaOption) => option?.value || ''}
+          getOptionLabel={classifierLabel}
           placeholder={setPlaceholder(values.evolution?.value, id)}
         />
       )}

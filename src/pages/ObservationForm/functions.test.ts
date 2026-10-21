@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { CriteriaOption, CriteriaSign } from '../../types';
-import { getStageOptions, storedClassifier } from './functions';
+import { getStageOptions } from './functions';
 
 const stage: CriteriaOption = { id: 90, name: 'SUAUGES_INDIVIDAS', value: 'Suaugęs individas' };
 
@@ -14,20 +14,6 @@ const withStages: CriteriaSign = {
 const withoutStages: CriteriaSign = { id: 65, name: 'NERASTA', value: 'Nerasta', stages: [] };
 
 const signs: CriteriaSign[] = [withStages, withoutStages];
-
-describe('storedClassifier', () => {
-  it('marks a stored value as retired so it reads apart from the offered ones', () => {
-    expect(storedClassifier({ id: 41, name: 'HABITATION', value: 'Lizdas, ola ir pan' })).toEqual({
-      id: 41,
-      name: 'HABITATION',
-      value: 'Lizdas, ola ir pan (nebenaudojama)',
-    });
-  });
-
-  it('is null when the form holds no classifier', () => {
-    expect(storedClassifier(undefined)).toBeNull();
-  });
-});
 
 describe('getStageOptions', () => {
   it('offers the stages of the chosen sign', () => {

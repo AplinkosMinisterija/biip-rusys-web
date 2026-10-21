@@ -2,13 +2,7 @@ import { isEqual } from 'lodash';
 import { FormTypes, PlantAbundanceType } from '../../utils/constants';
 import { CriteriaOption, CriteriaSign } from '../../types';
 import { isNew } from '../../utils/functions';
-import { deactivatedOptionLabel } from '../../utils/options';
 import { inputLabels, pageTitles } from '../../utils/texts';
-
-// A retired value is the select's value but never one of its options, and design-system 1.4.7
-// suppresses onChange when the clicked option's label equals the current one.
-export const storedClassifier = (stored?: CriteriaOption): CriteriaOption | null =>
-  stored ? { ...stored, value: deactivatedOptionLabel(stored.value) } : null;
 
 export const getStageOptions = (
   signs: CriteriaSign[],

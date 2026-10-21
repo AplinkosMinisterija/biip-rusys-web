@@ -1,6 +1,6 @@
 import { map } from 'lodash';
 import api from '../api';
-import { ClassifierOption } from '../types';
+import { CriteriaOption } from '../types';
 import {
   ClassifierGroups,
   CrustaceanMethodType,
@@ -12,15 +12,19 @@ import {
 import {
   crustaceanMethodTypeLabels,
   fishMethodTypeLabels,
-  inputLabels,
   mammalMethodTypeLabels,
   molluskMethodTypeLabels,
+  inputLabels,
   plantAbundanceTypeLabels,
 } from './texts';
 
-// SelectField drops onChange when two options share a label, and 2026 repeats four legacy ones.
-export const deactivatedOptionLabel = (value: string) =>
-  `${value} (${inputLabels.deactivatedOption})`;
+// A retired value is still shown, so it has to read apart from the one that replaced it: the two
+// vocabulary generations share four labels, and design-system 1.4.7 drops onChange when the
+// clicked option's label equals the current one.
+export const classifierLabel = (option?: CriteriaOption): string =>
+  option?.active === false
+    ? `${option.value} (${inputLabels.deactivatedOption})`
+    : option?.value || '';
 
 const methodLabels = {
   ...fishMethodTypeLabels,
@@ -47,13 +51,10 @@ export const getMethodOptions = () =>
     }),
   );
 
-export const getClassifierOptionsList =
+export const getCriteriaOptionsList =
   (group: ClassifierGroups) => async (input: string, page: number | string) =>
-    await api.getClassifierOptionsPage(group, input, page);
+    await api.getCriteriaOptionsPage(group, input, page);
 
-export const getActivityOptionsList = getClassifierOptionsList(ClassifierGroups.ACTIVITY);
+export const getActivityOptionsList = getCriteriaOptionsList(ClassifierGroups.ACTIVITY);
 
-export const getEvolutionOptionsList = getClassifierOptionsList(ClassifierGroups.EVOLUTION);
-
-export const classifierOptionLabel = (option?: ClassifierOption) =>
-  option?.active === false ? deactivatedOptionLabel(option.value) : option?.value || '';
+export const getEvolutionOptionsList = getCriteriaOptionsList(ClassifierGroups.EVOLUTION);

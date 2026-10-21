@@ -1,29 +1,25 @@
 import { describe, expect, it } from 'vitest';
-import { ClassifierOption } from '../types';
-import { ClassifierGroups } from './constants';
-import { classifierOptionLabel } from './options';
+import { CriteriaOption } from '../types';
+import { classifierLabel } from './options';
 
-const option = (value: string, active: boolean): ClassifierOption => ({
-  id: 1,
-  name: 'MATURE',
-  value,
-  group: ClassifierGroups.EVOLUTION,
-  active,
-});
+const offered: CriteriaOption = { id: 78, name: 'SUAUGES_INDIVIDAS', value: 'Suaugęs individas' };
 
-describe('classifierOptionLabel', () => {
-  it('shows an offered option as it comes', () => {
-    expect(classifierOptionLabel(option('Suaugęs individas', true))).toBe('Suaugęs individas');
+describe('classifierLabel', () => {
+  it('words an option the way the vocabulary does', () => {
+    expect(classifierLabel({ ...offered, active: true })).toBe('Suaugęs individas');
   });
 
-  it('marks a deactivated option so two generations stay distinct', () => {
-    expect(classifierOptionLabel(option('Suaugęs individas', false))).toBe(
-      'Suaugęs individas (nebenaudojama)',
-    );
+  it('marks a retired option so it reads apart from the one that replaced it', () => {
+    expect(
+      classifierLabel({ id: 7, name: 'MATURE', value: 'Suaugęs individas', active: false }),
+    ).toBe('Suaugęs individas (istorinė reikšmė)');
   });
 
-  it('stays blank for a chip left over from the old filter shape', () => {
-    expect(classifierOptionLabel(undefined)).toBe('');
-    expect(classifierOptionLabel({ id: 1, label: 'Suaugęs individas' } as never)).toBe('');
+  it('leaves a criterion option alone, which never says whether it is active', () => {
+    expect(classifierLabel(offered)).toBe('Suaugęs individas');
+  });
+
+  it('is blank when there is no option', () => {
+    expect(classifierLabel(undefined)).toBe('');
   });
 });
