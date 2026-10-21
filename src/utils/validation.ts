@@ -19,8 +19,7 @@ export const availableMimeTypes = ['image/png', 'image/jpg', 'image/jpeg', 'appl
 
 export type ObservationFormRules = {
   criteria: SpeciesCriteria;
-  // A record stored before its criterion offered any sign has no sign to show, and demanding one
-  // would make the officer invent a value and lose the stage the old sign never had.
+  // Demanding a sign from a record stored before its criterion had any would wipe the stage it has.
   predatesSigns: boolean;
   criteriaFailed: boolean;
 };
@@ -34,8 +33,7 @@ export const getObservationFormValidationSchema = ({
     {
       species: Yup.object()
         .required(validationTexts.requireSelect)
-        // A failed criterion lookup is indistinguishable from "no criterion", so without this the
-        // form would happily save a protected species with no sign at all.
+        // See useSpeciesCriteria: a failed lookup is indistinguishable from "no criterion".
         .test('criteriaResolved', validationTexts.criteriaUnavailable, () => !criteriaFailed)
         .nullable(),
       source: Yup.object().required(validationTexts.requireSelect).nullable(),

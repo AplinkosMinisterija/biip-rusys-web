@@ -5,8 +5,7 @@ import { EMPTY_SPECIES_CRITERIA } from './constants';
 import { validationTexts } from './texts';
 import { getObservationFormValidationSchema, ObservationFormRules } from './validation';
 
-// validation.ts reaches the design-system through a photo-upload component that cannot evaluate
-// outside a browser; neither symbol takes part in the rules under test.
+// validation.ts pulls the design-system in via PhotoUploadField, which needs a browser to evaluate.
 vi.mock('@aplinkosministerija/design-system', () => ({ phoneNumberRegexPattern: /^\+370\d{8}$/ }));
 vi.mock('../components/fields/PhotoUploadField', () => ({ availablePhotoMimeTypes: [] }));
 

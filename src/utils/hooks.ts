@@ -47,8 +47,7 @@ export const useSpeciesCriteria = (
 
   return {
     criteria: data ?? EMPTY_SPECIES_CRITERIA,
-    // A failed lookup is indistinguishable from "this species has no criterion", which would let a
-    // protected species be submitted with no sign at all.
+    // A failed lookup looks exactly like "no criterion", which would save a protected species unsigned.
     failed: !!speciesId && isError,
   };
 };

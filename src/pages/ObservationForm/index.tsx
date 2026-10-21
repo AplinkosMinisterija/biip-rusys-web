@@ -38,8 +38,7 @@ const ObservationForm = () => {
   return <ObservationFormContent {...data} id={data.id || ''} />;
 };
 
-// Split so the species reaches the criteria query: useState reads its initial value on mount,
-// and on a single component that mount happens while useData is still loading.
+// Split so useState sees the loaded species: on one component, mount happens while useData loads.
 const ObservationFormContent = ({
   initialValues,
   id,

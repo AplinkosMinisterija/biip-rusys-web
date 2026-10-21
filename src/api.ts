@@ -413,8 +413,7 @@ class Api {
     let page = 1;
     let totalPages = 1;
 
-    // Administrators own this vocabulary, so a page that silently truncates would drop filter
-    // values and leave stored ones unlabelled. Oldest id first: duplicate codes keep the first row.
+    // Admin-managed vocabulary: a truncated page would silently drop filter values. Oldest id first.
     while (page <= totalPages) {
       const response: GetAllResponse<ClassifierOption> = await this.get({
         resource: Resources.FORM_SETTINGS_OPTIONS,

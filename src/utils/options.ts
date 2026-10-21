@@ -17,9 +17,7 @@ import {
   plantAbundanceTypeLabels,
 } from './texts';
 
-// Two vocabulary generations share labels (Kiaušinis, Lėliukė, Suaugęs individas, Jaunas…), and
-// the design-system SelectField drops onChange when the clicked option's label equals the current
-// one — so an unmarked pair makes the live option unselectable and the filter chips ambiguous.
+// SelectField drops onChange when two options share a label, and 2026 repeats four legacy ones.
 export const deactivatedOptionLabel = (value: string) =>
   `${value} (${inputLabels.deactivatedOption})`;
 
@@ -49,8 +47,7 @@ export const getMethodOptions = () =>
   );
 
 export const getClassifierFilterOptions = (options: ClassifierOption[], group: ClassifierGroups) =>
-  // A filter sends the code, and the legacy vocabulary seeded GROWING once per form type; keeping
-  // the older row of a repeated code preserves the label these lists showed before.
+  // Legacy seeded GROWING once per form type; the older row preserves the label these lists showed.
   uniqBy(
     options.filter((option) => option.group === group),
     'name',
