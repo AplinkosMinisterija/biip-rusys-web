@@ -1,13 +1,19 @@
 import { isEqual } from 'lodash';
-import {
-  AnimalActivity,
-  AnimalEvolutionState,
-  FormTypes,
-  PlantAbundanceType,
-  PlantEvolutionState,
-} from '../../utils/constants';
+import { FormTypes, PlantAbundanceType } from '../../utils/constants';
+import { CriteriaOption, CriteriaSign } from '../../types';
 import { isNew } from '../../utils/functions';
+import { deactivatedOptionLabel } from '../../utils/options';
 import { inputLabels, pageTitles } from '../../utils/texts';
+
+// A retired value is the select's value but never one of its options, and design-system 1.4.7
+// suppresses onChange when the clicked option's label equals the current one.
+export const storedClassifier = (stored?: CriteriaOption): CriteriaOption | null =>
+  stored ? { ...stored, value: deactivatedOptionLabel(stored.value) } : null;
+
+export const getStageOptions = (
+  signs: CriteriaSign[],
+  activity?: CriteriaOption | null,
+): CriteriaOption[] => signs.find((sign) => sign.id === activity?.id)?.stages || [];
 
 export const setPlaceholder = (value, id) =>
   !value && !isNew(id) ? inputLabels.noData : inputLabels.chooseOption;
@@ -18,37 +24,6 @@ export const title = (disabled: boolean, id: string) => {
 
   return pageTitles.updateForm;
 };
-
-export const getAnimalPlantOptions = (formType: FormTypes) => {
-  const isMushroomKingdom = isEqual(formType, FormTypes.ENDANGERED_MUSHROOM);
-
-  return Object.keys(PlantEvolutionState).filter((evolution) => {
-    if (isEqual(evolution, PlantEvolutionState.GROWING)) {
-      return isMushroomKingdom;
-    }
-    return true;
-  });
-};
-
-export const getAnimalActivityOptions = () => Object.keys(AnimalActivity);
-
-export const getAnimalEvolutionOptions = (activity?: AnimalActivity) =>
-  Object.keys(AnimalEvolutionState).filter((evolution) => {
-    if (isEqual(activity, AnimalActivity.HABITATION)) {
-      return true;
-    }
-
-    const showAgeOptions =
-      activity && [AnimalActivity.OBSERVED_ALIVE, AnimalActivity.OTHER].includes(activity);
-
-    if (showAgeOptions) {
-      return [AnimalEvolutionState.IMMATURE, AnimalEvolutionState.MATURE].includes(
-        evolution as AnimalEvolutionState,
-      );
-    }
-
-    return false;
-  });
 
 export const getMapPath = (disabled = false, authToken?: string) => {
   const param = new URLSearchParams();

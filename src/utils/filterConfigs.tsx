@@ -9,7 +9,12 @@ import {
   getSpeciesList,
   speciesOptionLabel,
 } from './functions';
-import { getActivities, getEvolutionOptions, getMethodOptions } from './options';
+import {
+  classifierOptionLabel,
+  getActivityOptionsList,
+  getEvolutionOptionsList,
+  getMethodOptions,
+} from './options';
 import { formFiltersLabels } from './texts';
 
 export const myObservationFilterConfig = {
@@ -23,16 +28,16 @@ export const myObservationFilterConfig = {
   evolution: {
     label: formFiltersLabels.evolution,
     key: 'evolution',
-    optionLabel: (option) => option?.label,
-    inputType: FilterInputTypes.singleSelect,
-    options: getEvolutionOptions(),
+    inputType: FilterInputTypes.asyncSingleSelect,
+    optionsApi: getEvolutionOptionsList,
+    optionLabel: classifierOptionLabel,
   },
   activity: {
     label: formFiltersLabels.activity,
     key: 'activity',
-    optionLabel: (option) => option?.label,
-    inputType: FilterInputTypes.singleSelect,
-    options: getActivities(),
+    inputType: FilterInputTypes.asyncSingleSelect,
+    optionsApi: getActivityOptionsList,
+    optionLabel: classifierOptionLabel,
   },
   source: {
     label: formFiltersLabels.source,

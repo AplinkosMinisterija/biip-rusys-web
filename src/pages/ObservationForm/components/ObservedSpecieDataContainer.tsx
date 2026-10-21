@@ -17,6 +17,7 @@ export const ObservedSpecieDataContainer = ({
   handleChange,
   disabled,
   setValues,
+  criteria,
 }: ObservedSpecieDataContainerProps) => {
   const formType = values?.species?.formType;
   const handleSetTransect = () => {
@@ -103,6 +104,7 @@ export const ObservedSpecieDataContainer = ({
           errors={errors}
           setValues={setValues}
           handleChange={handleChange}
+          criteria={criteria}
         />
         <TextAreaField
           disabled={disabled}

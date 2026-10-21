@@ -1,33 +1,4 @@
-export enum AnimalActivity {
-  FAECES = 'FAECES',
-  CUD = 'CUD',
-  HABITATION = 'HABITATION',
-  OBSERVED_FOOTPRINT = 'OBSERVED_FOOTPRINT',
-  OBSERVED_ALIVE = 'OBSERVED_ALIVE',
-  OTHER = 'OTHER',
-}
-
-export enum AnimalEvolutionState {
-  EGG = 'EGG',
-  LARVA = 'LARVA',
-  IMMATURE = 'IMMATURE',
-  PUPA = 'PUPA',
-  DEAD = 'DEAD',
-  MATURE = 'MATURE',
-}
-
-export enum PlantEvolutionState {
-  GROWING = 'GROWING',
-  VEGETATING = 'VEGETATING',
-  BLOOMING = 'BLOOMING',
-  FRUIT_BEARING = 'FRUIT_BEARING',
-  DRY = 'DRY',
-}
-
-export enum MushroomEvolutionState {
-  GROWING = 'GROWING',
-  DRIED_UP = 'DRIED_UP',
-}
+import type { SpeciesCriteria } from '../types';
 
 export enum HistoryTypes {
   CREATED = 'CREATED',
@@ -112,6 +83,8 @@ export enum Resources {
   TAXONOMY = 'taxonomy',
   UPLOAD = 'upload',
   CAN_EDIT = 'canEdit',
+  FORM_CRITERIA = 'forms/criteria',
+  FORM_SETTINGS_OPTIONS = 'forms/settings/options',
 }
 
 export enum PlantAbundanceType {
@@ -131,6 +104,8 @@ export enum PlantAbundanceType {
 export enum Populations {
   SOURCE = 'source',
   ROLE = 'role',
+  ACTIVITY = 'activity',
+  EVOLUTION = 'evolution',
 }
 
 export enum SortFields {
@@ -138,6 +113,7 @@ export enum SortFields {
   CREATED_AT = '-createdAt',
   LAST_NAME = 'lastName',
   NAME = 'name',
+  ID = 'id',
 }
 
 export enum LoadingTypes {
@@ -302,3 +278,12 @@ export enum ButtonColors {
   DANGER_OUTLINE = 'dangerOutline',
   TEXT_ONLY = 'textOnly',
 }
+
+export enum ClassifierGroups {
+  ACTIVITY = 'ACTIVITY',
+  EVOLUTION = 'EVOLUTION',
+}
+
+export const CLASSIFIER_STALE_TIME = 60 * 60 * 1000;
+
+export const EMPTY_SPECIES_CRITERIA: SpeciesCriteria = { criteria: null, signs: [] };

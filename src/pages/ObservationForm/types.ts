@@ -4,15 +4,12 @@ import {
   FormNoQuantityReason,
   HandleChangeType,
   Sources,
+  CriteriaOption,
+  SpeciesCriteria,
   SpeciesSearchProp,
   Transect,
 } from '../../types';
-import {
-  AnimalActivity,
-  AnimalEvolutionState,
-  PlantEvolutionState,
-  StatusTypes,
-} from '../../utils/constants';
+import { StatusTypes } from '../../utils/constants';
 
 export type ObservationPhoto = FileProps | File;
 export type ObservationGeom = FeatureCollection | '';
@@ -37,8 +34,8 @@ export interface FormProps {
   isCorrectFormInformation: boolean;
   status?: StatusTypes;
   comment?: string;
-  evolution?: AnimalEvolutionState | PlantEvolutionState;
-  activity?: AnimalActivity;
+  evolution?: CriteriaOption | null;
+  activity?: CriteriaOption | null;
   noQuantityReason?: FormNoQuantityReason;
 }
 
@@ -55,8 +52,8 @@ export interface FormServerProps {
   observedAt: Date | undefined;
   status?: StatusTypes;
   comment?: string;
-  evolution?: AnimalEvolutionState | PlantEvolutionState;
-  activity: AnimalActivity | undefined;
+  evolution?: number | null;
+  activity?: number | null;
   noQuantityReason?: FormNoQuantityReason;
 }
 
@@ -66,6 +63,7 @@ export interface SpecieActivityProps {
   setValues: SetObservationFormValues;
   handleChange: HandleChangeType;
   disabled: boolean;
+  criteria: SpeciesCriteria;
 }
 
 export interface ObservedSpecieDataContainerProps {
@@ -74,6 +72,9 @@ export interface ObservedSpecieDataContainerProps {
   setValues: SetObservationFormValues;
   handleChange: HandleChangeType;
   disabled: boolean;
+  criteria: SpeciesCriteria;
+  storedSign?: CriteriaOption;
+  storedStage?: CriteriaOption;
 }
 
 export interface ObserverDataContainerProps {
