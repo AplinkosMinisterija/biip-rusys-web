@@ -1,16 +1,12 @@
 import { FormNoQuantityReason } from '../types';
 import {
-  AnimalActivity,
-  AnimalEvolutionState,
   CrustaceanMethodType,
   FishMethodType,
   HistoryTypes,
   MammalMethodType,
   MeasurementUnits,
   MolluskMethodType,
-  MushroomEvolutionState,
   PlantAbundanceType,
-  PlantEvolutionState,
   RequestDocumentType,
   RequestTypes,
   RolesTypes,
@@ -298,6 +294,7 @@ export const formLabels = {
 };
 
 export const inputLabels = {
+  deactivatedOption: 'nebenaudojama',
   area: 'Plotas',
   generating: 'Išrašas kuriamas',
   pdfGenerating: 'PDF išrašas kuriamas',
@@ -452,35 +449,6 @@ export const requestTypeLabels = {
   [RequestTypes.GET_ONCE]: 'Išrašas',
 };
 
-export const animalEvolutionStateLabels = {
-  [AnimalEvolutionState.EGG]: 'Kiaušinis',
-  [AnimalEvolutionState.LARVA]: 'Lerva',
-  [AnimalEvolutionState.IMMATURE]: 'Jaunas, nesubrendęs individas',
-  [AnimalEvolutionState.PUPA]: 'Lėliukė',
-  [AnimalEvolutionState.DEAD]: 'Negyvas individas',
-  [AnimalEvolutionState.MATURE]: 'Suaugęs individas',
-};
-
-export const plantEvolutionStateLabels = {
-  [PlantEvolutionState.VEGETATING]: 'Daigas/vegetuojantis augalas',
-  [PlantEvolutionState.BLOOMING]: 'Žydintis augalas',
-  [PlantEvolutionState.FRUIT_BEARING]: 'Vaisius duodantis augalas',
-  [PlantEvolutionState.DRY]: 'Sausas (nudžiūvęs) augalas, augalo liekanos',
-};
-
-export const mushroomEvolutionStateLabels = {
-  [MushroomEvolutionState.GROWING]: 'Augantis grybas arba kerpė',
-  [MushroomEvolutionState.DRIED_UP]: 'Sudžiūvęs grybas ar kerpė',
-};
-export const animalActivityLabels = {
-  [AnimalActivity.FAECES]: 'Išmatos',
-  [AnimalActivity.CUD]: 'Išvamos (atrajos)',
-  [AnimalActivity.HABITATION]: 'Lizdas, ola ir pan',
-  [AnimalActivity.OBSERVED_FOOTPRINT]: 'Stebėti pėdsakai',
-  [AnimalActivity.OBSERVED_ALIVE]: 'Stebėtas gyvas (praskrendantis, besimaitinantis ir kt.)',
-  [AnimalActivity.OTHER]: 'Kiti buvimo požymiai (balsai ir kt.)',
-};
-
 export const observationFormActionLabels = {
   [StatusTypes.APPROVED]: 'Tvirtinama stebėjimo anketa',
   [StatusTypes.RETURNED]: 'Grąžinti stebėjimo anketą taisymui',
@@ -522,6 +490,7 @@ export const requestFormHistoryLabels = {
 
 export const validationTexts = {
   formFillError: 'Neteisingai užpildyta forma',
+  criteriaUnavailable: 'Nepavyko gauti šios rūšies požymių sąrašo. Perkraukite puslapį.',
   requireMap: 'Privalote pasirinkti vietą žemėlapyje',
   photoNotUploaded: 'Nuotrauka neįkelta',
   requirePhotos: 'Privalote įkelti nuotrauką',

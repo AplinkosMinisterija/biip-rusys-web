@@ -1,26 +1,26 @@
 import { map } from 'lodash';
+import api from '../api';
+import { ClassifierOption } from '../types';
 import {
-  AnimalActivity,
-  AnimalEvolutionState,
+  ClassifierGroups,
   CrustaceanMethodType,
   FishMethodType,
   MammalMethodType,
   MolluskMethodType,
-  MushroomEvolutionState,
   PlantAbundanceType,
-  PlantEvolutionState,
 } from './constants';
 import {
-  animalActivityLabels,
-  animalEvolutionStateLabels,
   crustaceanMethodTypeLabels,
   fishMethodTypeLabels,
+  inputLabels,
   mammalMethodTypeLabels,
   molluskMethodTypeLabels,
-  mushroomEvolutionStateLabels,
   plantAbundanceTypeLabels,
-  plantEvolutionStateLabels,
 } from './texts';
+
+// SelectField drops onChange when two options share a label, and 2026 repeats four legacy ones.
+export const deactivatedOptionLabel = (value: string) =>
+  `${value} (${inputLabels.deactivatedOption})`;
 
 const methodLabels = {
   ...fishMethodTypeLabels,
@@ -28,12 +28,6 @@ const methodLabels = {
   ...crustaceanMethodTypeLabels,
   ...mammalMethodTypeLabels,
   ...plantAbundanceTypeLabels,
-};
-
-const evolutionLabels = {
-  ...animalEvolutionStateLabels,
-  ...mushroomEvolutionStateLabels,
-  ...plantEvolutionStateLabels,
 };
 
 export const getMethodOptions = () =>
@@ -53,23 +47,13 @@ export const getMethodOptions = () =>
     }),
   );
 
-export const getEvolutionOptions = () =>
-  map(
-    [
-      ...new Set([
-        ...Object.keys(AnimalEvolutionState),
-        ...Object.keys(MushroomEvolutionState),
-        ...Object.keys(PlantEvolutionState),
-      ]),
-    ],
-    (Status) => ({
-      id: Status,
-      label: evolutionLabels[Status],
-    }),
-  );
+export const getClassifierOptionsList =
+  (group: ClassifierGroups) => async (input: string, page: number | string) =>
+    await api.getClassifierOptionsPage(group, input, page);
 
-export const getActivities = () =>
-  map(AnimalActivity, (Status) => ({
-    id: Status,
-    label: animalActivityLabels[Status],
-  }));
+export const getActivityOptionsList = getClassifierOptionsList(ClassifierGroups.ACTIVITY);
+
+export const getEvolutionOptionsList = getClassifierOptionsList(ClassifierGroups.EVOLUTION);
+
+export const classifierOptionLabel = (option?: ClassifierOption) =>
+  option?.active === false ? deactivatedOptionLabel(option.value) : option?.value || '';

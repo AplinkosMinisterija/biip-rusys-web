@@ -133,14 +133,16 @@ export const useData = () => {
     geom: observationForm?.geom || '',
     observedBy: observationForm?.observedBy || '',
     isCorrectFormInformation: disabled,
-    evolution: observationForm?.evolution,
-    activity: observationForm?.activity,
+    evolution: observationForm?.evolution?.id ?? null,
+    activity: observationForm?.activity?.id ?? null,
     noQuantityReason: observationForm?.noQuantityReason,
   };
 
   return {
     handleSubmit,
     deleteInfo,
+    storedSign: observationForm?.activity,
+    storedStage: observationForm?.evolution,
     loading: isFetching || specieLoading,
     mapQueryString,
     initialValues,
