@@ -490,6 +490,7 @@ export const requestFormHistoryLabels = {
 
 export const validationTexts = {
   formFillError: 'Neteisingai užpildyta forma',
+  criteriaUnavailable: 'Nepavyko gauti šios rūšies požymių sąrašo. Perkraukite puslapį.',
   requireMap: 'Privalote pasirinkti vietą žemėlapyje',
   photoNotUploaded: 'Nuotrauka neįkelta',
   requirePhotos: 'Privalote įkelti nuotrauką',

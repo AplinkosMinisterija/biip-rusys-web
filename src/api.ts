@@ -409,18 +409,30 @@ class Api {
     });
 
   getClassifierOptions = async (): Promise<ClassifierOption[]> => {
-    // Oldest id first: the filter dropdowns keep the first row of a repeated code.
-    const { rows } = await this.get({
-      resource: Resources.FORM_SETTINGS_OPTIONS,
-      pageSize: CLASSIFIER_OPTIONS_PAGE_SIZE,
-      sort: [SortFields.ID],
-      fields: ['id', 'name', 'value', 'group', 'active'],
-      query: JSON.stringify({
-        group: { $in: [ClassifierGroups.ACTIVITY, ClassifierGroups.EVOLUTION] },
-      }),
-    });
+    const options: ClassifierOption[] = [];
+    let page = 1;
+    let totalPages = 1;
 
-    return rows;
+    // Administrators own this vocabulary, so a page that silently truncates would drop filter
+    // values and leave stored ones unlabelled. Oldest id first: duplicate codes keep the first row.
+    while (page <= totalPages) {
+      const response: GetAllResponse<ClassifierOption> = await this.get({
+        resource: Resources.FORM_SETTINGS_OPTIONS,
+        page: `${page}`,
+        pageSize: CLASSIFIER_OPTIONS_PAGE_SIZE,
+        sort: [SortFields.ID],
+        fields: ['id', 'name', 'value', 'group', 'active'],
+        query: JSON.stringify({
+          group: { $in: [ClassifierGroups.ACTIVITY, ClassifierGroups.EVOLUTION] },
+        }),
+      });
+
+      options.push(...response.rows);
+      totalPages = response.totalPages;
+      page += 1;
+    }
+
+    return options;
   };
 
   createObservationForm = async (params: FormServerProps): Promise<Form> => {

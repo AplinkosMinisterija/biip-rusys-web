@@ -31,7 +31,7 @@ export const useFilteredRoutes = () => {
 
 export const useSpeciesCriteria = (
   speciesId?: number,
-): { criteria: SpeciesCriteria; isResolved: boolean } => {
+): { criteria: SpeciesCriteria; failed: boolean } => {
   const { data, isError } = useQuery(
     ['speciesCriteria', speciesId],
     () => api.getSpeciesCriteria(Number(speciesId)),
@@ -47,9 +47,9 @@ export const useSpeciesCriteria = (
 
   return {
     criteria: data ?? EMPTY_SPECIES_CRITERIA,
-    // In flight and failed both look like "this species has no criterion", which would let a
+    // A failed lookup is indistinguishable from "this species has no criterion", which would let a
     // protected species be submitted with no sign at all.
-    isResolved: !speciesId || (!!data && !isError),
+    failed: !!speciesId && isError,
   };
 };
 

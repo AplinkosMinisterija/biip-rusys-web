@@ -17,15 +17,27 @@ import { Species, SpeciesCriteria } from '../types';
 
 export const availableMimeTypes = ['image/png', 'image/jpg', 'image/jpeg', 'application/pdf'];
 
-// `predatesSigns`: a record stored before its criterion offered any sign has no sign to show, and
-// demanding one would make the officer invent a value and lose the stage the old sign never had.
-export const getObservationFormValidationSchema = (
-  criteria: SpeciesCriteria,
-  predatesSigns: boolean,
-) =>
+export type ObservationFormRules = {
+  criteria: SpeciesCriteria;
+  // A record stored before its criterion offered any sign has no sign to show, and demanding one
+  // would make the officer invent a value and lose the stage the old sign never had.
+  predatesSigns: boolean;
+  criteriaFailed: boolean;
+};
+
+export const getObservationFormValidationSchema = ({
+  criteria,
+  predatesSigns,
+  criteriaFailed,
+}: ObservationFormRules) =>
   Yup.object().shape(
     {
-      species: Yup.object().required(validationTexts.requireSelect).nullable(),
+      species: Yup.object()
+        .required(validationTexts.requireSelect)
+        // A failed criterion lookup is indistinguishable from "no criterion", so without this the
+        // form would happily save a protected species with no sign at all.
+        .test('criteriaResolved', validationTexts.criteriaUnavailable, () => !criteriaFailed)
+        .nullable(),
       source: Yup.object().required(validationTexts.requireSelect).nullable(),
       transect: Yup.object()
         .when(['species', 'transect'], {

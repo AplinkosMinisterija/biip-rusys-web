@@ -3,7 +3,7 @@ import * as Yup from 'yup';
 import { CriteriaSign, SpeciesCriteria } from '../types';
 import { EMPTY_SPECIES_CRITERIA } from './constants';
 import { validationTexts } from './texts';
-import { getObservationFormValidationSchema } from './validation';
+import { getObservationFormValidationSchema, ObservationFormRules } from './validation';
 
 // validation.ts reaches the design-system through a photo-upload component that cannot evaluate
 // outside a browser; neither symbol takes part in the rules under test.
@@ -30,13 +30,15 @@ const criteria: SpeciesCriteria = {
 };
 
 const errorFor = async (
-  resolved: SpeciesCriteria,
+  criteria: SpeciesCriteria,
   field: string,
   values: Record<string, unknown>,
-  predatesSigns = false,
+  overrides: Partial<Omit<ObservationFormRules, 'criteria'>> = {},
 ): Promise<string | undefined> => {
+  const rules = { criteria, predatesSigns: false, criteriaFailed: false, ...overrides };
+
   try {
-    await getObservationFormValidationSchema(resolved, predatesSigns).validateAt(field, values);
+    await getObservationFormValidationSchema(rules).validateAt(field, values);
     return undefined;
   } catch (error) {
     return (error as Yup.ValidationError).message;
@@ -73,7 +75,19 @@ describe('getObservationFormValidationSchema', () => {
   });
 
   it('does not force a sign onto a form stored before the criterion had any', async () => {
-    expect(await errorFor(criteria, 'activityId', { activityId: null }, true)).toBe(undefined);
+    expect(
+      await errorFor(criteria, 'activityId', { activityId: null }, { predatesSigns: true }),
+    ).toBe(undefined);
+  });
+
+  it('blocks the form when the criterion could not be loaded', async () => {
+    expect(
+      await errorFor(criteria, 'species', { species: { speciesId: 1 } }, { criteriaFailed: true }),
+    ).toBe(validationTexts.criteriaUnavailable);
+  });
+
+  it('lets the species through once the criterion has loaded', async () => {
+    expect(await errorFor(criteria, 'species', { species: { speciesId: 1 } })).toBe(undefined);
   });
 
   it('requires neither field while the criterion is still loading', async () => {
