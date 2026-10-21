@@ -14,8 +14,17 @@ import {
   fishMethodTypeLabels,
   mammalMethodTypeLabels,
   molluskMethodTypeLabels,
+  inputLabels,
   plantAbundanceTypeLabels,
 } from './texts';
+
+// A retired value is still shown, so it has to read apart from the one that replaced it: the two
+// vocabulary generations share four labels, and design-system 1.4.7 drops onChange when the
+// clicked option's label equals the current one.
+export const classifierLabel = (option?: CriteriaOption): string =>
+  option?.active === false
+    ? `${option.value} (${inputLabels.deactivatedOption})`
+    : option?.value || '';
 
 const methodLabels = {
   ...fishMethodTypeLabels,
