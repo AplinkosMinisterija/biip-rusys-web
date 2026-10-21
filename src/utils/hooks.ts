@@ -10,8 +10,8 @@ import { actions as tenantAction } from '../state/tenant/reducer';
 import { actions as userAction } from '../state/user/reducer';
 import { actions } from '../state/users/reducer';
 import { device } from '../styles';
-import { SpeciesCriteria, Tenant, User } from '../types';
-import { CLASSIFIER_STALE_TIME, EMPTY_SPECIES_CRITERIA, ServerErrorCodes } from './constants';
+import { Tenant, User } from '../types';
+import { ServerErrorCodes } from './constants';
 import {
   handleErrorFromServerToast,
   handleIsTenantOwner,
@@ -27,29 +27,6 @@ const MAP_TOKEN_INVALIDATION_COOLDOWN_MS = 30000;
 
 export const useFilteredRoutes = () => {
   return filteredRoutes(useGetCurrentProfile());
-};
-
-export const useSpeciesCriteria = (
-  speciesId?: number,
-): { criteria: SpeciesCriteria; failed: boolean } => {
-  const { data, isError } = useQuery(
-    ['speciesCriteria', speciesId],
-    () => api.getSpeciesCriteria(Number(speciesId)),
-    {
-      onError: () => {
-        handleErrorFromServerToast();
-      },
-      enabled: !!speciesId,
-      staleTime: CLASSIFIER_STALE_TIME,
-      retry: false,
-    },
-  );
-
-  return {
-    criteria: data ?? EMPTY_SPECIES_CRITERIA,
-    // A failed lookup looks exactly like "no criterion", which would save a protected species unsigned.
-    failed: !!speciesId && isError,
-  };
 };
 
 export const useGetCurrentProfile = () => {

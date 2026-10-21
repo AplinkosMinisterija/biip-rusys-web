@@ -1,9 +1,9 @@
 import { NumericTextField, SelectField, TextField } from '@aplinkosministerija/design-system';
 import { isEmpty, isEqual } from 'lodash';
+import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { device } from '../../../styles';
-import { CriteriaOption, CriteriaSign } from '../../../types';
 import {
   crustaceanMethodTypeOptions,
   fishMethodTypeOptions,
@@ -12,22 +12,32 @@ import {
   plantAbundanceTypeOptions,
 } from '../../../utils/functions';
 import {
+  getAnimalActivityOptions,
+  getAnimalEvolutionOptions,
   getShowNoQuantityReasonField,
-  getSignOptions,
-  getStageOptions,
   setPlaceholder,
 } from '../functions';
 import { noQuantityOptions } from '../options';
 import { StyledRadioOptions } from '../styles';
 import { SpecieActivityProps } from '../types';
-import { FormTypes, MammalMethodType } from '../../../utils/constants';
 import {
+  AnimalActivity,
+  FormTypes,
+  MammalMethodType,
+  MushroomEvolutionState,
+  PlantEvolutionState,
+} from '../../../utils/constants';
+import {
+  animalActivityLabels,
+  animalEvolutionStateLabels,
   crustaceanMethodTypeLabels,
   fishMethodTypeLabels,
   inputLabels,
   mammalMethodTypeLabels,
   molluskMethodTypeLabels,
+  mushroomEvolutionStateLabels,
   plantAbundanceTypeLabels,
+  plantEvolutionStateLabels,
   shortMeasurementUnitsLabels,
 } from '../../../utils/texts';
 
@@ -37,12 +47,20 @@ export const SpecieActivity = ({
   errors,
   setValues,
   handleChange,
-  criteria,
-  storedSign,
-  storedStage,
 }: SpecieActivityProps) => {
   const { id } = useParams();
   const formType = values?.species?.formType ? values?.species?.formType : '';
+  const isAnimalKingdom = isEqual(formType, FormTypes.ENDANGERED_ANIMAL);
+
+  const plantEvolutionOptions = useMemo(() => Object.keys(PlantEvolutionState), []);
+
+  const mushroomEvolutionOptions = useMemo(() => Object.keys(MushroomEvolutionState), []);
+  const animalActivitiesOptions = useMemo(() => getAnimalActivityOptions(), []);
+
+  const animalEvolutionOptions = useMemo(
+    () => getAnimalEvolutionOptions(values.activity),
+    [values.activity],
+  );
 
   const hasMethod =
     formType &&
@@ -53,6 +71,21 @@ export const SpecieActivity = ({
       FormTypes.INVASIVE_MAMMAL,
       FormTypes.INVASIVE_PLANT,
     ].includes(formType);
+
+  const showEvolutionField =
+    (isAnimalKingdom && !isEmpty(animalEvolutionOptions)) ||
+    (formType && [FormTypes.ENDANGERED_MUSHROOM, FormTypes.ENDANGERED_PLANT].includes(formType));
+
+  const evolution = {
+    [FormTypes.ENDANGERED_ANIMAL]: animalEvolutionOptions,
+    [FormTypes.ENDANGERED_MUSHROOM]: mushroomEvolutionOptions,
+    [FormTypes.ENDANGERED_PLANT]: plantEvolutionOptions,
+  };
+  const evolutionLabels = {
+    [FormTypes.ENDANGERED_ANIMAL]: animalEvolutionStateLabels,
+    [FormTypes.ENDANGERED_MUSHROOM]: mushroomEvolutionStateLabels,
+    [FormTypes.ENDANGERED_PLANT]: plantEvolutionStateLabels,
+  };
 
   const method = {
     [FormTypes.INVASIVE_FISH]: fishMethodTypeOptions,
@@ -112,6 +145,13 @@ export const SpecieActivity = ({
     (methodValue?.label && isEqual(FormTypes.INVASIVE_MAMMAL, values?.species?.formType)) ||
     isOtherMethod;
 
+  const handleSetActivity = (e: AnimalActivity) => {
+    setValues({
+      ...values,
+      evolution: undefined,
+      activity: e,
+    });
+  };
   if (!values.species) return <></>;
 
   const isInvasiveFormType =
@@ -192,44 +232,33 @@ export const SpecieActivity = ({
       </Row>
     );
 
-  const signOptions = getSignOptions(criteria.signs, values.activity, storedSign);
-  const selectedSign = signOptions.find((sign) => sign.id === values.activity);
-
-  const stageOptions = getStageOptions(selectedSign, values.evolution, storedStage);
-  const selectedStage = stageOptions.find((stage) => stage.id === values.evolution);
-
-  // A stage is only ever offered through a sign, so a new sign invalidates the stored one.
-  const handleSetSign = (sign?: CriteriaSign) =>
-    setValues({ ...values, activity: sign?.id ?? null, evolution: null });
-
-  const handleSetStage = (stage?: CriteriaOption) =>
-    setValues({ ...values, evolution: stage?.id ?? null });
-
   return (
     <>
-      {!isEmpty(signOptions) && (
+      {isAnimalKingdom && (
         <SelectField
           disabled={disabled}
           label={inputLabels.activity}
-          value={selectedSign}
+          value={values.activity}
           error={errors.activity}
-          name="activity"
-          onChange={handleSetSign}
-          options={signOptions}
-          getOptionLabel={(option: CriteriaOption) => option.value}
+          name={'activity'}
+          onChange={(e) => handleSetActivity(e)}
+          options={animalActivitiesOptions}
+          getOptionLabel={(e) => animalActivityLabels[e]}
           placeholder={setPlaceholder(values.activity, id)}
         />
       )}
-      {!isEmpty(stageOptions) && (
+      {showEvolutionField && (
         <SelectField
           disabled={disabled}
           label={inputLabels.evolution}
-          value={selectedStage}
+          value={values.evolution}
           error={errors.evolution}
           name="evolution"
-          onChange={handleSetStage}
-          options={stageOptions}
-          getOptionLabel={(option: CriteriaOption) => option.value}
+          onChange={(e) => {
+            handleChange('evolution', e);
+          }}
+          options={evolution[formType]}
+          getOptionLabel={(e: string) => evolutionLabels[formType][e]}
           placeholder={setPlaceholder(values.evolution, id)}
         />
       )}

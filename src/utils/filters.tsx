@@ -25,12 +25,8 @@ export const mapMyObservationFilters = (filters: FormFilters): FormFiltersProps 
     filters?.noQuantityReason?.id && (params.noQuantityReason = filters.noQuantityReason.id);
 
     filters?.method && (params.method = filters?.method?.id);
-    if (filters?.activity) {
-      params.activity = filters.activity.id;
-    }
-    if (filters?.evolution) {
-      params.evolution = filters.evolution.id;
-    }
+    filters?.activity && (params.activity = filters?.activity?.id);
+    filters?.evolution && (params.evolution = filters?.evolution?.id);
     filters?.source && (params.source = filters?.source?.id);
 
     filters?.state &&
