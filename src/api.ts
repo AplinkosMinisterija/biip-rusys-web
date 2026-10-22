@@ -413,6 +413,9 @@ class Api {
       resource: Resources.FORM_SETTINGS_OPTIONS,
       query: JSON.stringify({ group }),
       filter: { value: input },
+      // A historic value stays searchable, but it belongs under the ones still in use, and
+      // `name` is the derived code so sorting by it reads as no order at all.
+      sort: ['-active', 'value'],
       page: page?.toString(),
     });
 
