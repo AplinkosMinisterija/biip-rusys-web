@@ -12,7 +12,7 @@ import {
 import { phoneNumberRegexPattern } from '@aplinkosministerija/design-system';
 import { isEmpty, isEqual } from 'lodash';
 import { availablePhotoMimeTypes } from '../components/fields/PhotoUploadField';
-import { getIsInvasivePlant } from '../pages/ObservationForm/functions';
+import { getIsInvasivePlant, getStageOptions } from '../pages/ObservationForm/functions';
 import { CriteriaOption, Species, SpeciesCriteria } from '../types';
 
 export const availableMimeTypes = ['image/png', 'image/jpg', 'image/jpeg', 'application/pdf'];
@@ -92,7 +92,7 @@ export const getObservationFormValidationSchema = ({
       evolution: Yup.object()
         .when('activity', {
           is: (activity?: CriteriaOption) =>
-            !isEmpty(criteria.signs.find((sign) => sign.id === activity?.id)?.stages),
+            !isEmpty(getStageOptions(criteria.signs, criteria.stages, activity)),
           then: Yup.object().required(validationTexts.requireSelect).nullable(),
         })
         .nullable(),

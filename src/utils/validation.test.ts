@@ -26,6 +26,15 @@ const signWithoutStages: CriteriaSign = {
 const criteria: SpeciesCriteria = {
   criteria: { id: 1, name: 'Vabzdžiai' },
   signs: [signWithStages, signWithoutStages],
+  stages: [],
+};
+
+const looseStage = { id: 91, name: 'DAIGAS', value: 'Daigas' };
+
+const signlessCriteria: SpeciesCriteria = {
+  criteria: { id: 2, name: 'Augalai' },
+  signs: [],
+  stages: [looseStage],
 };
 
 const errorFor = async (
@@ -47,6 +56,16 @@ const errorFor = async (
 describe('getObservationFormValidationSchema', () => {
   it('does not require a sign for a species with no criterion', async () => {
     expect(await errorFor(EMPTY_SPECIES_CRITERIA, 'activity', { activity: null })).toBe(undefined);
+  });
+
+  it('does not require a sign when the criterion offers none', async () => {
+    expect(await errorFor(signlessCriteria, 'activity', { activity: null })).toBe(undefined);
+  });
+
+  it('requires a stage when the criterion offers stages without a sign', async () => {
+    expect(
+      await errorFor(signlessCriteria, 'evolution', { activity: null, evolution: null }),
+    ).toBe(validationTexts.requireSelect);
   });
 
   it('requires a sign when the criterion offers signs', async () => {
