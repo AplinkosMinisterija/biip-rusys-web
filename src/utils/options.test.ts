@@ -12,7 +12,7 @@ describe('classifierLabel', () => {
   it('marks a retired option so it reads apart from the one that replaced it', () => {
     expect(
       classifierLabel({ id: 7, name: 'MATURE', value: 'Suaugęs individas', active: false }),
-    ).toBe('Suaugęs individas (istorinė reikšmė)');
+    ).toBe('Suaugęs individas (nebenaudojama)');
   });
 
   it('leaves a criterion option alone, which never says whether it is active', () => {
