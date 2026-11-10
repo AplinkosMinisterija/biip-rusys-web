@@ -17,7 +17,9 @@ export const GeneratedFileComponent = ({
   documentTypes: RequestDocumentType[];
 }) => (
   <SimpleContainer title={formLabels.documents}>
-    <FileContainer>
+    {/* A format's block swaps from "kuriamas" to a download link with no page
+        load, so the region has to be live for that to reach a screen reader. */}
+    <FileContainer role="status" aria-live="polite">
       {requestGeneratedDocuments
         .filter(({ type }) => documentTypes.includes(type))
         .map(({ type, field, extension, downloadLabel, generatingLabel }) => {
@@ -33,7 +35,10 @@ export const GeneratedFileComponent = ({
             </InnerContainer>
           ) : (
             <Container key={type}>
-              <Loader size={30} /> {generatingLabel}
+              <span aria-hidden="true">
+                <Loader size={30} />
+              </span>{' '}
+              {generatingLabel}
             </Container>
           );
         })}
