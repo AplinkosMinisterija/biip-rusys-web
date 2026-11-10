@@ -1,8 +1,8 @@
 import { Columns } from '@aplinkosministerija/design-system';
 import { useMediaQuery } from '@material-ui/core';
 import { isEmpty, isEqual } from 'lodash';
-import { useState } from 'react';
-import { useMutation, useQuery } from 'react-query';
+import { useCallback, useRef, useState } from 'react';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import Cookies from 'universal-cookie';
 import { default as api } from '../api';
 import { useAppDispatch, useAppSelector } from '../state/hooks';
@@ -10,8 +10,8 @@ import { actions as tenantAction } from '../state/tenant/reducer';
 import { actions as userAction } from '../state/user/reducer';
 import { actions } from '../state/users/reducer';
 import { device } from '../styles';
-import { Tenant, User } from '../types';
-import { ServerErrorCodes } from './constants';
+import { SpeciesCriteria, Tenant, User } from '../types';
+import { CLASSIFIER_STALE_TIME, EMPTY_SPECIES_CRITERIA, ServerErrorCodes } from './constants';
 import {
   handleErrorFromServerToast,
   handleIsTenantOwner,
@@ -23,18 +23,94 @@ import { clearCookies, emptyUser, handleSetProfile } from './loginFunctions';
 import { filteredRoutes } from './routes';
 
 const cookies = new Cookies();
+const MAP_TOKEN_INVALIDATION_COOLDOWN_MS = 30000;
 
 export const useFilteredRoutes = () => {
   return filteredRoutes(useGetCurrentProfile());
 };
 
+export const useSpeciesCriteria = (
+  speciesId?: number,
+): { criteria: SpeciesCriteria; failed: boolean } => {
+  const { data, isError } = useQuery(
+    ['speciesCriteria', speciesId],
+    () => api.getSpeciesCriteria(Number(speciesId)),
+    {
+      onError: () => {
+        handleErrorFromServerToast();
+      },
+      enabled: !!speciesId,
+      staleTime: CLASSIFIER_STALE_TIME,
+      retry: false,
+    },
+  );
+
+  return {
+    // A rolling deploy still serves responses without `stages`, and every reader spreads it.
+    criteria: data ? { ...data, stages: data.stages ?? [] } : EMPTY_SPECIES_CRITERIA,
+    // A failed lookup looks exactly like "no criterion", which would save a protected species unsigned.
+    failed: !!speciesId && isError,
+  };
+};
+
 export const useGetCurrentProfile = () => {
   const profiles = useAppSelector((state) => state.user.userData.profiles);
   const profileId = cookies.get('profileId');
-  const currentProfile = profiles?.find(
-    (profile) => profile.id?.toString() === profileId?.toString(),
-  );
-  return currentProfile;
+
+  return profiles?.find((profile) => profile.id?.toString() === profileId?.toString());
+};
+
+export const useMapToken = () => {
+  const queryClient = useQueryClient();
+  const [mapToken, setMapToken] = useState(cookies.get('mapToken'));
+  const invalidationInProgress = useRef(false);
+  const lastInvalidationAt = useRef(0);
+
+  const { data, isFetching } = useQuery(['mapToken'], () => api.getMapToken(), {
+    onError: () => {
+      handleErrorFromServerToast();
+    },
+    onSuccess: ({ token, expires }) => {
+      if (!token) return;
+
+      cookies.set('mapToken', `${token}`, {
+        path: '/',
+        expires: new Date(expires),
+      });
+      setMapToken(`${token}`);
+    },
+    enabled: !mapToken,
+    retry: false,
+  });
+
+  const invalidateMapToken = useCallback(async () => {
+    const now = Date.now();
+
+    if (
+      invalidationInProgress.current ||
+      now - lastInvalidationAt.current < MAP_TOKEN_INVALIDATION_COOLDOWN_MS
+    ) {
+      return;
+    }
+
+    invalidationInProgress.current = true;
+    lastInvalidationAt.current = now;
+
+    try {
+      cookies.remove('mapToken', { path: '/' });
+      setMapToken(undefined);
+      queryClient.setQueryData(['mapToken'], undefined);
+      await queryClient.invalidateQueries(['mapToken']);
+    } finally {
+      invalidationInProgress.current = false;
+    }
+  }, [queryClient]);
+
+  return {
+    mapToken: mapToken || data?.token,
+    isFetching,
+    invalidateMapToken,
+  };
 };
 
 export const useIsTenantUser = () => {
@@ -48,7 +124,7 @@ export const useIsTenantOwner = () => {
 export const useGetSortedColumns = (columns: Columns) => {
   const isMobile = useMediaQuery(device.mobileL);
 
-  const sortedColumns = Object.keys(columns)
+  return Object.keys(columns)
     .sort((key, key2) =>
       isMobile ? sortMobile(columns, key, key2) : sortDesktop(columns, key, key2),
     )
@@ -56,8 +132,6 @@ export const useGetSortedColumns = (columns: Columns) => {
       obj[key] = columns[key];
       return obj;
     }, {});
-
-  return sortedColumns;
 };
 
 export const useUsers = () => {

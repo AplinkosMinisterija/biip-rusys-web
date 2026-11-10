@@ -1,13 +1,17 @@
-import { isEqual } from 'lodash';
-import {
-  AnimalActivity,
-  AnimalEvolutionState,
-  FormTypes,
-  PlantAbundanceType,
-  PlantEvolutionState,
-} from './../../utils/constants';
-import { isNew } from './../../utils/functions';
-import { inputLabels, pageTitles } from './../../utils/texts';
+import { isEmpty, isEqual } from 'lodash';
+import { FormTypes, PlantAbundanceType } from '../../utils/constants';
+import { CriteriaOption, CriteriaSign } from '../../types';
+import { isNew } from '../../utils/functions';
+import { inputLabels, pageTitles } from '../../utils/texts';
+
+// A criteria that offers no sign carries its stages itself; every other one hangs them off
+// the chosen sign.
+export const getStageOptions = (
+  signs: CriteriaSign[],
+  stages: CriteriaOption[] = [],
+  activity?: CriteriaOption | null,
+): CriteriaOption[] =>
+  isEmpty(signs) ? stages : signs.find((sign) => sign.id === activity?.id)?.stages || [];
 
 export const setPlaceholder = (value, id) =>
   !value && !isNew(id) ? inputLabels.noData : inputLabels.chooseOption;
@@ -19,48 +23,18 @@ export const title = (disabled: boolean, id: string) => {
   return pageTitles.updateForm;
 };
 
-export const getAnimalPlantOptions = (formType: FormTypes) => {
-  const isMushroomKingdom = isEqual(formType, FormTypes.ENDANGERED_MUSHROOM);
-
-  const plantEvolutionOptions = Object.keys(PlantEvolutionState).filter((evolution) => {
-    if (isEqual(evolution, PlantEvolutionState.GROWING)) {
-      return isMushroomKingdom;
-    }
-    return true;
-  });
-
-  return plantEvolutionOptions;
-};
-
-export const getAnimalActivityOptions = () => Object.keys(AnimalActivity);
-
-export const getAnimalEvolutionOptions = (activity?: AnimalActivity) =>
-  Object.keys(AnimalEvolutionState).filter((evolution: any) => {
-    if (isEqual(activity, AnimalActivity.HABITATION)) {
-      return true;
-    }
-
-    const showAgeOptions =
-      activity && [AnimalActivity.OBSERVED_ALIVE, AnimalActivity.OTHER].includes(activity);
-
-    if (showAgeOptions) {
-      const AgeOptions = [AnimalEvolutionState.IMMATURE, AnimalEvolutionState.MATURE].includes(
-        evolution,
-      );
-
-      return AgeOptions;
-    }
-
-    return false;
-  });
-
-export const getMapPath = (disabled = false) => {
+export const getMapPath = (disabled = false, authToken?: string) => {
   const param = new URLSearchParams();
   const path = '/edit';
+
+  if (authToken) {
+    param.append('auth', authToken);
+  }
 
   if (disabled) {
     param.append('preview', 'true');
   } else {
+    param.append('showArea', 'true');
     param.append('buffer', 'true');
   }
 

@@ -6,8 +6,8 @@ import { noQuantityOptions } from '../options';
 import { Column, IndividualsContainer, StyledRadioOptions, StyledSingleCheckBox } from '../styles';
 import { ObservedSpecieDataContainerProps } from '../types';
 import SimpleContainer from './../../../components/containers/SimpleContainer';
-import { FormTypes, MeasurementUnits } from './../../../utils/constants';
-import { formLabels, inputLabels } from './../../../utils/texts';
+import { FormTypes, MeasurementUnits } from '../../../utils/constants';
+import { formLabels, inputLabels } from '../../../utils/texts';
 import { SpecieActivity } from './SpecieActivity';
 import { TransectInfoFields } from './TransectInfoFields';
 
@@ -17,6 +17,7 @@ export const ObservedSpecieDataContainer = ({
   handleChange,
   disabled,
   setValues,
+  criteria,
 }: ObservedSpecieDataContainerProps) => {
   const formType = values?.species?.formType;
   const handleSetTransect = () => {
@@ -103,6 +104,7 @@ export const ObservedSpecieDataContainer = ({
           errors={errors}
           setValues={setValues}
           handleChange={handleChange}
+          criteria={criteria}
         />
         <TextAreaField
           disabled={disabled}

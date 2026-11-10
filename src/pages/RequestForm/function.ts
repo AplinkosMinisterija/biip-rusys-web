@@ -66,6 +66,7 @@ export const getMapPath = (disabled = false) => {
     param.append('preview', 'true');
   } else {
     param.append('types[]', 'polygon');
+    param.append('showArea', 'true');
     param.append('multi', 'true');
   }
 

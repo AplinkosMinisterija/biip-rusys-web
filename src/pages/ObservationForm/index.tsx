@@ -1,49 +1,77 @@
-import { AsyncSelectField, MapField } from '@aplinkosministerija/design-system';
+import { AsyncSelectField } from '@aplinkosministerija/design-system';
+import { useMemo, useState } from 'react';
 import { StatusModal } from '../../components/other/StatusModal';
-import { mapsHost } from '../../utils/constants';
 import Api from './../../api';
 import FormHistoryContainer from './../../components/containers/FormHistoryContainer';
 import SimpleContainer from './../../components/containers/SimpleContainer';
 import LoaderComponent from './../../components/other/LoaderComponent';
 import FormPageWrapper from './../../components/wrappers/FormikFormPageWrapper';
-import { ColumnOne, ColumnTwo, InnerContainer } from './../../styles/GenericStyledComponents';
-import { Species } from './../../types';
-import { getSpeciesList, isNew, speciesOptionLabel } from './../../utils/functions';
+import { ColumnOne, ColumnTwo, InnerContainer } from '../../styles/GenericStyledComponents';
+import { HandleChangeType, SpeciesSearchProp } from '../../types';
+import { getSpeciesList, isNew, speciesOptionLabel } from '../../utils/functions';
+import { useSpeciesCriteria } from '../../utils/hooks';
 import {
   buttonsTitles,
   formLabels,
   inputLabels,
   observationFormActionLabels,
   observationFormHistoryLabels,
-} from './../../utils/texts';
-import { validateForm } from './../../utils/validation';
+} from '../../utils/texts';
+import { getObservationFormValidationSchema } from '../../utils/validation';
 import { ObservedSpecieDataContainer } from './components/ObservedSpecieDataContainer';
 import { ObserverDataContainer } from './components/ObserverDataContainer';
+import { ObservationMapContainer } from './components/ObservationMapContainer';
 import { PhotoContainer } from './components/PhotoContainer';
 import { title } from './functions';
 import { useData } from './hooks/useData';
-import { FormProps } from './types';
+import { FormProps, ObservationFormErrors, SetObservationFormValues } from './types';
+
+type ObservationFormContentProps = Omit<ReturnType<typeof useData>, 'loading'> & { id: string };
 
 const ObservationForm = () => {
-  const {
-    initialValues,
-    id = '',
-    deleteInfo,
-    disabled,
-    loading,
-    handleSubmit,
-    mapQueryString,
-  } = useData();
+  const { loading, ...data } = useData();
 
-  const renderForm = (values: FormProps, errors: any, handleChange: any, setValues: any) => {
-    const handleUpdateSpecie = (species: Species) => {
-      setValues({
+  if (loading) {
+    return <LoaderComponent />;
+  }
+
+  return <ObservationFormContent {...data} id={data.id || ''} />;
+};
+
+// Split so useState sees the loaded species: on one component, mount happens while useData loads.
+const ObservationFormContent = ({
+  initialValues,
+  id,
+  deleteInfo,
+  disabled,
+  handleSubmit,
+  mapQueryString,
+}: ObservationFormContentProps) => {
+  const [speciesId, setSpeciesId] = useState(initialValues.species?.speciesId);
+  const { criteria, failed: criteriaFailed } = useSpeciesCriteria(speciesId);
+  const predatesSigns = !isNew(id) && initialValues.activity == null;
+  const validationSchema = useMemo(
+    () => getObservationFormValidationSchema({ criteria, predatesSigns, criteriaFailed }),
+    [criteria, predatesSigns, criteriaFailed],
+  );
+
+  const renderForm = (
+    values: FormProps,
+    errors: ObservationFormErrors,
+    handleChange: HandleChangeType,
+    setValues?: SetObservationFormValues,
+  ) => {
+    const setObservationValues = setValues ?? (() => undefined);
+
+    const handleUpdateSpecie = (species: SpeciesSearchProp) => {
+      setSpeciesId(species?.speciesId);
+      setObservationValues({
         ...values,
         species,
-        evolution: '',
+        evolution: null,
         method: '',
         methodValue: '',
-        activity: '',
+        activity: null,
       });
     };
 
@@ -53,11 +81,11 @@ const ObservationForm = () => {
           <SimpleContainer title={formLabels.informationAboutObservedSpecie}>
             <AsyncSelectField
               label={inputLabels.specie}
-              disabled={!isNew(id)}
+              disabled={!isNew(id) && disabled}
               value={values.species}
-              error={errors.species as any}
+              error={errors.species}
               name="species"
-              onChange={(species: Species) => {
+              onChange={(species: SpeciesSearchProp) => {
                 handleUpdateSpecie(species);
               }}
               getOptionLabel={(option) => speciesOptionLabel(option)}
@@ -75,21 +103,16 @@ const ObservationForm = () => {
             errors={errors}
             handleChange={handleChange}
             disabled={disabled}
-            setValues={setValues}
+            setValues={setObservationValues}
+            criteria={criteria}
           />
-          <SimpleContainer title={formLabels.map}>
-            <MapField
-              allow="geolocation *"
-              mapHost={mapsHost}
-              value={values?.geom}
-              mapPath={mapQueryString}
-              error={errors?.geom}
-              onChange={(data) => handleChange('geom', data)}
-              height={'300px'}
-              accessibilityDescription="Interaktyvus žemėlapis objektų žymėjimui. Žemėlapis nėra visiškai prieinamas naudotojams su regėjimo negalia."
-              accessibilityContact="Dėl žemėlapio duomenų prieinamumo, kreipkitės: sris@vstt.lt"
-            />
-          </SimpleContainer>
+          <ObservationMapContainer
+            values={values}
+            errors={errors}
+            disabled={disabled}
+            mapQueryString={mapQueryString}
+            handleChange={handleChange}
+          />
           <PhotoContainer
             photos={values.photos}
             photoError={errors.photos}
@@ -125,9 +148,6 @@ const ObservationForm = () => {
     );
   };
 
-  if (loading) {
-    return <LoaderComponent />;
-  }
   return (
     <FormPageWrapper
       twoColumn={!isNew(id)}
@@ -135,7 +155,7 @@ const ObservationForm = () => {
       initialValues={initialValues}
       onSubmit={handleSubmit}
       renderForm={renderForm}
-      validationSchema={validateForm}
+      validationSchema={validationSchema}
       disabled={disabled}
       submitButtonText={buttonsTitles.submit}
       deleteInfo={deleteInfo}

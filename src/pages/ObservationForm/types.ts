@@ -1,16 +1,23 @@
+import type { FeatureCollection } from '@aplinkosministerija/design-system';
 import {
+  FileProps,
   FormNoQuantityReason,
   HandleChangeType,
   Sources,
+  CriteriaOption,
+  SpeciesCriteria,
   SpeciesSearchProp,
   Transect,
-} from './../../types';
-import {
-  AnimalActivity,
-  AnimalEvolutionState,
-  PlantEvolutionState,
-  StatusTypes,
-} from './../../utils/constants';
+} from '../../types';
+import { StatusTypes } from '../../utils/constants';
+
+export type ObservationPhoto = FileProps | File;
+export type ObservationGeom = FeatureCollection | '';
+type ObservationFormFieldErrors = Partial<Record<Exclude<keyof FormProps, 'transect'>, string>>;
+export type ObservationFormErrors = ObservationFormFieldErrors & {
+  transect?: Partial<Record<keyof Transect, string>>;
+};
+export type SetObservationFormValues = (values: FormProps, shouldValidate?: boolean) => void;
 
 export interface FormProps {
   species?: SpeciesSearchProp;
@@ -20,15 +27,15 @@ export interface FormProps {
   quantity: string;
   transect?: Transect;
   description: string;
-  photos: any[];
-  geom: any;
+  photos: ObservationPhoto[];
+  geom: ObservationGeom;
   observedBy: string;
   observedAt?: Date;
   isCorrectFormInformation: boolean;
   status?: StatusTypes;
   comment?: string;
-  evolution?: AnimalEvolutionState | PlantEvolutionState;
-  activity?: AnimalActivity;
+  evolution?: CriteriaOption | null;
+  activity?: CriteriaOption | null;
   noQuantityReason?: FormNoQuantityReason;
 }
 
@@ -39,43 +46,47 @@ export interface FormServerProps {
   source: string | undefined;
   description: string;
   method?: string;
-  geom?: any;
-  photos?: any[];
+  geom?: FeatureCollection;
+  photos?: ObservationPhoto[];
   observedBy: string;
   observedAt: Date | undefined;
   status?: StatusTypes;
   comment?: string;
-  evolution?: AnimalEvolutionState | PlantEvolutionState;
-  activity: AnimalActivity | undefined;
+  evolution?: number | null;
+  activity?: number | null;
   noQuantityReason?: FormNoQuantityReason;
 }
 
 export interface SpecieActivityProps {
   values: FormProps;
-  errors: { [key: string]: string };
-  setValues: any;
+  errors: ObservationFormErrors;
+  setValues: SetObservationFormValues;
   handleChange: HandleChangeType;
   disabled: boolean;
+  criteria: SpeciesCriteria;
 }
 
 export interface ObservedSpecieDataContainerProps {
   values: FormProps;
-  errors: { [key: string]: any };
-  setValues: any;
+  errors: ObservationFormErrors;
+  setValues: SetObservationFormValues;
   handleChange: HandleChangeType;
   disabled: boolean;
+  criteria: SpeciesCriteria;
+  storedSign?: CriteriaOption;
+  storedStage?: CriteriaOption;
 }
 
 export interface ObserverDataContainerProps {
   values: FormProps;
-  errors: { [key: string]: string };
+  errors: ObservationFormErrors;
   handleChange: HandleChangeType;
   disabled: boolean;
   id?: string;
 }
 
 export interface PhotoContainerProps {
-  photos: any[];
+  photos: ObservationPhoto[];
   photoError?: string;
   handleChange: HandleChangeType;
   disabled: boolean;
@@ -85,5 +96,5 @@ export interface TransectInfoFieldsProps {
   disabled: boolean;
   handleChange: HandleChangeType;
   transect?: Transect;
-  errors: { [key: string]: string };
+  errors?: Partial<Record<keyof Transect, string>>;
 }

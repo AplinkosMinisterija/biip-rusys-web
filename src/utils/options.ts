@@ -1,26 +1,30 @@
 import { map } from 'lodash';
+import api from '../api';
+import { CriteriaOption } from '../types';
 import {
-  AnimalActivity,
-  AnimalEvolutionState,
+  ClassifierGroups,
   CrustaceanMethodType,
   FishMethodType,
   MammalMethodType,
   MolluskMethodType,
-  MushroomEvolutionState,
   PlantAbundanceType,
-  PlantEvolutionState,
 } from './constants';
 import {
-  animalActivityLabels,
-  animalEvolutionStateLabels,
   crustaceanMethodTypeLabels,
   fishMethodTypeLabels,
   mammalMethodTypeLabels,
   molluskMethodTypeLabels,
-  mushroomEvolutionStateLabels,
+  inputLabels,
   plantAbundanceTypeLabels,
-  plantEvolutionStateLabels,
 } from './texts';
+
+// A retired value is still shown, so it has to read apart from the one that replaced it: the two
+// vocabulary generations share four labels, and design-system 1.4.7 drops onChange when the
+// clicked option's label equals the current one.
+export const classifierLabel = (option?: CriteriaOption): string =>
+  option?.active === false
+    ? `${option.value} (${inputLabels.deactivatedOption})`
+    : option?.value || '';
 
 const methodLabels = {
   ...fishMethodTypeLabels,
@@ -28,12 +32,6 @@ const methodLabels = {
   ...crustaceanMethodTypeLabels,
   ...mammalMethodTypeLabels,
   ...plantAbundanceTypeLabels,
-};
-
-const evolutionLabels = {
-  ...animalEvolutionStateLabels,
-  ...mushroomEvolutionStateLabels,
-  ...plantEvolutionStateLabels,
 };
 
 export const getMethodOptions = () =>
@@ -53,23 +51,10 @@ export const getMethodOptions = () =>
     }),
   );
 
-export const getEvolutionOptions = () =>
-  map(
-    [
-      ...new Set([
-        ...Object.keys(AnimalEvolutionState),
-        ...Object.keys(MushroomEvolutionState),
-        ...Object.keys(PlantEvolutionState),
-      ]),
-    ],
-    (Status) => ({
-      id: Status,
-      label: evolutionLabels[Status],
-    }),
-  );
+export const getCriteriaOptionsList =
+  (group: ClassifierGroups) => async (input: string, page: number | string) =>
+    await api.getCriteriaOptionsPage(group, input, page);
 
-export const getActivities = () =>
-  map(AnimalActivity, (Status) => ({
-    id: Status,
-    label: animalActivityLabels[Status],
-  }));
+export const getActivityOptionsList = getCriteriaOptionsList(ClassifierGroups.ACTIVITY);
+
+export const getEvolutionOptionsList = getCriteriaOptionsList(ClassifierGroups.EVOLUTION);

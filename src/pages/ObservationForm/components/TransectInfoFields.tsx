@@ -1,15 +1,15 @@
-import { ButtonsGroup, NumericTextField } from '@aplinkosministerija/design-system';
+import { ButtonsGroup, NumericField } from '@aplinkosministerija/design-system';
 import { isEmpty } from 'lodash';
 import styled from 'styled-components';
 import { MeasurementUnit } from '../../../components/other/MeasurmentUnit';
 import { device } from '../../../styles';
 import { TransectInfoFieldsProps } from '../types';
-import { MeasurementUnits } from './../../../utils/constants';
+import { MeasurementUnits } from '../../../utils/constants';
 import {
   inputLabels,
   measurementUnitsLabels,
   shortMeasurementUnitsLabels,
-} from './../../../utils/texts';
+} from '../../../utils/texts';
 
 export const TransectInfoFields = ({
   disabled,
@@ -33,26 +33,26 @@ export const TransectInfoFields = ({
         isSelected={(option) => option === unit}
         getOptionLabel={(option) => measurementUnitsLabels[option]}
       />
-      <NumericTextField
+      <NumericField
         disabled={disabled}
         label={inputLabels.length}
         value={height}
         right={<MeasurementUnit unit={shortMeasurementUnitsLabels[unit]} />}
         error={errors?.height}
         name={'height'}
-        onChange={(height: number) => {
-          handleChange('transect.height', height?.toString());
+        onChange={(height: number | undefined) => {
+          handleChange('transect.height', height);
         }}
       />
-      <NumericTextField
+      <NumericField
         disabled={disabled}
         label={inputLabels.width}
         value={width}
         right={<MeasurementUnit unit={shortMeasurementUnitsLabels[unit]} />}
         error={errors?.width}
         name={'width'}
-        onChange={(width: number) => {
-          handleChange('transect.width', width?.toString());
+        onChange={(width: number | undefined) => {
+          handleChange('transect.width', width);
         }}
       />
     </UnitContainer>

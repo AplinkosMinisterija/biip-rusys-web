@@ -4,17 +4,19 @@ import Cookies from 'universal-cookie';
 import { FormServerProps } from './pages/ObservationForm/types';
 import { RequestFormServerProps } from './pages/RequestForm/types';
 import {
+  CriteriaOption,
   Form,
   FormFiltersProps,
   Request,
   RequestFilterProps,
   Species,
+  SpeciesCriteria,
   SpeciesSearchProp,
   Tenant,
   User,
   UserFilters,
 } from './types';
-import { Populations, Resources, SortFields } from './utils/constants';
+import { ClassifierGroups, Populations, Resources, SortFields } from './utils/constants';
 const cookies = new Cookies();
 
 interface GetAll {
@@ -33,6 +35,7 @@ interface GetAll {
 
 export interface GetAllResponse<T> {
   rows: T[];
+  total?: number;
   totalPages: number;
   page: number;
   pageSize: number;
@@ -337,6 +340,8 @@ class Api {
         Resources.CAN_EDIT,
         Resources.GEOM,
         Populations.SOURCE,
+        Populations.ACTIVITY,
+        Populations.EVOLUTION,
       ],
       id,
     });
@@ -394,12 +399,33 @@ class Api {
       page,
     });
 
+  getSpeciesCriteria = async (speciesId: number): Promise<SpeciesCriteria> =>
+    await this.getOne({
+      resource: `${Resources.FORM_CRITERIA}/species/${speciesId}`,
+    });
+
+  getCriteriaOptionsPage = async (
+    group: ClassifierGroups,
+    input: string,
+    page: number | string,
+  ): Promise<GetAllResponse<CriteriaOption>> =>
+    await this.get({
+      resource: Resources.FORM_SETTINGS_OPTIONS,
+      query: JSON.stringify({ group }),
+      filter: { value: input },
+      // A historic value stays searchable, but it belongs under the ones still in use, and
+      // `name` is the derived code so sorting by it reads as no order at all.
+      sort: ['-active', 'value'],
+      page: page?.toString(),
+    });
+
   createObservationForm = async (params: FormServerProps): Promise<Form> => {
     return await this.post({
       resource: Resources.FORMS,
       params,
     });
   };
+
   uploadFiles = async (resource: Resources, files: File[] = []): Promise<any> => {
     if (isEmpty(files)) return [];
 

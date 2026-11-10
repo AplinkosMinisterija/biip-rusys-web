@@ -7,16 +7,15 @@ import {
 import { Column, Row } from '../styles';
 import { ObserverDataContainerProps } from '../types';
 import SimpleContainer from './../../../components/containers/SimpleContainer';
-import { Sources } from './../../../types';
-import { getSourcesList } from './../../../utils/functions';
-import { formLabels, inputLabels } from './../../../utils/texts';
+import { Sources } from '../../../types';
+import { getSourcesList } from '../../../utils/functions';
+import { formLabels, inputLabels } from '../../../utils/texts';
 
 export const ObserverDataContainer = ({
   values,
   errors,
   handleChange,
   disabled,
-  id,
 }: ObserverDataContainerProps) => {
   return (
     <SimpleContainer title={formLabels.dataAboutObserver}>
