@@ -2,10 +2,10 @@ import {
   ColumnButtonProps,
   Columns,
   DynamicFilterProps,
+  NotFoundInfoProps,
   useStorage,
 } from '@aplinkosministerija/design-system';
 import Api from '../../../api';
-import { NotFoundProps } from '../../../components/other/NotFound';
 import { ButtonInfo } from '../../../components/wrappers/PageWrapper';
 import { useGenericTablePageHooks, useTableData } from '../../../state/hooks';
 import { slugs } from '../../../utils/routes';
@@ -67,10 +67,13 @@ export const useData = () => {
     },
   };
 
-  const notFoundInfo: NotFoundProps = {
+  const notFoundInfo: NotFoundInfoProps = {
     url: slugs.newTenantUser,
-    urlLabel: emptyStateUrlLabels.user,
-    label: emptyStateLabels.user,
+    urlText: emptyStateUrlLabels.user,
+    text: emptyStateLabels.user,
+    onClick: () => {
+      navigate(slugs.newTenantUser);
+    },
   };
 
   return {
