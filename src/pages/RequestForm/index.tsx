@@ -23,7 +23,7 @@ import { AdditionalInfoComponent } from './components/AdditionalInfoContainer';
 import { FormTypeContainer } from './components/FormTypeContainer';
 import { GeneratedFileComponent } from './components/GeneratedFileContainer';
 import SpeciesTaxonomiesContainer from './components/TaxonomiesContainer';
-import { getDownloadUrl, getFileName } from './function';
+import { getFileName } from './function';
 import { useData } from './hooks/useData';
 import { RequestFormProps } from './types';
 
@@ -106,12 +106,7 @@ const RequestForm = () => {
           <ColumnTwo>
             {showFileComponent && (
               <GeneratedFileComponent
-                generatedFilePdf={getDownloadUrl(values?.generatedFile, fileName, 'pdf')}
-                generatedFileGeojson={getDownloadUrl(
-                  values?.generatedFileGeojson,
-                  fileName,
-                  'geojson',
-                )}
+                request={values}
                 documentTypes={values.documentTypes}
                 fileName={fileName}
               />

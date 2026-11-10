@@ -244,6 +244,9 @@ export interface Request {
   id: string;
   status: StatusTypes;
   generatedFile: string;
+  generatedFileShp?: string;
+  generatedFileGdb?: string;
+  generatedFileGpkg?: string;
   files: FileProps[];
   respondedAt: Date;
   type: RequestTypes;

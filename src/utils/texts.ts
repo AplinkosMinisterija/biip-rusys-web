@@ -218,6 +218,9 @@ export const buttonsTitles = {
   returnToLogin: 'Grįžti į prisijungimo langą',
   downLoadGeoJson: 'Atsisiųsti GeoJSON',
   downloadPDF: 'Atsisiųsti PDF',
+  downloadShp: 'Atsisiųsti Shapefile (ZIP)',
+  downloadGdb: 'Atsisiųsti Geodatabase (ZIP)',
+  downloadGpkg: 'Atsisiųsti GeoPackage',
   or: 'Arba',
   eLogin: 'Prisijungti per el. valdžios vartus',
   fillOutRequest: 'Pildyti prašymą',
@@ -299,6 +302,9 @@ export const inputLabels = {
   generating: 'Išrašas kuriamas',
   pdfGenerating: 'PDF išrašas kuriamas',
   geojsonGenerating: 'GeoJSON išrašas kuriamas',
+  shpGenerating: 'Shapefile išrašas kuriamas',
+  gdbGenerating: 'Geodatabase išrašas kuriamas',
+  gpkgGenerating: 'GeoPackage išrašas kuriamas',
   method: 'Metodas',
   abundance: 'Gausumas',
   respondentsNumber: 'Respondentų skaičius',
@@ -628,6 +634,62 @@ export const formNoQuantityReasonLabels = {
 };
 
 export const documentTypeLabels = {
-  [RequestDocumentType.GEOJSON]: 'GeoJSON formatas',
   [RequestDocumentType.PDF]: 'PDF formatas',
+  [RequestDocumentType.GEOJSON]: 'GeoJSON formatas',
+  [RequestDocumentType.SHP]: 'Shapefile (.shp) formatas',
+  [RequestDocumentType.GDB]: 'Geodatabase (.gdb) formatas',
+  [RequestDocumentType.GPKG]: 'GeoPackage (.gpkg) formatas',
 };
+
+export type RequestGeneratedDocumentField =
+  | 'generatedFile'
+  | 'generatedFileGeojson'
+  | 'generatedFileShp'
+  | 'generatedFileGdb'
+  | 'generatedFileGpkg';
+
+export interface RequestGeneratedDocument {
+  type: RequestDocumentType;
+  field: RequestGeneratedDocumentField;
+  extension: string;
+  downloadLabel: string;
+  generatingLabel: string;
+}
+
+export const requestGeneratedDocuments: RequestGeneratedDocument[] = [
+  {
+    type: RequestDocumentType.PDF,
+    field: 'generatedFile',
+    extension: 'pdf',
+    downloadLabel: buttonsTitles.downloadPDF,
+    generatingLabel: inputLabels.pdfGenerating,
+  },
+  {
+    type: RequestDocumentType.GEOJSON,
+    field: 'generatedFileGeojson',
+    extension: 'geojson',
+    downloadLabel: buttonsTitles.downloadGeoJson,
+    generatingLabel: inputLabels.geojsonGenerating,
+  },
+  {
+    type: RequestDocumentType.SHP,
+    field: 'generatedFileShp',
+    extension: 'zip',
+    downloadLabel: buttonsTitles.downloadShp,
+    generatingLabel: inputLabels.shpGenerating,
+  },
+  {
+    type: RequestDocumentType.GDB,
+    field: 'generatedFileGdb',
+    extension: 'zip',
+    downloadLabel: buttonsTitles.downloadGdb,
+    generatingLabel: inputLabels.gdbGenerating,
+  },
+  {
+    type: RequestDocumentType.GPKG,
+    field: 'generatedFileGpkg',
+    extension: 'gpkg',
+    downloadLabel: buttonsTitles.downloadGpkg,
+    generatingLabel: inputLabels.gpkgGenerating,
+  },
+];
