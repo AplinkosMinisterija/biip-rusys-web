@@ -216,7 +216,6 @@ export const buttonsTitles = {
   download: 'Atsisiųsti',
   downloadGeoJson: 'Atsisiųsti GeoJSON',
   returnToLogin: 'Grįžti į prisijungimo langą',
-  downLoadGeoJson: 'Atsisiųsti GeoJSON',
   downloadPDF: 'Atsisiųsti PDF',
   downloadShp: 'Atsisiųsti Shapefile (ZIP)',
   downloadGdb: 'Atsisiųsti Geodatabase (ZIP)',
