@@ -22,8 +22,8 @@ export const GeneratedFileComponent = ({
     <FileContainer role="status" aria-live="polite">
       {requestGeneratedDocuments
         .filter(({ type }) => documentTypes.includes(type))
-        .map(({ type, field, extension, downloadLabel, generatingLabel }) => {
-          const url = getDownloadUrl(request?.[field], fileName, extension);
+        .map(({ type, field, extension, downloadSuffix, downloadLabel, generatingLabel }) => {
+          const url = getDownloadUrl(request?.[field], fileName, extension, downloadSuffix);
 
           return url ? (
             <InnerContainer key={type}>

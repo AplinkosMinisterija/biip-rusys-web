@@ -65,11 +65,11 @@ const mapRequestItem = (request: Request) => {
       formatDate(new Date(request.respondedAt)),
     generatedFiles: (
       <FlexEndRow>
-        {requestGeneratedDocuments.map(({ type, field, extension, downloadLabel }) => (
+        {requestGeneratedDocuments.map(({ type, field, extension, downloadSuffix, downloadLabel }) => (
           <FileDownloadContainer
             key={type}
             downloadButtonTitle={downloadLabel}
-            url={getDownloadUrl(request[field], getFileName(request.id), extension)}
+            url={getDownloadUrl(request[field], getFileName(request.id), extension, downloadSuffix)}
           />
         ))}
       </FlexEndRow>

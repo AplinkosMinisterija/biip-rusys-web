@@ -651,6 +651,7 @@ export interface RequestGeneratedDocument {
   type: RequestDocumentType;
   field: RequestGeneratedDocumentField;
   extension: string;
+  downloadSuffix?: string;
   downloadLabel: string;
   generatingLabel: string;
 }
@@ -674,6 +675,7 @@ export const requestGeneratedDocuments: RequestGeneratedDocument[] = [
     type: RequestDocumentType.SHP,
     field: 'generatedFileShp',
     extension: 'zip',
+    downloadSuffix: 'shapefile',
     downloadLabel: buttonsTitles.downloadShp,
     generatingLabel: inputLabels.shpGenerating,
   },
@@ -681,6 +683,7 @@ export const requestGeneratedDocuments: RequestGeneratedDocument[] = [
     type: RequestDocumentType.GDB,
     field: 'generatedFileGdb',
     extension: 'zip',
+    downloadSuffix: 'geodatabase',
     downloadLabel: buttonsTitles.downloadGdb,
     generatingLabel: inputLabels.gdbGenerating,
   },
