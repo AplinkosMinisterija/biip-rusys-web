@@ -45,9 +45,12 @@ export const Grid = styled.div<{ column?: number }>`
 
 export const FlexEndRow = styled.div`
   display: flex;
-  gap: 18px;
+  flex-wrap: wrap;
+  gap: 8px 18px;
   justify-content: flex-end;
   width: 100%;
+  /* Unwrapped, five download links size the table past its container. */
+  max-width: 220px;
   @media ${device.mobileL} {
     gap: 0px;
     flex-direction: column;

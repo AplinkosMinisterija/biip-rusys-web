@@ -203,6 +203,9 @@ export enum SpeciesTypes {
 export enum RequestDocumentType {
   PDF = 'PDF',
   GEOJSON = 'GEOJSON',
+  SHP = 'SHP',
+  GDB = 'GDB',
+  GPKG = 'GPKG',
 }
 
 export const mapsHost = import.meta.env.VITE_MAPS_HOST;

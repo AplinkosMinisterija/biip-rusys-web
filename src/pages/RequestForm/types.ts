@@ -13,6 +13,9 @@ export interface RequestFormProps {
   generatedFileGeojson: string;
   files: FileProps[];
   generatedFile: string;
+  generatedFileShp?: string;
+  generatedFileGdb?: string;
+  generatedFileGpkg?: string;
   description?: string;
   isCorrectFormInformation?: boolean;
   status?: StatusTypes;

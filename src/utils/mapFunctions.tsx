@@ -9,8 +9,8 @@ import { colorsByStatus } from './constants';
 import { formatDate } from './format';
 import { canShowResponseDate } from './functions';
 import {
-  buttonsTitles,
   observationFormStatusLabels,
+  requestGeneratedDocuments,
   requestStatusLabels,
   requestTypeLabels,
 } from './texts';
@@ -65,13 +65,13 @@ const mapRequestItem = (request: Request) => {
       formatDate(new Date(request.respondedAt)),
     generatedFiles: (
       <FlexEndRow>
-        <FileDownloadContainer
-          url={getDownloadUrl(request.generatedFile, getFileName(request.id), 'pdf')}
-        />
-        <FileDownloadContainer
-          downloadButtonTitle={buttonsTitles.downloadGeoJson}
-          url={getDownloadUrl(request?.generatedFileGeojson, getFileName(request.id), 'geojson')}
-        />
+        {requestGeneratedDocuments.map(({ type, field, extension, downloadLabel }) => (
+          <FileDownloadContainer
+            key={type}
+            downloadButtonTitle={downloadLabel}
+            url={getDownloadUrl(request[field], getFileName(request.id), extension)}
+          />
+        ))}
       </FlexEndRow>
     ),
   };

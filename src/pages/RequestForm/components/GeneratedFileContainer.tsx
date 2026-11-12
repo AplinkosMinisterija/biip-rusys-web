@@ -3,69 +3,48 @@ import SimpleContainer from '../../../components/containers/SimpleContainer';
 import FileDownloadContainer from '../../../components/other/FileDownloadContainer';
 import Loader from '../../../components/other/Loader';
 import { RequestDocumentType } from '../../../utils/constants';
-import { buttonsTitles, formLabels, inputLabels } from '../../../utils/texts';
+import { formLabels, requestGeneratedDocuments } from '../../../utils/texts';
+import { getDownloadUrl } from '../function';
+import { RequestFormProps } from '../types';
 
 export const GeneratedFileComponent = ({
-  generatedFilePdf,
-  generatedFileGeojson,
+  request,
   fileName,
   documentTypes,
 }: {
-  generatedFilePdf?: string;
-  generatedFileGeojson?: string;
+  request?: RequestFormProps;
   fileName?: string;
   documentTypes: RequestDocumentType[];
-}) => {
-  const renderLoader = ({ loadingLabel }) => (
-    <Container>
-      <Loader size={30} /> {loadingLabel}
-    </Container>
-  );
+}) => (
+  <SimpleContainer title={formLabels.documents}>
+    {/* A format's block swaps from "kuriamas" to a download link with no page
+        load, so the region has to be live for that to reach a screen reader. */}
+    <FileContainer role="status" aria-live="polite">
+      {requestGeneratedDocuments
+        .filter(({ type }) => documentTypes.includes(type))
+        .map(({ type, field, extension, downloadLabel, generatingLabel }) => {
+          const url = getDownloadUrl(request?.[field], fileName, extension);
 
-  const renderFileDownload = (
-    url?: string,
-    onDownload?: () => void,
-    loading?: boolean,
-    title?: string,
-    loadingLabel?: string,
-  ) => {
-    if (loading) return renderLoader({ loadingLabel });
-
-    return (
-      <InnerContainer>
-        <FileDownloadContainer
-          url={url}
-          onDownload={onDownload}
-          downloadButtonTitle={title}
-          fileName={fileName}
-        />
-      </InnerContainer>
-    );
-  };
-
-  return (
-    <SimpleContainer title={formLabels.documents}>
-      <FileContainer>
-        {documentTypes.includes(RequestDocumentType.PDF) &&
-          renderFileDownload(
-            generatedFilePdf,
-            undefined,
-            !generatedFilePdf,
-            '',
-            inputLabels.pdfGenerating,
-          )}
-        {documentTypes.includes(RequestDocumentType.GEOJSON) &&
-          renderFileDownload(
-            generatedFileGeojson,
-            undefined,
-            !generatedFileGeojson,
-            buttonsTitles.downLoadGeoJson,
-            inputLabels.geojsonGenerating,
-          )}
-      </FileContainer>
-    </SimpleContainer>
-  );
-};
+          return url ? (
+            <InnerContainer key={type}>
+              <FileDownloadContainer
+                url={url}
+                downloadButtonTitle={downloadLabel}
+                fileName={fileName}
+              />
+            </InnerContainer>
+          ) : (
+            <Container key={type}>
+              <span aria-hidden="true">
+                <Loader size={30} />
+              </span>{' '}
+              {generatingLabel}
+            </Container>
+          );
+        })}
+    </FileContainer>
+  </SimpleContainer>
+);
 
 const FileContainer = styled.div`
   display: flex;
