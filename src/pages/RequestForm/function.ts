@@ -81,15 +81,21 @@ export const getFileName = (id: string) => {
   return `${formLabels.documentNo}${String(id).padStart(amountOfCharacters, '0')}`;
 };
 
-export const getDownloadUrl = (url?: string, fileName?: string, extension?: string): string => {
+export const getDownloadUrl = (
+  url?: string,
+  fileName?: string,
+  extension?: string,
+  // Shapefile and Geodatabase both arrive as .zip, so the name is all that tells them apart.
+  suffix?: string,
+): string => {
   if (!url || !fileName || !extension) return '';
 
-  return `${url}?download=${encodeURIComponent(
-    removeDiacritics(fileName)
-      .replace(/[.\s]+/g, '-')
-      .toLowerCase()
-      .replace(/[^\w-]/g, ''),
-  )}.${extension}`;
+  const name = removeDiacritics(fileName)
+    .replace(/[.\s]+/g, '-')
+    .toLowerCase()
+    .replace(/[^\w-]/g, '');
+
+  return `${url}?download=${encodeURIComponent(suffix ? `${name}-${suffix}` : name)}.${extension}`;
 };
 
 const removeDiacritics = (str: string): string => {
