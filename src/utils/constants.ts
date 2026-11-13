@@ -44,6 +44,7 @@ export enum ServerErrors {
   NOT_FOUND = 'Not found.',
   ENTITY_NOT_FOUND = 'Entity not found',
   AUTH_USER_EXISTS = 'AUTH_USER_EXISTS',
+  GEOM_OUTSIDE_LITHUANIA = 'FORM_GEOM_OUTSIDE_LITHUANIA',
 }
 export enum Resources {
   LOGIN = 'auth/login',
@@ -84,6 +85,7 @@ export enum Resources {
   UPLOAD = 'upload',
   CAN_EDIT = 'canEdit',
   FORM_CRITERIA = 'forms/criteria',
+  FORMS_CHECK_GEOM = 'forms/check/geom',
   FORM_SETTINGS_OPTIONS = 'forms/settings/options',
 }
 
