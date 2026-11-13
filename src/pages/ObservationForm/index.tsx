@@ -22,7 +22,7 @@ import { ObservedSpecieDataContainer } from './components/ObservedSpecieDataCont
 import { ObserverDataContainer } from './components/ObserverDataContainer';
 import { ObservationMapContainer } from './components/ObservationMapContainer';
 import { PhotoContainer } from './components/PhotoContainer';
-import { title } from './functions';
+import { getIsInvasivePlant, title } from './functions';
 import { useData } from './hooks/useData';
 import { FormProps, ObservationFormErrors, SetObservationFormValues } from './types';
 
@@ -45,7 +45,7 @@ const ObservationFormContent = ({
   deleteInfo,
   disabled,
   handleSubmit,
-  mapQueryString,
+  getMapQueryString,
 }: ObservationFormContentProps) => {
   const [speciesId, setSpeciesId] = useState(initialValues.species?.speciesId);
   const { criteria, failed: criteriaFailed } = useSpeciesCriteria(speciesId);
@@ -110,7 +110,7 @@ const ObservationFormContent = ({
             values={values}
             errors={errors}
             disabled={disabled}
-            mapQueryString={mapQueryString}
+            mapQueryString={getMapQueryString(getIsInvasivePlant(values.species))}
             handleChange={handleChange}
           />
           <PhotoContainer
