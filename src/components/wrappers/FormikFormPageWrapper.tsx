@@ -1,7 +1,7 @@
 import { Button } from '@aplinkosministerija/design-system';
-import { Form, Formik, yupToFormErrors } from 'formik';
+import { Form, Formik, useFormikContext, yupToFormErrors } from 'formik';
 import { isEmpty } from 'lodash';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { ButtonVariants, device } from '../../styles';
@@ -112,6 +112,7 @@ const FormPageWrapper = ({
                 </InnerRow>
                 <DeleteComponent deleteInfo={deleteInfo} />
               </Row>
+              <ScrollToFirstError />
               {renderForm(values, errors, setFieldValue, setValues)}
               <MessageCointainer>
                 {!isEmpty(errors) && <ErrorMessage>{validationTexts.formFillError}</ErrorMessage>}
@@ -135,6 +136,29 @@ const FormPageWrapper = ({
       </Formik>
     </Container>
   );
+};
+
+const ScrollToFirstError = () => {
+  const { submitCount, isSubmitting, isValid } = useFormikContext();
+  const handledSubmitCount = useRef(0);
+
+  useEffect(() => {
+    if (isSubmitting || isValid || submitCount === handledSubmitCount.current) return;
+    handledSubmitCount.current = submitCount;
+
+    const timeout = setTimeout(() => {
+      const error = document.querySelector('form [role="alert"]');
+      if (!error) return;
+
+      const field = error.closest('.fieldWrapper') || error;
+      field.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      field.querySelector<HTMLElement>('input, textarea, select')?.focus({ preventScroll: true });
+    });
+
+    return () => clearTimeout(timeout);
+  }, [submitCount, isSubmitting, isValid]);
+
+  return null;
 };
 
 const IconContainer = styled.div`

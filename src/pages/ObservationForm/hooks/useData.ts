@@ -63,8 +63,8 @@ export const useData = () => {
     (values: FormServerProps) =>
       isNew(id) ? api.createObservationForm(values) : api.updateObservationForm(values, id),
     {
-      onError: () => {
-        handleErrorFromServerToast();
+      onError: ({ response }: any) => {
+        handleErrorFromServerToast(response?.data?.message);
       },
       onSuccess: () => {
         navigate(slugs.observationForms);

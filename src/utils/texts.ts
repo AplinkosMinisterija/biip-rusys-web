@@ -493,6 +493,9 @@ export const requestFormHistoryLabels = {
   [HistoryTypes.DELETED]: 'Ištrintas',
 };
 
+const geomOutsideLithuaniaText =
+  'Ši vieta yra už Lietuvos ribų, todėl jos pasirinkti negalima. Pažymėkite vietą Lietuvoje, Kuršių mariose arba Lietuvos jūros zonoje.';
+
 export const validationTexts = {
   formFillError: 'Neteisingai užpildyta forma',
   criteriaUnavailable: 'Nepavyko gauti šios rūšies požymių sąrašo. Perkraukite puslapį.',
@@ -509,6 +512,8 @@ export const validationTexts = {
   [ServerErrors.WRONG_PASSWORD]: 'Blogas elektroninis paštas arba slaptažodis',
   [ServerErrors.USER_NOT_FOUND]: 'Naudotojo su tokiu el. paštu nėra',
   [ServerErrors.AUTH_USER_EXISTS]: 'Darbuotojas jau yra įmonėje',
+  geomOutsideLithuania: geomOutsideLithuaniaText,
+  [ServerErrors.GEOM_OUTSIDE_LITHUANIA]: geomOutsideLithuaniaText,
   passwordsDoNotMatch: 'Slaptažodžiai nesutampa',
   error: 'Įvyko nenumatyta klaida, prašome pabandyti vėliau',
   validFirstName: 'Įveskite taisyklingą vardą',

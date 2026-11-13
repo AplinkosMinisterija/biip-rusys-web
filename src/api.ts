@@ -419,6 +419,13 @@ class Api {
       page: page?.toString(),
     });
 
+  checkObservationFormGeom = async (geom: any): Promise<{ insideLithuania: boolean }> => {
+    return await this.post({
+      resource: Resources.FORMS_CHECK_GEOM,
+      params: { geom },
+    });
+  };
+
   createObservationForm = async (params: FormServerProps): Promise<Form> => {
     return await this.post({
       resource: Resources.FORMS,
