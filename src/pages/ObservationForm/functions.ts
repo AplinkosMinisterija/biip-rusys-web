@@ -1,5 +1,5 @@
 import { isEmpty, isEqual } from 'lodash';
-import { FormTypes, PlantAbundanceType } from '../../utils/constants';
+import { FormTypes, MapAreaUnit, PlantAbundanceType } from '../../utils/constants';
 import { CriteriaOption, CriteriaSign } from '../../types';
 import { isNew } from '../../utils/functions';
 import { inputLabels, pageTitles } from '../../utils/texts';
@@ -23,7 +23,7 @@ export const title = (disabled: boolean, id: string) => {
   return pageTitles.updateForm;
 };
 
-export const getMapPath = (disabled = false, authToken?: string) => {
+export const getMapPath = (disabled = false, authToken?: string, isInvasivePlant = false) => {
   const param = new URLSearchParams();
   const path = '/edit';
 
@@ -36,6 +36,10 @@ export const getMapPath = (disabled = false, authToken?: string) => {
   } else {
     param.append('showArea', 'true');
     param.append('buffer', 'true');
+
+    if (isInvasivePlant) {
+      param.append('areaUnit', MapAreaUnit.SQUARE_METERS);
+    }
   }
 
   return `${path}?${param}`;

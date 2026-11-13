@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { CriteriaOption, CriteriaSign } from '../../types';
-import { getStageOptions } from './functions';
+import { FormTypes, MapAreaUnit } from '../../utils/constants';
+import { getIsInvasivePlant, getMapPath, getStageOptions } from './functions';
 
 const stage: CriteriaOption = { id: 90, name: 'SUAUGES_INDIVIDAS', value: 'Suaugęs individas' };
 
@@ -53,5 +54,35 @@ describe('getStageOptions', () => {
     it('offers nothing when the criterion carries no stages key', () => {
       expect(getStageOptions([], undefined, null)).toEqual([]);
     });
+  });
+});
+
+describe('getMapPath', () => {
+  const invasivePlant = { formType: FormTypes.INVASIVE_PLANT };
+  const endangeredPlant = { formType: FormTypes.ENDANGERED_PLANT };
+
+  it('asks the map for square metres on an invasive plant form', () => {
+    expect(getMapPath(false, undefined, getIsInvasivePlant(invasivePlant))).toContain(
+      `areaUnit=${MapAreaUnit.SQUARE_METERS}`,
+    );
+  });
+
+  it('leaves the area unit to the map for any other species', () => {
+    expect(getMapPath(false, undefined, getIsInvasivePlant(endangeredPlant))).not.toContain(
+      'areaUnit',
+    );
+  });
+
+  it('measures nothing in preview mode', () => {
+    const path = getMapPath(true, undefined, getIsInvasivePlant(invasivePlant));
+
+    expect(path).toContain('preview=true');
+    expect(path).not.toContain('areaUnit');
+  });
+
+  it('keeps the auth token and the drawing params', () => {
+    const path = getMapPath(false, 'token', getIsInvasivePlant(invasivePlant));
+
+    expect(path).toBe('/edit?auth=token&showArea=true&buffer=true&areaUnit=m2');
   });
 });

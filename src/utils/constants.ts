@@ -197,6 +197,10 @@ export enum MeasurementUnits {
   HECTARES = 'HECTARES',
 }
 
+export enum MapAreaUnit {
+  SQUARE_METERS = 'm2',
+}
+
 export enum SpeciesTypes {
   ENDANGERED = 'ENDANGERED',
   INVASIVE = 'INVASIVE',

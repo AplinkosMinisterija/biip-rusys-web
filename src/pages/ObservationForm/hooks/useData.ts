@@ -57,7 +57,8 @@ export const useData = () => {
 
   const disabled = !!observationForm && !observationForm?.canEdit;
 
-  const mapQueryString = getMapPath(disabled, mapToken);
+  const getMapQueryString = (isInvasivePlant: boolean) =>
+    getMapPath(disabled, mapToken, isInvasivePlant);
 
   const formMutation = useMutation(
     (values: FormServerProps) =>
@@ -142,7 +143,7 @@ export const useData = () => {
     handleSubmit,
     deleteInfo,
     loading: isFetching || specieLoading,
-    mapQueryString,
+    getMapQueryString,
     initialValues,
     disabled,
     id,
