@@ -81,7 +81,7 @@ const ObservationFormContent = ({
           <SimpleContainer title={formLabels.informationAboutObservedSpecie}>
             <AsyncSelectField
               label={inputLabels.specie}
-              disabled={!isNew(id) && disabled}
+              disabled={!isNew(id)}
               value={values.species}
               error={errors.species}
               name="species"
