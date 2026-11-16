@@ -514,6 +514,8 @@ export const validationTexts = {
   [ServerErrors.AUTH_USER_EXISTS]: 'Darbuotojas jau yra įmonėje',
   geomOutsideLithuania: geomOutsideLithuaniaText,
   [ServerErrors.GEOM_OUTSIDE_LITHUANIA]: geomOutsideLithuaniaText,
+  requireNestPhotos: 'Šios rūšies lizdo stebėjimui privalote įkelti nuotrauką',
+  [ServerErrors.NEST_PHOTOS_REQUIRED]: 'Šios rūšies lizdo stebėjimui privalote įkelti nuotrauką',
   passwordsDoNotMatch: 'Slaptažodžiai nesutampa',
   error: 'Įvyko nenumatyta klaida, prašome pabandyti vėliau',
   validFirstName: 'Įveskite taisyklingą vardą',

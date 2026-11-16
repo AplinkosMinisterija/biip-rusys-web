@@ -63,9 +63,9 @@ describe('getObservationFormValidationSchema', () => {
   });
 
   it('requires a stage when the criterion offers stages without a sign', async () => {
-    expect(
-      await errorFor(signlessCriteria, 'evolution', { activity: null, evolution: null }),
-    ).toBe(validationTexts.requireSelect);
+    expect(await errorFor(signlessCriteria, 'evolution', { activity: null, evolution: null })).toBe(
+      validationTexts.requireSelect,
+    );
   });
 
   it('requires a sign when the criterion offers signs', async () => {
@@ -115,5 +115,36 @@ describe('getObservationFormValidationSchema', () => {
 
     expect(await errorFor(EMPTY_SPECIES_CRITERIA, 'activity', values)).toBe(undefined);
     expect(await errorFor(EMPTY_SPECIES_CRITERIA, 'evolution', values)).toBe(undefined);
+  });
+
+  describe('nest photos', () => {
+    const nest = {
+      id: 80,
+      name: 'VEISIMOSI_VIETA_LIZDAS_UOKSAS_TUOKVIETE_IR_PAN',
+      value: 'Lizdas',
+    };
+    const nestCriteria: SpeciesCriteria = { ...criteria, nestNeedsPhotos: true };
+
+    it('requires a photo for a nest of a species that needs one', async () => {
+      expect(await errorFor(nestCriteria, 'photos', { activity: nest, photos: [] })).toBe(
+        validationTexts.requireNestPhotos,
+      );
+    });
+
+    it('accepts the nest once a photo is attached', async () => {
+      const values = { activity: nest, photos: [{ url: 'a' }] };
+
+      expect(await errorFor(nestCriteria, 'photos', values)).toBe(undefined);
+    });
+
+    it('leaves other signs without a photo', async () => {
+      const values = { activity: signWithStages, photos: [] };
+
+      expect(await errorFor(nestCriteria, 'photos', values)).toBe(undefined);
+    });
+
+    it('leaves nests of other species without a photo', async () => {
+      expect(await errorFor(criteria, 'photos', { activity: nest, photos: [] })).toBe(undefined);
+    });
   });
 });

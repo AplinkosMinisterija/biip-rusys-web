@@ -4,6 +4,7 @@ import { validationTexts } from './texts';
 import {
   FormTypes,
   MammalMethodType,
+  NEST_SIGN_CODE,
   PlantAbundanceType,
   RequestTypes,
   SpeciesTypes,
@@ -134,12 +135,20 @@ export const getObservationFormValidationSchema = ({
           then: Yup.string().required(validationTexts.requireText).nullable(),
         })
         .nullable(),
-      photos: Yup.array().when('species', {
-        is: (species) => species?.speciesType.includes(SpeciesTypes.INVASIVE),
-        then: Yup.array()
-          .required(validationTexts.requirePhotos)
-          .min(1, validationTexts.requirePhotos),
-      }),
+      photos: Yup.array()
+        .when('species', {
+          is: (species) => species?.speciesType.includes(SpeciesTypes.INVASIVE),
+          then: Yup.array()
+            .required(validationTexts.requirePhotos)
+            .min(1, validationTexts.requirePhotos),
+        })
+        .when('activity', {
+          is: (activity?: CriteriaOption) =>
+            !!criteria.nestNeedsPhotos && activity?.name === NEST_SIGN_CODE,
+          then: Yup.array()
+            .required(validationTexts.requireNestPhotos)
+            .min(1, validationTexts.requireNestPhotos),
+        }),
       isCorrectFormInformation: Yup.boolean()
         .required(validationTexts.requireSelect)
         .oneOf([true], validationTexts.requireSelect),
