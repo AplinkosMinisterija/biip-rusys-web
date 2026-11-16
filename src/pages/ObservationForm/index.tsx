@@ -1,5 +1,6 @@
 import { AsyncSelectField } from '@aplinkosministerija/design-system';
 import { useMemo, useState } from 'react';
+import { FieldHint } from '../../components/other/FieldHint';
 import { StatusModal } from '../../components/other/StatusModal';
 import Api from './../../api';
 import FormHistoryContainer from './../../components/containers/FormHistoryContainer';
@@ -11,6 +12,7 @@ import { HandleChangeType, SpeciesSearchProp } from '../../types';
 import { getSpeciesList, isNew, speciesOptionLabel } from '../../utils/functions';
 import { useSpeciesCriteria } from '../../utils/hooks';
 import {
+  fieldHints,
   buttonsTitles,
   formLabels,
   inputLabels,
@@ -79,24 +81,26 @@ const ObservationFormContent = ({
       <InnerContainer>
         <ColumnOne>
           <SimpleContainer title={formLabels.informationAboutObservedSpecie}>
-            <AsyncSelectField
-              label={inputLabels.specie}
-              disabled={!isNew(id)}
-              value={values.species}
-              error={errors.species}
-              name="species"
-              onChange={(species: SpeciesSearchProp) => {
-                handleUpdateSpecie(species);
-              }}
-              getOptionLabel={(option) => speciesOptionLabel(option)}
-              getOptionId={(option) => option?.speciesId}
-              loadOptions={(input, page) => getSpeciesList(input, page)}
-              ariaLabelRemove="Pašalinti"
-              texts={{
-                resultsCount: (count) => `${count} Rūšys`,
-                noOptions: 'Nėra rūšių pasirinkimų',
-              }}
-            />
+            <FieldHint hint={fieldHints.species} show={isNew(id)}>
+              <AsyncSelectField
+                label={inputLabels.specie}
+                disabled={!isNew(id)}
+                value={values.species}
+                error={errors.species}
+                name="species"
+                onChange={(species: SpeciesSearchProp) => {
+                  handleUpdateSpecie(species);
+                }}
+                getOptionLabel={(option) => speciesOptionLabel(option)}
+                getOptionId={(option) => option?.speciesId}
+                loadOptions={(input, page) => getSpeciesList(input, page)}
+                ariaLabelRemove="Pašalinti"
+                texts={{
+                  resultsCount: (count) => `${count} Rūšys`,
+                  noOptions: 'Nėra rūšių pasirinkimų',
+                }}
+              />
+            </FieldHint>
           </SimpleContainer>
           <ObservedSpecieDataContainer
             values={values}

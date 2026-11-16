@@ -704,3 +704,18 @@ export const requestGeneratedDocuments: RequestGeneratedDocument[] = [
     generatingLabel: inputLabels.gpkgGenerating,
   },
 ];
+
+export const fieldHints = {
+  species:
+    'Pradėkite rašyti rūšies pavadinimą lietuviškai arba lotyniškai ir pasirinkite ją iš sąrašo.',
+  activity: 'Pasirinkite, ką stebėjote: patį individą ar jo buvimo požymius, pavyzdžiui, lizdą.',
+  evolution: 'Pasirinkite stebėto individo vystymosi stadiją.',
+  quantity: 'Nurodykite, kiek individų stebėjote.',
+  description:
+    'Aprašykite vietą, kurioje stebėjote rūšį, individų elgseną ir aplink vykdomą ūkinę veiklą.',
+  observedAt: 'Nurodykite dieną, kada stebėjote rūšį, o ne anketos pildymo dieną.',
+  observedBy:
+    'Nurodykite asmenį, kuris stebėjo rūšį. Jei stebėjote patys, įrašykite savo vardą ir pavardę.',
+  source: 'Pasirinkite, iš kur gauti šie duomenys.',
+  transect: 'Nurodykite stebėto ploto matmenis pasirinktais matavimo vienetais.',
+};

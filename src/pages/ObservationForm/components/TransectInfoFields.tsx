@@ -6,10 +6,12 @@ import { device } from '../../../styles';
 import { TransectInfoFieldsProps } from '../types';
 import { MeasurementUnits } from '../../../utils/constants';
 import {
+  fieldHints,
   inputLabels,
   measurementUnitsLabels,
   shortMeasurementUnitsLabels,
 } from '../../../utils/texts';
+import { FieldHint } from '../../../components/other/FieldHint';
 
 export const TransectInfoFields = ({
   disabled,
@@ -22,40 +24,42 @@ export const TransectInfoFields = ({
   const { unit, height, width } = transect;
 
   return (
-    <UnitContainer>
-      <ButtonsGroup
-        label={inputLabels.measurementUnits}
-        disabled={disabled}
-        options={Object.keys(MeasurementUnits).slice(0, 2)}
-        onChange={(e) => {
-          handleChange('transect.unit', e);
-        }}
-        isSelected={(option) => option === unit}
-        getOptionLabel={(option) => measurementUnitsLabels[option]}
-      />
-      <NumericField
-        disabled={disabled}
-        label={inputLabels.length}
-        value={height}
-        right={<MeasurementUnit unit={shortMeasurementUnitsLabels[unit]} />}
-        error={errors?.height}
-        name={'height'}
-        onChange={(height: number | undefined) => {
-          handleChange('transect.height', height);
-        }}
-      />
-      <NumericField
-        disabled={disabled}
-        label={inputLabels.width}
-        value={width}
-        right={<MeasurementUnit unit={shortMeasurementUnitsLabels[unit]} />}
-        error={errors?.width}
-        name={'width'}
-        onChange={(width: number | undefined) => {
-          handleChange('transect.width', width);
-        }}
-      />
-    </UnitContainer>
+    <FieldHint hint={fieldHints.transect} show={!disabled}>
+      <UnitContainer>
+        <ButtonsGroup
+          label={inputLabels.measurementUnits}
+          disabled={disabled}
+          options={Object.keys(MeasurementUnits).slice(0, 2)}
+          onChange={(e) => {
+            handleChange('transect.unit', e);
+          }}
+          isSelected={(option) => option === unit}
+          getOptionLabel={(option) => measurementUnitsLabels[option]}
+        />
+        <NumericField
+          disabled={disabled}
+          label={inputLabels.length}
+          value={height}
+          right={<MeasurementUnit unit={shortMeasurementUnitsLabels[unit]} />}
+          error={errors?.height}
+          name={'height'}
+          onChange={(height: number | undefined) => {
+            handleChange('transect.height', height);
+          }}
+        />
+        <NumericField
+          disabled={disabled}
+          label={inputLabels.width}
+          value={width}
+          right={<MeasurementUnit unit={shortMeasurementUnitsLabels[unit]} />}
+          error={errors?.width}
+          name={'width'}
+          onChange={(width: number | undefined) => {
+            handleChange('transect.width', width);
+          }}
+        />
+      </UnitContainer>
+    </FieldHint>
   );
 };
 

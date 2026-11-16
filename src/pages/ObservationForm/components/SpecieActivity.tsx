@@ -18,6 +18,7 @@ import { StyledRadioOptions } from '../styles';
 import { SpecieActivityProps } from '../types';
 import { FormTypes, MammalMethodType } from '../../../utils/constants';
 import {
+  fieldHints,
   crustaceanMethodTypeLabels,
   fishMethodTypeLabels,
   inputLabels,
@@ -26,6 +27,7 @@ import {
   plantAbundanceTypeLabels,
   shortMeasurementUnitsLabels,
 } from '../../../utils/texts';
+import { FieldHint } from '../../../components/other/FieldHint';
 
 export const SpecieActivity = ({
   values,
@@ -199,30 +201,34 @@ export const SpecieActivity = ({
   return (
     <>
       {showSignField && (
-        <SelectField
-          disabled={disabled}
-          label={inputLabels.activity}
-          value={values.activity}
-          error={errors.activity}
-          name="activity"
-          onChange={handleSetSign}
-          options={criteria.signs}
-          getOptionLabel={classifierLabel}
-          placeholder={setPlaceholder(values.activity?.value, id)}
-        />
+        <FieldHint hint={fieldHints.activity} show={!disabled}>
+          <SelectField
+            disabled={disabled}
+            label={inputLabels.activity}
+            value={values.activity}
+            error={errors.activity}
+            name="activity"
+            onChange={handleSetSign}
+            options={criteria.signs}
+            getOptionLabel={classifierLabel}
+            placeholder={setPlaceholder(values.activity?.value, id)}
+          />
+        </FieldHint>
       )}
       {showStageField && (
-        <SelectField
-          disabled={disabled}
-          label={inputLabels.evolution}
-          value={values.evolution}
-          error={errors.evolution}
-          name="evolution"
-          onChange={(stage?: CriteriaOption) => handleChange('evolution', stage ?? null)}
-          options={stageOptions}
-          getOptionLabel={classifierLabel}
-          placeholder={setPlaceholder(values.evolution?.value, id)}
-        />
+        <FieldHint hint={fieldHints.evolution} show={!disabled}>
+          <SelectField
+            disabled={disabled}
+            label={inputLabels.evolution}
+            value={values.evolution}
+            error={errors.evolution}
+            name="evolution"
+            onChange={(stage?: CriteriaOption) => handleChange('evolution', stage ?? null)}
+            options={stageOptions}
+            getOptionLabel={classifierLabel}
+            placeholder={setPlaceholder(values.evolution?.value, id)}
+          />
+        </FieldHint>
       )}
     </>
   );
