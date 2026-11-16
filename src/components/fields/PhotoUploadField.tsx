@@ -257,10 +257,8 @@ const ErrorMessage = styled.label`
   width: 100%;
   color: ${({ theme }) => theme.colors.error};
   font-size: 1.4rem;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  height: 2.4rem;
+  min-height: 2.4rem;
+  margin-top: 8px;
 `;
 
 export default PhotoUploadField;

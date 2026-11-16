@@ -514,6 +514,10 @@ export const validationTexts = {
   [ServerErrors.AUTH_USER_EXISTS]: 'Darbuotojas jau yra įmonėje',
   geomOutsideLithuania: geomOutsideLithuaniaText,
   [ServerErrors.GEOM_OUTSIDE_LITHUANIA]: geomOutsideLithuaniaText,
+  requireNestPhotos:
+    'Šios rūšies lizdai minimi Miško taisyklėse, todėl lizdo stebėjimą galima pateikti tik su nuotrauka. Įkelkite bent vieną lizdo nuotrauką.',
+  [ServerErrors.NEST_PHOTOS_REQUIRED]:
+    'Šios rūšies lizdai minimi Miško taisyklėse, todėl lizdo stebėjimą galima pateikti tik su nuotrauka. Įkelkite bent vieną lizdo nuotrauką.',
   passwordsDoNotMatch: 'Slaptažodžiai nesutampa',
   error: 'Įvyko nenumatyta klaida, prašome pabandyti vėliau',
   validFirstName: 'Įveskite taisyklingą vardą',

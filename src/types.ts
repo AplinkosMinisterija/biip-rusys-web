@@ -236,6 +236,8 @@ export interface SpeciesCriteria {
   criteria: { id: number; name: string } | null;
   signs: CriteriaSign[];
   stages: CriteriaOption[];
+  // Absent while a rolling deploy still serves the older response.
+  nestNeedsPhotos?: boolean;
 }
 
 export interface Request {
