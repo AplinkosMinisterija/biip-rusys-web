@@ -494,7 +494,7 @@ export const requestFormHistoryLabels = {
 };
 
 const geomOutsideLithuaniaText =
-  'Ši vieta yra už Lietuvos ribų, todėl jos pasirinkti negalima. Pažymėkite vietą Lietuvoje, Kuršių mariose arba Lietuvos jūros zonoje.';
+  'Ši vieta yra už Lietuvos ribų, todėl jos pasirinkti negalima. Pažymėkite vietą Lietuvoje, Kuršių mariose, Lietuvos teritorinėje jūroje arba Išskirtinėje ekonominėje zonoje.';
 
 export const validationTexts = {
   formFillError: 'Neteisingai užpildyta forma',
