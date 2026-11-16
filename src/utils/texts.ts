@@ -718,4 +718,7 @@ export const fieldHints = {
     'Nurodykite asmenį, kuris stebėjo rūšį. Jei stebėjote patys, įrašykite savo vardą ir pavardę.',
   source: 'Pasirinkite, iš kur gauti šie duomenys.',
   transect: 'Nurodykite stebėto ploto matmenis pasirinktais matavimo vienetais.',
+  map: 'Pažymėkite stebėjimo vietą žemėlapyje tašku, linija arba plotu. Vietą galite surasti per paiešką žemėlapio viršuje.',
+  photos:
+    'Įkelkite stebėto individo ar jo buvimo požymių nuotraukas (PNG arba JPG). Invazinių rūšių stebėjimams nuotrauka privaloma.',
 };

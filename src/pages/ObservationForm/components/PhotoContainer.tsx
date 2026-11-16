@@ -4,7 +4,8 @@ import { ObservationPhoto, PhotoContainerProps } from '../types';
 import Api from './../../../api';
 import SimpleContainer from './../../../components/containers/SimpleContainer';
 import PhotoUploadField from './../../../components/fields/PhotoUploadField';
-import { formLabels } from '../../../utils/texts';
+import { fieldHints, formLabels } from '../../../utils/texts';
+import { FieldHint } from '../../../components/other/FieldHint';
 
 export const PhotoContainer = ({
   photos,
@@ -23,16 +24,18 @@ export const PhotoContainer = ({
 
   return (
     <SimpleContainer title={formLabels.photos}>
-      <PhotoUploadField
-        getSrc={(photo) => photo.url}
-        canOpenPhoto={disabled}
-        disabled={disabled}
-        onUpload={async (photos: File[]) => handleUpload(photos)}
-        onChange={async (photos: ObservationPhoto[]) => handleChange('photos', photos)}
-        name={'photos'}
-        photos={photos}
-        error={photoError}
-      />
+      <FieldHint hint={fieldHints.photos} show={!disabled}>
+        <PhotoUploadField
+          getSrc={(photo) => photo.url}
+          canOpenPhoto={disabled}
+          disabled={disabled}
+          onUpload={async (photos: File[]) => handleUpload(photos)}
+          onChange={async (photos: ObservationPhoto[]) => handleChange('photos', photos)}
+          name={'photos'}
+          photos={photos}
+          error={photoError}
+        />
+      </FieldHint>
     </SimpleContainer>
   );
 };
