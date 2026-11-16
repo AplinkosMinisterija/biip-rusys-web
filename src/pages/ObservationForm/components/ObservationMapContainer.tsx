@@ -2,7 +2,8 @@ import { useState } from 'react';
 import SimpleContainer from '../../../components/containers/SimpleContainer';
 import DisplayMap from '../../../components/map/DisplayMap';
 import { mapsHost } from '../../../utils/constants';
-import { formLabels } from '../../../utils/texts';
+import { fieldHints, formLabels } from '../../../utils/texts';
+import { FieldHint } from '../../../components/other/FieldHint';
 import { FormProps, ObservationFormErrors } from '../types';
 import { ObservationMapField } from './ObservationMapField';
 import { ToggleBtn } from './ToggleButton';
@@ -18,6 +19,7 @@ interface ObservationMapContainerProps {
 export const ObservationMapContainer = ({
   values,
   errors,
+  disabled,
   mapQueryString,
   handleChange,
 }: ObservationMapContainerProps) => {
@@ -48,17 +50,19 @@ export const ObservationMapContainer = ({
       {showClosePlaces ? (
         <DisplayMap height="300px" geom={values?.geom} speciesId={speciesId} showAmateur={false} />
       ) : (
-        <ObservationMapField
-          allow="geolocation *"
-          mapHost={mapsHost}
-          value={geom}
-          mapPath={mapQueryString}
-          error={errors?.geom}
-          onChange={handleMapChange}
-          height={'300px'}
-          accessibilityDescription="Interaktyvus žemėlapis objektų žymėjimui. Žemėlapis nėra visiškai prieinamas naudotojams su regėjimo negalia."
-          accessibilityContact="Dėl žemėlapio duomenų prieinamumo, kreipkitės: sris@vstt.lt"
-        />
+        <FieldHint hint={fieldHints.map} show={!disabled}>
+          <ObservationMapField
+            allow="geolocation *"
+            mapHost={mapsHost}
+            value={geom}
+            mapPath={mapQueryString}
+            error={errors?.geom}
+            onChange={handleMapChange}
+            height={'300px'}
+            accessibilityDescription="Interaktyvus žemėlapis objektų žymėjimui. Žemėlapis nėra visiškai prieinamas naudotojams su regėjimo negalia."
+            accessibilityContact="Dėl žemėlapio duomenų prieinamumo, kreipkitės: sris@vstt.lt"
+          />
+        </FieldHint>
       )}
     </SimpleContainer>
   );

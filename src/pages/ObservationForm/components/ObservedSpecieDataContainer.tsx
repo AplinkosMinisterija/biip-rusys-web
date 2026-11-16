@@ -7,7 +7,8 @@ import { Column, IndividualsContainer, StyledRadioOptions, StyledSingleCheckBox 
 import { ObservedSpecieDataContainerProps } from '../types';
 import SimpleContainer from './../../../components/containers/SimpleContainer';
 import { FormTypes, MeasurementUnits } from '../../../utils/constants';
-import { formLabels, inputLabels } from '../../../utils/texts';
+import { fieldHints, formLabels, inputLabels } from '../../../utils/texts';
+import { FieldHint } from '../../../components/other/FieldHint';
 import { SpecieActivity } from './SpecieActivity';
 import { TransectInfoFields } from './TransectInfoFields';
 
@@ -60,18 +61,20 @@ export const ObservedSpecieDataContainer = ({
       <Column>
         {!isInvasivePlant && (
           <IndividualsContainer>
-            <NumericTextField
-              disabled={disabled}
-              label={inputLabels.observedSpecieIndividualsQuantity}
-              value={values.quantity}
-              right={<MeasurementUnit unit={inputLabels.quantity} />}
-              error={errors.quantity}
-              name={'quantity'}
-              onChange={(quantity: number) => {
-                handleChange('quantity', quantity?.toString());
-                handleChange('noQuantityReason', undefined);
-              }}
-            />
+            <FieldHint hint={fieldHints.quantity} show={!disabled}>
+              <NumericTextField
+                disabled={disabled}
+                label={inputLabels.observedSpecieIndividualsQuantity}
+                value={values.quantity}
+                right={<MeasurementUnit unit={inputLabels.quantity} />}
+                error={errors.quantity}
+                name={'quantity'}
+                onChange={(quantity: number) => {
+                  handleChange('quantity', quantity?.toString());
+                  handleChange('noQuantityReason', undefined);
+                }}
+              />
+            </FieldHint>
             {showNoQuantityReasonField && (
               <StyledRadioOptions
                 value={values.noQuantityReason}
@@ -106,15 +109,17 @@ export const ObservedSpecieDataContainer = ({
           handleChange={handleChange}
           criteria={criteria}
         />
-        <TextAreaField
-          disabled={disabled}
-          label={inputLabels.observationBiotope}
-          value={values.description}
-          rows={2}
-          name={'description'}
-          onChange={(e: string) => handleChange('description', e)}
-          error={errors?.description}
-        />
+        <FieldHint hint={fieldHints.description} show={!disabled}>
+          <TextAreaField
+            disabled={disabled}
+            label={inputLabels.observationBiotope}
+            value={values.description}
+            rows={2}
+            name={'description'}
+            onChange={(e: string) => handleChange('description', e)}
+            error={errors?.description}
+          />
+        </FieldHint>
       </Column>
     </SimpleContainer>
   );
