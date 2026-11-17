@@ -48,6 +48,10 @@ export enum ServerErrors {
   GEOM_OUTSIDE_LITHUANIA = 'FORM_GEOM_OUTSIDE_LITHUANIA',
   NEST_PHOTOS_REQUIRED = 'FORM_NEST_PHOTOS_REQUIRED',
 }
+export enum EvartaiProvider {
+  GOVERNMENT_EMPLOYEE_CARD = 'AUTH_LT_GOVERNMENT_EMPLOYEE_CARD',
+}
+
 export enum Resources {
   LOGIN = 'auth/login',
   TENANT = 'tenants',

@@ -11,7 +11,12 @@ import { actions as userAction } from '../state/user/reducer';
 import { actions } from '../state/users/reducer';
 import { device } from '../styles';
 import { SpeciesCriteria, Tenant, User } from '../types';
-import { CLASSIFIER_STALE_TIME, EMPTY_SPECIES_CRITERIA, ServerErrorCodes } from './constants';
+import {
+  CLASSIFIER_STALE_TIME,
+  EMPTY_SPECIES_CRITERIA,
+  EvartaiProvider,
+  ServerErrorCodes,
+} from './constants';
 import {
   handleErrorFromServerToast,
   handleIsTenantOwner,
@@ -167,8 +172,8 @@ export const useShowDeleteRequestTab = () => {
   return showDeletedRequestTab;
 };
 
-export const useEGatesSign = () => {
-  const { mutateAsync, isLoading } = useMutation(api.eGatesSign, {
+export const useEGatesSign = (provider?: EvartaiProvider) => {
+  const { mutateAsync, isLoading } = useMutation(() => api.eGatesSign(provider), {
     onError: () => {
       handleErrorFromServerToast();
     },
