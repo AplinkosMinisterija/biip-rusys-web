@@ -206,6 +206,7 @@ export enum MapAreaUnit {
 export enum SpeciesTypes {
   ENDANGERED = 'ENDANGERED',
   INVASIVE = 'INVASIVE',
+  INTRODUCED = 'INTRODUCED',
 }
 
 export enum RequestDocumentType {

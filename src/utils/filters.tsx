@@ -32,6 +32,9 @@ export const mapMyObservationFilters = (filters: FormFilters): FormFiltersProps 
       params.evolution = filters.evolution.id;
     }
     filters?.source && (params.source = filters?.source?.id);
+    if (filters?.speciesType?.id) {
+      params.speciesType = filters.speciesType.id;
+    }
 
     filters?.state &&
       !isEmpty(filters?.state) &&

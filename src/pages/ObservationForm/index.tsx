@@ -1,6 +1,7 @@
 import { AsyncSelectField } from '@aplinkosministerija/design-system';
 import { useMemo, useState } from 'react';
 import { FieldHint } from '../../components/other/FieldHint';
+import { SpeciesTypeTag } from '../../components/other/SpeciesTypeTag';
 import { StatusModal } from '../../components/other/StatusModal';
 import Api from './../../api';
 import FormHistoryContainer from './../../components/containers/FormHistoryContainer';
@@ -101,6 +102,7 @@ const ObservationFormContent = ({
                 }}
               />
             </FieldHint>
+            <SpeciesTypeTag type={values.species?.speciesType} />
           </SimpleContainer>
           <ObservedSpecieDataContainer
             values={values}

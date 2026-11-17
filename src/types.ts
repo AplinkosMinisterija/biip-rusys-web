@@ -337,6 +337,7 @@ export interface FormFilters {
 
   createdBy?: User;
   species?: SpeciesSearchProp[];
+  speciesType?: { id: SpeciesTypes; label: string };
   source?: Sources;
   tenant?: Tenant;
   method?: { id: string; label: string };
@@ -347,6 +348,7 @@ export interface FormFilters {
 export interface FormFiltersProps {
   createdBy?: string | number;
   species?: { $in: number[] };
+  speciesType?: SpeciesTypes;
   createdAt?: { $gte?: Date; $lt?: Date };
   state?: { $in: StatusTypes[] };
   status?: { $in: FormStatusTypes[] };

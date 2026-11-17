@@ -51,6 +51,7 @@ export const formFiltersLabels = {
   species: 'Rūšis',
   users: 'Pateikė',
   type: 'Tipas',
+  speciesType: 'Rūšies tipas',
   noQuantityReason: 'Gausumo nebuvimo priežastis',
 };
 
@@ -76,6 +77,12 @@ export const myObservationFormLabels = {
     label: 'Rūšis',
     mobileOrder: 1,
     desktopOrder: 1,
+    show: true,
+  },
+  speciesType: {
+    label: 'Rūšies tipas',
+    mobileOrder: 6,
+    desktopOrder: 2,
     show: true,
   },
 
@@ -577,6 +584,13 @@ export const deleteDescriptionSecondPart = {
 export const speciesTypeLabels = {
   [SpeciesTypes.ENDANGERED]: 'Saugoma',
   [SpeciesTypes.INVASIVE]: 'Invazinė',
+  [SpeciesTypes.INTRODUCED]: 'Svetimžemė',
+};
+
+export const speciesTypeListLabels = {
+  [SpeciesTypes.ENDANGERED]: 'Saugomų rūšių sąrašas',
+  [SpeciesTypes.INVASIVE]: 'Invazinių rūšių sąrašas',
+  [SpeciesTypes.INTRODUCED]: 'Svetimžemių rūšių sąrašas',
 };
 
 export const fishMethodTypeLabels = {
