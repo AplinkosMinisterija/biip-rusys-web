@@ -495,6 +495,7 @@ export const observationFormHistoryLabels = {
   [HistoryTypes.PLACE_ASSIGNED]: 'Priskirta radavietė',
   [HistoryTypes.APPROVED]: 'Priimta',
   [HistoryTypes.DELETED]: 'Ištrinta',
+  [HistoryTypes.SPECIES_CHANGED]: 'Pakeista rūšis',
 };
 
 export const requestFormHistoryLabels = {

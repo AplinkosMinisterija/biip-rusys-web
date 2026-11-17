@@ -34,6 +34,7 @@ const historyContainerColors: HistoryContainerColorsType = {
   [HistoryTypes.PLACE_CREATED]: null,
   [HistoryTypes.PLACE_CHANGED]: null,
   [HistoryTypes.PLACE_ASSIGNED]: null,
+  [HistoryTypes.SPECIES_CHANGED]: null,
 };
 
 const FormHistoryContainer = ({ formHistoryLabels, endpoint, name }: FormHistoryContainerProps) => {
