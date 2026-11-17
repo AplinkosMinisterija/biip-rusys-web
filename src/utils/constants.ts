@@ -106,6 +106,7 @@ export enum PlantAbundanceType {
 
 export enum Populations {
   SOURCE = 'source',
+  TENANT = 'tenant',
   ROLE = 'role',
   ACTIVITY = 'activity',
   EVOLUTION = 'evolution',

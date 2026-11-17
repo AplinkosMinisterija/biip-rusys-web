@@ -10,7 +10,7 @@ import { ButtonInfo } from '../../../components/wrappers/PageWrapper';
 import { useGenericTablePageHooks, useTableData } from '../../../state/hooks';
 import { observationFilterConfig, observationRowConfig } from '../../../utils/filterConfigs';
 import { mapObservationFilters } from '../../../utils/filters';
-import { useIsTenantUser, useUsers } from '../../../utils/hooks';
+import { useUsers } from '../../../utils/hooks';
 import { mapObservationList } from '../../../utils/mapFunctions';
 import { slugs } from '../../../utils/routes';
 import { getActiveTab, getObservationTabs } from '../../../utils/tabs';
@@ -24,9 +24,8 @@ import {
 
 export const useData = () => {
   const { location, navigate, page } = useGenericTablePageHooks();
-  const isTenantUser = useIsTenantUser();
   const users = useUsers();
-  const tabs = getObservationTabs(isTenantUser);
+  const tabs = getObservationTabs();
   const activeTabValue = getActiveTab(tabs, location);
   const { value: filters, setValue: setFilters } = useStorage('formFilters', {}, true);
   const { value: storedColumns, setValue: setColumns } = useStorage<Columns>(
