@@ -9,11 +9,9 @@ import { EvartaiProvider } from '../utils/constants';
 import { handleErrorFromServerToast } from '../utils/functions';
 import { useEGatesSign, useUserInfo } from '../utils/hooks';
 import { handleUpdateTokens } from '../utils/loginFunctions';
-import { buttonsTitles, descriptions, inputLabels, validationTexts } from '../utils/texts';
+import { buttonsTitles, inputLabels, validationTexts } from '../utils/texts';
 import { loginSchema } from '../utils/validation';
 import { CheckBox, PasswordField, Button, TextField } from '@aplinkosministerija/design-system';
-
-const governmentEmployeeCardHintId = 'government-employee-card-hint';
 
 interface LoginProps {
   email: string;
@@ -120,11 +118,9 @@ export const Login = () => {
         loading={governmentEmployeeCardLoading}
         disabled={eGatesSignLoading}
         onClick={() => governmentEmployeeCardMutation()}
-        aria-describedby={governmentEmployeeCardHintId}
       >
         {buttonsTitles.governmentEmployeeCard}
       </GovernmentEmployeeCardButton>
-      <LoginHint id={governmentEmployeeCardHintId}>{descriptions.governmentEmployeeCard}</LoginHint>
       <ReCAPTCHA
         ref={captchaRef}
         size="invisible"
@@ -156,13 +152,6 @@ const Container = styled.form`
   display: flex;
   flex-direction: column;
   gap: 16px;
-`;
-
-const LoginHint = styled.div`
-  font-size: 1.4rem;
-  line-height: 1.8rem;
-  color: #716c6b;
-  text-align: center;
 `;
 
 // The design-system button draws its loader white, which is invisible on a transparent variant.
