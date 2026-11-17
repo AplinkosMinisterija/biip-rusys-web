@@ -257,6 +257,7 @@ export const buttonsTitles = {
   createPassword: 'Nustatyti slaptažodį',
   login: 'Prisijungti',
   eGates: 'Prisijungti per el. valdžios vartus',
+  governmentEmployeeCard: 'Prisijungti valstybės tarnautojo pažymėjimu',
   edit: 'Atnaujinti',
   view: 'Peržiūrėti',
   removeTenantUser: 'Pašalinti darbuotoją',
@@ -542,6 +543,8 @@ export const validationTexts = {
 };
 
 export const descriptions = {
+  governmentEmployeeCard:
+    'Valstybės tarnautojo pažymėjimą pasirinksite el. valdžios vartų puslapyje.',
   getDataAboutPlaces:
     'Norėdami matyti tikslų radaviečių žemėlapį, pateikite prašymą gauti prieigą.',
   getMoreDataAboutPlaces:
