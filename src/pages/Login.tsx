@@ -4,7 +4,8 @@ import ReCAPTCHA from 'react-google-recaptcha';
 import { useMutation } from 'react-query';
 import styled from 'styled-components';
 import api from '../api';
-import { ButtonVariants, device } from '../styles';
+import Loader from '../components/other/Loader';
+import { ButtonVariants, device, palette } from '../styles';
 import { EvartaiProvider } from '../utils/constants';
 import { handleErrorFromServerToast } from '../utils/functions';
 import { useEGatesSign, useUserInfo } from '../utils/hooks';
@@ -116,7 +117,14 @@ export const Login = () => {
       <Button
         variant={ButtonVariants.TRANSPARENT}
         width={'100%'}
-        loading={governmentEmployeeCardLoading}
+        left={
+          governmentEmployeeCardLoading ? (
+            <LoaderIcon>
+              <Loader size={18} color={palette.midnightBlue} />
+            </LoaderIcon>
+          ) : undefined
+        }
+        disabled={governmentEmployeeCardLoading}
         onClick={() => governmentEmployeeCardMutation()}
         aria-describedby={governmentEmployeeCardHintId}
       >
@@ -166,6 +174,11 @@ const LoginHint = styled.div`
 const EvvIcon = styled.img`
   width: 18px;
   height: 18px;
+  margin-right: 12px;
+`;
+
+const LoaderIcon = styled.span`
+  display: flex;
   margin-right: 12px;
 `;
 
