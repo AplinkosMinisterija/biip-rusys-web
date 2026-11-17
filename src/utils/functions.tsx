@@ -23,6 +23,7 @@ import {
   requestStatusLabels,
   requestTypeLabels,
   roleLabels,
+  speciesTypeLabels,
   taxonomyOptionLabels,
   validationTexts,
 } from './texts';
@@ -64,13 +65,19 @@ export const bytesToMb = (bytes: number) => {
   return `${(bytes / 1024 ** sizeArrayIndex).toFixed(1)} ${sizes[sizeArrayIndex]}`;
 };
 
-export const getSpeciesTypes = () => map(SpeciesTypes, (type) => type);
+export const getSpeciesTypes = () => [SpeciesTypes.ENDANGERED, SpeciesTypes.INVASIVE];
 export const getRequestDocumentTypes = () => map(RequestDocumentType, (status) => status);
 
 export const getObservationFormStatusTypes = () =>
   map(StatusTypes, (Status) => ({
     id: Status,
     label: observationFormStatusLabels[Status],
+  }));
+
+export const getSpeciesTypeOptions = () =>
+  map(SpeciesTypes, (type) => ({
+    id: type,
+    label: speciesTypeLabels[type],
   }));
 
 export const getNoQuantityOptions = () =>

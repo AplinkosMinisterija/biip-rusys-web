@@ -13,6 +13,7 @@ import {
   requestGeneratedDocuments,
   requestStatusLabels,
   requestTypeLabels,
+  speciesTypeLabels,
 } from './texts';
 
 const mapObservationItem = (form: Form) => {
@@ -21,6 +22,7 @@ const mapObservationItem = (form: Form) => {
     name: (
       <TableItem label={form?.species?.speciesName} bottomLabel={form?.species?.speciesNameLatin} />
     ),
+    speciesType: speciesTypeLabels[form?.species?.speciesType] || '-',
     createdAt: form.createdAt && formatDate(form.createdAt),
     observedAt: form.observedAt && formatDate(form.observedAt),
     status: (
@@ -65,13 +67,20 @@ const mapRequestItem = (request: Request) => {
       formatDate(new Date(request.respondedAt)),
     generatedFiles: (
       <FlexEndRow>
-        {requestGeneratedDocuments.map(({ type, field, extension, downloadSuffix, downloadLabel }) => (
-          <FileDownloadContainer
-            key={type}
-            downloadButtonTitle={downloadLabel}
-            url={getDownloadUrl(request[field], getFileName(request.id), extension, downloadSuffix)}
-          />
-        ))}
+        {requestGeneratedDocuments.map(
+          ({ type, field, extension, downloadSuffix, downloadLabel }) => (
+            <FileDownloadContainer
+              key={type}
+              downloadButtonTitle={downloadLabel}
+              url={getDownloadUrl(
+                request[field],
+                getFileName(request.id),
+                extension,
+                downloadSuffix,
+              )}
+            />
+          ),
+        )}
       </FlexEndRow>
     ),
   };

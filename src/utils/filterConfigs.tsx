@@ -7,6 +7,7 @@ import {
   getRequestTypes,
   getSourcesList,
   getSpeciesList,
+  getSpeciesTypeOptions,
   speciesOptionLabel,
 } from './functions';
 import {
@@ -70,6 +71,13 @@ export const myObservationFilterConfig = {
     optionLabel: (option) => speciesOptionLabel(option),
     getOptionValue: (option) => option?.speciesId,
   },
+  speciesType: {
+    label: formFiltersLabels.speciesType,
+    key: 'speciesType',
+    optionLabel: (option) => option?.label,
+    inputType: FilterInputTypes.singleSelect,
+    options: getSpeciesTypeOptions(),
+  },
   noQuantityReason: {
     label: formFiltersLabels.noQuantityReason,
     key: 'noQuantityReason',
@@ -92,6 +100,7 @@ export const observationFilterConfig = (users: User[] = []) => ({
 
 export const observationRowConfig = [
   ['species'],
+  ['speciesType'],
   ['createdBy'],
   ['dateFrom', 'dateTo'],
   ['state'],

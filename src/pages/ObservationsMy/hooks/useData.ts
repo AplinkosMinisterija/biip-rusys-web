@@ -25,11 +25,13 @@ import {
 export const useData = () => {
   const { location, navigate, page } = useGenericTablePageHooks();
   const { value: filters, setValue: setFilters } = useStorage('myFormFilters', {}, true);
-  const { value: columns, setValue: setColumns } = useStorage<Columns>(
+  const { value: storedColumns, setValue: setColumns } = useStorage<Columns>(
     'myFormColumns',
     myObservationFormLabels,
     true,
   );
+  // Columns added later are missing from what a user saved before, so add them back.
+  const columns = { ...myObservationFormLabels, ...storedColumns };
 
   const isTenantUser = useIsTenantUser();
   const tabs = getObservationTabs(isTenantUser);

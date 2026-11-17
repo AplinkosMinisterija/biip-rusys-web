@@ -29,11 +29,13 @@ export const useData = () => {
   const tabs = getObservationTabs(isTenantUser);
   const activeTabValue = getActiveTab(tabs, location);
   const { value: filters, setValue: setFilters } = useStorage('formFilters', {}, true);
-  const { value: columns, setValue: setColumns } = useStorage<Columns>(
+  const { value: storedColumns, setValue: setColumns } = useStorage<Columns>(
     'formColumns',
     observationFormLabels,
     true,
   );
+  // Columns added later are missing from what a user saved before, so add them back.
+  const columns = { ...observationFormLabels, ...storedColumns };
 
   const { tableData, loading } = useTableData({
     endpoint: () =>
