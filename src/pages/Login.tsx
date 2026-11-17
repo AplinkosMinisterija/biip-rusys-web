@@ -12,6 +12,8 @@ import { buttonsTitles, descriptions, inputLabels, validationTexts } from '../ut
 import { loginSchema } from '../utils/validation';
 import { CheckBox, PasswordField, Button, TextField } from '@aplinkosministerija/design-system';
 
+const governmentEmployeeCardHintId = 'government-employee-card-hint';
+
 interface LoginProps {
   email: string;
   password: string;
@@ -113,10 +115,11 @@ export const Login = () => {
         width={'100%'}
         loading={eGatesSignLoading}
         onClick={() => eGatesMutation()}
+        aria-describedby={governmentEmployeeCardHintId}
       >
         {buttonsTitles.governmentEmployeeCard}
       </Button>
-      <LoginHint>{descriptions.governmentEmployeeCard}</LoginHint>
+      <LoginHint id={governmentEmployeeCardHintId}>{descriptions.governmentEmployeeCard}</LoginHint>
       <ReCAPTCHA
         ref={captchaRef}
         size="invisible"
@@ -151,8 +154,8 @@ const Container = styled.form`
 `;
 
 const LoginHint = styled.div`
-  font-size: 1.2rem;
-  line-height: 1.6rem;
+  font-size: 1.4rem;
+  line-height: 1.8rem;
   color: #716c6b;
   text-align: center;
 `;
