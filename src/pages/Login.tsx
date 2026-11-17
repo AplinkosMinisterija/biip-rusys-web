@@ -5,6 +5,7 @@ import { useMutation } from 'react-query';
 import styled from 'styled-components';
 import api from '../api';
 import { ButtonVariants, device } from '../styles';
+import { EvartaiProvider } from '../utils/constants';
 import { handleErrorFromServerToast } from '../utils/functions';
 import { useEGatesSign, useUserInfo } from '../utils/hooks';
 import { handleUpdateTokens } from '../utils/loginFunctions';
@@ -47,6 +48,8 @@ export const Login = () => {
   });
 
   const { mutateAsync: eGatesMutation, isLoading: eGatesSignLoading } = useEGatesSign();
+  const { mutateAsync: governmentEmployeeCardMutation, isLoading: governmentEmployeeCardLoading } =
+    useEGatesSign(EvartaiProvider.GOVERNMENT_EMPLOYEE_CARD);
 
   const loading = [loginMutation.isLoading, userInfoLoading].some((loading) => loading);
 
@@ -113,8 +116,8 @@ export const Login = () => {
       <Button
         variant={ButtonVariants.TRANSPARENT}
         width={'100%'}
-        loading={eGatesSignLoading}
-        onClick={() => eGatesMutation()}
+        loading={governmentEmployeeCardLoading}
+        onClick={() => governmentEmployeeCardMutation()}
         aria-describedby={governmentEmployeeCardHintId}
       >
         {buttonsTitles.governmentEmployeeCard}

@@ -544,7 +544,7 @@ export const validationTexts = {
 
 export const descriptions = {
   governmentEmployeeCard:
-    'Valstybės tarnautojo pažymėjimą pasirinksite el. valdžios vartų puslapyje.',
+    'El. valdžios vartuose liks tik prisijungimas valstybės tarnautojo pažymėjimu.',
   getDataAboutPlaces:
     'Norėdami matyti tikslų radaviečių žemėlapį, pateikite prašymą gauti prieigą.',
   getMoreDataAboutPlaces:

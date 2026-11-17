@@ -16,7 +16,13 @@ import {
   User,
   UserFilters,
 } from './types';
-import { ClassifierGroups, Populations, Resources, SortFields } from './utils/constants';
+import {
+  ClassifierGroups,
+  EvartaiProvider,
+  Populations,
+  Resources,
+  SortFields,
+} from './utils/constants';
 const cookies = new Cookies();
 
 interface GetAll {
@@ -225,9 +231,10 @@ class Api {
     });
   };
 
-  eGatesSign = async () => {
+  eGatesSign = async (provider?: EvartaiProvider) => {
     return this.authApi({
       resource: Resources.E_GATES_SIGN,
+      params: provider ? { provider } : undefined,
     });
   };
 
