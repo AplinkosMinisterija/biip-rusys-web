@@ -36,6 +36,7 @@ export const getMapPath = (disabled = false, authToken?: string, isInvasivePlant
   } else {
     param.append('showArea', 'true');
     param.append('buffer', 'true');
+    param.append('speciesLayers', 'true');
 
     if (isInvasivePlant) {
       param.append('areaUnit', MapAreaUnit.SQUARE_METERS);
