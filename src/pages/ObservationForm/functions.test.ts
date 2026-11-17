@@ -83,6 +83,11 @@ describe('getMapPath', () => {
   it('keeps the auth token and the drawing params', () => {
     const path = getMapPath(false, 'token', getIsInvasivePlant(invasivePlant));
 
-    expect(path).toBe('/edit?auth=token&showArea=true&buffer=true&areaUnit=m2');
+    expect(path).toBe('/edit?auth=token&showArea=true&buffer=true&speciesLayers=true&areaUnit=m2');
+  });
+
+  it('offers the species layers only while the location can be drawn', () => {
+    expect(getMapPath(false)).toContain('speciesLayers=true');
+    expect(getMapPath(true)).not.toContain('speciesLayers');
   });
 });
