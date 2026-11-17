@@ -4,7 +4,6 @@ import ReCAPTCHA from 'react-google-recaptcha';
 import { useMutation } from 'react-query';
 import styled from 'styled-components';
 import api from '../api';
-import Loader from '../components/other/Loader';
 import { ButtonVariants, device, palette } from '../styles';
 import { EvartaiProvider } from '../utils/constants';
 import { handleErrorFromServerToast } from '../utils/functions';
@@ -110,26 +109,21 @@ export const Login = () => {
         left={<EvvIcon alt="EVV" src="./icons/EVV.svg" />}
         width={'100%'}
         loading={eGatesSignLoading}
+        disabled={governmentEmployeeCardLoading}
         onClick={() => eGatesMutation()}
       >
         {buttonsTitles.eGates}
       </Button>
-      <Button
+      <GovernmentEmployeeCardButton
         variant={ButtonVariants.TRANSPARENT}
         width={'100%'}
-        left={
-          governmentEmployeeCardLoading ? (
-            <LoaderIcon>
-              <Loader size={18} color={palette.midnightBlue} />
-            </LoaderIcon>
-          ) : undefined
-        }
-        disabled={governmentEmployeeCardLoading}
+        loading={governmentEmployeeCardLoading}
+        disabled={eGatesSignLoading}
         onClick={() => governmentEmployeeCardMutation()}
         aria-describedby={governmentEmployeeCardHintId}
       >
         {buttonsTitles.governmentEmployeeCard}
-      </Button>
+      </GovernmentEmployeeCardButton>
       <LoginHint id={governmentEmployeeCardHintId}>{descriptions.governmentEmployeeCard}</LoginHint>
       <ReCAPTCHA
         ref={captchaRef}
@@ -171,16 +165,19 @@ const LoginHint = styled.div`
   text-align: center;
 `;
 
+// The design-system button draws its loader white, which is invisible on a transparent variant.
+const GovernmentEmployeeCardButton = styled(Button)`
+  svg path {
+    fill: ${palette.midnightBlue};
+  }
+`;
+
 const EvvIcon = styled.img`
   width: 18px;
   height: 18px;
   margin-right: 12px;
 `;
 
-const LoaderIcon = styled.span`
-  display: flex;
-  margin-right: 12px;
-`;
 
 const OrLabel = styled.div`
   font-weight: normal;
