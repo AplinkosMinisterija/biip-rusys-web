@@ -393,7 +393,7 @@ class Api {
   getSources = async ({ filter, page, fields }: TableList) =>
     await this.get({
       resource: Resources.SOURCES,
-      sort: [SortFields.NAME_DESC],
+      sort: [SortFields.POSITION, SortFields.NAME],
       filter,
       fields,
       page,
