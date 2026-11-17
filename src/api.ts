@@ -324,7 +324,7 @@ class Api {
   }: TableList<FormFiltersProps>): Promise<GetAllResponse<Form>> =>
     await this.get({
       resource: Resources.MY_FORMS,
-      populate: [Resources.CREATED_BY, Resources.SPECIES],
+      populate: [Resources.CREATED_BY, Resources.SPECIES, Populations.TENANT],
       filter,
       sort: [SortFields.CREATED_AT],
       page,

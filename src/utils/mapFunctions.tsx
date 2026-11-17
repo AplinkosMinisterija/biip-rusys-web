@@ -38,6 +38,9 @@ const mapObservationItem = (form: Form) => {
     respondedAt:
       canShowResponseDate(form?.status) && form.respondedAt && formatDate(form.respondedAt),
     createdBy: `${form?.createdBy?.firstName || '-'} ${form?.createdBy?.lastName || '-'}`,
+    submittedAs:
+      form?.tenant?.name ||
+      `${form?.createdBy?.firstName || '-'} ${form?.createdBy?.lastName || '-'}`,
   };
 };
 

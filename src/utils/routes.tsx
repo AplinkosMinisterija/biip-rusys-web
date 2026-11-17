@@ -16,7 +16,7 @@ import TenantForm from '../pages/Tenant';
 import TenantUserForm from '../pages/TenantUserForm';
 import TenantUsers from '../pages/TenantUsers';
 import { Profile } from '../types';
-import { handleIsTenantOwner, handleIsTenantUser } from './functions';
+import { handleIsTenantOwner } from './functions';
 import { menuLabels, url } from './texts';
 
 export const slugs = {
@@ -84,7 +84,6 @@ const routes = [
   {
     slug: slugs.myObservationForms,
     component: <MyObservations />,
-    tenantUser: true,
   },
   {
     slug: slugs.observationForm(':id'),
@@ -165,9 +164,5 @@ export const filteredRoutes = (profile?: Profile): any =>
     if (route.tenantOwner) {
       return handleIsTenantOwner(profile);
     }
-    if (route.tenantUser) {
-      return handleIsTenantUser(profile);
-    }
-
     return true;
   });

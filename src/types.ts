@@ -207,6 +207,7 @@ export interface Form {
   place: Place;
   description: string;
   createdBy: User;
+  tenant?: Tenant;
   history: FormHistory[];
   createdAt: Date;
   respondedAt: Date;

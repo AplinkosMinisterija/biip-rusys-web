@@ -72,7 +72,7 @@ export const tenantUsersLabels = {
   role: { label: 'Teisė', show: true },
 };
 
-export const myObservationFormLabels = {
+const observationFormBaseLabels = {
   name: {
     label: 'Rūšis',
     mobileOrder: 1,
@@ -112,8 +112,18 @@ export const myObservationFormLabels = {
   },
 };
 
+export const myObservationFormLabels = {
+  ...observationFormBaseLabels,
+  submittedAs: {
+    label: 'Pateikta kaip',
+    mobileOrder: 3,
+    desktopOrder: 2,
+    show: true,
+  },
+};
+
 export const observationFormLabels = {
-  ...myObservationFormLabels,
+  ...observationFormBaseLabels,
   createdBy: {
     label: 'Pateikė',
     mobileOrder: 3,

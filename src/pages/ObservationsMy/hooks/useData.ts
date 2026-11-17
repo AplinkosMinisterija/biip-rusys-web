@@ -10,7 +10,6 @@ import { ButtonInfo } from '../../../components/wrappers/PageWrapper';
 import { useGenericTablePageHooks, useTableData } from '../../../state/hooks';
 import { myObservationFilterConfig, observationRowConfig } from '../../../utils/filterConfigs';
 import { mapMyObservationFilters } from '../../../utils/filters';
-import { useIsTenantUser } from '../../../utils/hooks';
 import { mapObservationList } from '../../../utils/mapFunctions';
 import { slugs } from '../../../utils/routes';
 import { getActiveTab, getObservationTabs } from '../../../utils/tabs';
@@ -33,8 +32,7 @@ export const useData = () => {
   // Columns added later are missing from what a user saved before, so add them back.
   const columns = { ...myObservationFormLabels, ...storedColumns };
 
-  const isTenantUser = useIsTenantUser();
-  const tabs = getObservationTabs(isTenantUser);
+  const tabs = getObservationTabs();
   const activeTabValue = getActiveTab(tabs, location);
 
   const { tableData, loading } = useTableData({
