@@ -117,6 +117,7 @@ export enum SortFields {
   LAST_NAME = 'lastName',
   NAME = 'name',
   ID = 'id',
+  POSITION = 'position',
 }
 
 export enum LoadingTypes {
