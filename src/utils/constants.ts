@@ -11,6 +11,7 @@ export enum HistoryTypes {
   PLACE_ASSIGNED = 'PLACE_ASSIGNED',
   APPROVED = 'APPROVED',
   DELETED = 'DELETED',
+  SPECIES_CHANGED = 'SPECIES_CHANGED',
 }
 
 export enum StateTypes {
