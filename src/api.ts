@@ -6,6 +6,7 @@ import { RequestFormServerProps } from './pages/RequestForm/types';
 import {
   CriteriaOption,
   Form,
+  MediaFileProps,
   FormFiltersProps,
   Request,
   RequestFilterProps,
@@ -471,6 +472,18 @@ class Api {
     } catch (e: any) {
       return { error: e.response.data.message };
     }
+  };
+
+  uploadMedia = async (file: File): Promise<MediaFileProps> => {
+    const formData = new FormData();
+    formData.append('file', file);
+    const data = await this.errorWrapper(() =>
+      this.AuthApiAxios.post(`/${Resources.FORMS}/${Resources.UPLOAD}/media`, formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      }),
+    );
+
+    return { name: data.filename, size: data.size, url: data.url, mimetype: data.mimetype };
   };
 
   updateObservationForm = async (params: FormServerProps, id?: string): Promise<Form> => {

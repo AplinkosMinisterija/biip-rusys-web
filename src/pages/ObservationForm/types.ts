@@ -2,6 +2,7 @@ import type { FeatureCollection } from '@aplinkosministerija/design-system';
 import {
   FileProps,
   FormNoQuantityReason,
+  MediaFileProps,
   HandleChangeType,
   Sources,
   CriteriaOption,
@@ -28,6 +29,7 @@ export interface FormProps {
   transect?: Transect;
   description: string;
   photos: ObservationPhoto[];
+  media: MediaFileProps[];
   geom: ObservationGeom;
   observedBy: string;
   observedAt?: Date;
@@ -48,6 +50,7 @@ export interface FormServerProps {
   method?: string;
   geom?: FeatureCollection;
   photos?: ObservationPhoto[];
+  media?: MediaFileProps[];
   observedBy: string;
   observedAt: Date | undefined;
   status?: StatusTypes;

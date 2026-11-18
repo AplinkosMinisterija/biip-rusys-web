@@ -24,6 +24,7 @@ import { getObservationFormValidationSchema } from '../../utils/validation';
 import { ObservedSpecieDataContainer } from './components/ObservedSpecieDataContainer';
 import { ObserverDataContainer } from './components/ObserverDataContainer';
 import { ObservationMapContainer } from './components/ObservationMapContainer';
+import { MediaContainer } from './components/MediaContainer';
 import { PhotoContainer } from './components/PhotoContainer';
 import { getIsInvasivePlant, title } from './functions';
 import { useData } from './hooks/useData';
@@ -125,6 +126,7 @@ const ObservationFormContent = ({
             handleChange={handleChange}
             disabled={disabled}
           />
+          <MediaContainer media={values.media} handleChange={handleChange} disabled={disabled} />
           <ObserverDataContainer
             values={values}
             errors={errors}

@@ -304,6 +304,7 @@ export const formLabels = {
   showClosePlaces: 'Rodyti artimas radavietes',
   showCurrentPlace: 'Rodyti pažymėtą vietą',
   photos: 'Nuotraukos',
+  media: 'Garso ir vaizdo įrašai',
   dataAboutObserver: 'Duomenys apie stebėtoją',
   observationalHistory: 'Stebėjimų istorija',
   profileInfo: 'Profilio informacija',
@@ -731,7 +732,18 @@ export const requestGeneratedDocuments: RequestGeneratedDocument[] = [
   },
 ];
 
+export const mediaTexts = {
+  upload: 'Įkelti įrašą',
+  uploading: 'Įkeliama...',
+  remove: 'Pašalinti įrašą',
+  badType: 'Šio failo įkelti negalima. Tinka MP3, WAV, M4A, MP4, MOV ir WEBM failai.',
+  tooLarge: 'Failas per didelis. Vienas įrašas gali būti iki 100 MB.',
+  failed: 'Nepavyko įkelti įrašo. Bandykite dar kartą.',
+};
+
 export const fieldHints = {
+  media:
+    'Įkelkite garso (MP3, WAV, M4A) arba vaizdo (MP4, MOV, WEBM) įrašus. Vienas failas gali būti iki 100 MB.',
   species:
     'Pradėkite rašyti rūšies pavadinimą lietuviškai arba lotyniškai ir pasirinkite ją iš sąrašo.',
   activity: 'Pasirinkite, ką stebėjote: patį individą ar jo buvimo požymius, pavyzdžiui, lizdą.',
