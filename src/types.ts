@@ -87,6 +87,13 @@ export type FileProps = {
   size: number;
 };
 
+export type MediaFileProps = {
+  name: string;
+  size: number;
+  url: string;
+  mimetype?: string;
+};
+
 export type ResponseFileProps = {
   url: string;
   filename: string;
@@ -215,6 +222,7 @@ export interface Form {
   error?: string;
   observedBy?: string;
   photos: FileProps[] | File[] | any[];
+  media?: MediaFileProps[];
   observedAt: Date;
   evolution?: CriteriaOption;
   activity?: CriteriaOption;
