@@ -131,8 +131,16 @@ describe('getObservationFormValidationSchema', () => {
       );
     });
 
-    it('accepts the nest once a photo is attached', async () => {
+    it('requires a second photo of the nest', async () => {
       const values = { activity: nest, photos: [{ url: 'a' }] };
+
+      expect(await errorFor(nestCriteria, 'photos', values)).toBe(
+        validationTexts.requireNestPhotos,
+      );
+    });
+
+    it('accepts the nest once two photos are attached', async () => {
+      const values = { activity: nest, photos: [{ url: 'a' }, { url: 'b' }] };
 
       expect(await errorFor(nestCriteria, 'photos', values)).toBe(undefined);
     });
