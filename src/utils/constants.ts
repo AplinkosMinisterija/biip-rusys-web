@@ -307,3 +307,4 @@ export const CLASSIFIER_STALE_TIME = 60 * 60 * 1000;
 export const EMPTY_SPECIES_CRITERIA: SpeciesCriteria = { criteria: null, signs: [], stages: [] };
 
 export const NEST_SIGN_CODE = 'VEISIMOSI_VIETA_LIZDAS_UOKSAS_TUOKVIETE_IR_PAN';
+export const NEST_PHOTOS_MIN = 2;

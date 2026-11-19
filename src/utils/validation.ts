@@ -4,6 +4,7 @@ import { validationTexts } from './texts';
 import {
   FormTypes,
   MammalMethodType,
+  NEST_PHOTOS_MIN,
   NEST_SIGN_CODE,
   PlantAbundanceType,
   RequestTypes,
@@ -147,7 +148,7 @@ export const getObservationFormValidationSchema = ({
             !!criteria.nestNeedsPhotos && activity?.name === NEST_SIGN_CODE,
           then: Yup.array()
             .required(validationTexts.requireNestPhotos)
-            .min(1, validationTexts.requireNestPhotos),
+            .min(NEST_PHOTOS_MIN, validationTexts.requireNestPhotos),
         }),
       isCorrectFormInformation: Yup.boolean()
         .required(validationTexts.requireSelect)

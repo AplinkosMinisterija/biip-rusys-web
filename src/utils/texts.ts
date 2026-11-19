@@ -516,6 +516,9 @@ export const requestFormHistoryLabels = {
 const geomOutsideLithuaniaText =
   'Ši vieta yra už Lietuvos ribų, todėl jos pasirinkti negalima. Pažymėkite vietą Lietuvoje, Kuršių mariose, Lietuvos teritorinėje jūroje arba Išskirtinėje ekonominėje zonoje.';
 
+const nestPhotosText =
+  'Prašome pateikti mažiausiai dvi nuotraukas: bendrą medžio vaizdą ir patį lizdą iš arčiau.';
+
 export const validationTexts = {
   formFillError: 'Neteisingai užpildyta forma',
   criteriaUnavailable: 'Nepavyko gauti šios rūšies požymių sąrašo. Perkraukite puslapį.',
@@ -534,10 +537,8 @@ export const validationTexts = {
   [ServerErrors.AUTH_USER_EXISTS]: 'Darbuotojas jau yra įmonėje',
   geomOutsideLithuania: geomOutsideLithuaniaText,
   [ServerErrors.GEOM_OUTSIDE_LITHUANIA]: geomOutsideLithuaniaText,
-  requireNestPhotos:
-    'Šios rūšies lizdai minimi Miško taisyklėse, todėl lizdo stebėjimą galima pateikti tik su nuotrauka. Įkelkite bent vieną lizdo nuotrauką.',
-  [ServerErrors.NEST_PHOTOS_REQUIRED]:
-    'Šios rūšies lizdai minimi Miško taisyklėse, todėl lizdo stebėjimą galima pateikti tik su nuotrauka. Įkelkite bent vieną lizdo nuotrauką.',
+  requireNestPhotos: nestPhotosText,
+  [ServerErrors.NEST_PHOTOS_REQUIRED]: nestPhotosText,
   passwordsDoNotMatch: 'Slaptažodžiai nesutampa',
   error: 'Įvyko nenumatyta klaida, prašome pabandyti vėliau',
   validFirstName: 'Įveskite taisyklingą vardą',
