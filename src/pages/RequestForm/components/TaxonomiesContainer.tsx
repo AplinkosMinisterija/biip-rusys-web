@@ -51,7 +51,7 @@ const SpeciesTaxonomiesContainer = ({
               onChange={(data) => {
                 onChange('geom', data);
               }}
-              height={'300px'}
+              height={'400px'}
               accessibilityDescription="Interaktyvus žemėlapis objektų žymėjimui. Žemėlapis nėra visiškai prieinamas naudotojams su regėjimo negalia."
               accessibilityContact="Dėl žemėlapio duomenų prieinamumo, kreipkitės: sris@vstt.lt"
             />
